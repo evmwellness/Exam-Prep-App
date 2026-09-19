@@ -1,5 +1,5 @@
 import type { ExamType, PracticeItem, SessionMode, Specialty } from '../types'
-import { practiceItemsForExam } from '../data/practiceItems'
+import { aktPracticeItems, kfpExamFormatPracticeItems, kfpPracticeItems } from '../data/practiceItems'
 import { EXAM_SIM_DEFAULTS } from './examConfig'
 import { estimateBlockQuestionCount, getRecentAvgPaceSec } from './pace'
 import { buildWeakAreaSet, shuffle } from './weakAreas'
@@ -18,6 +18,14 @@ export interface BuildSessionParams {
   customCount?: number
   specialties?: Specialty[]
   focusWeakAreas?: boolean
+  /** KFP only: also draw from the legacy sequential case-study bank (bonus practice, not the current exam format). */
+  includeCaseStudies?: boolean
+}
+
+/** AKT items are standalone; KFP defaults to current-format MCQ+EMQ, optionally widened to include legacy cases. */
+function basePool(exam: ExamType, includeCaseStudies?: boolean): PracticeItem[] {
+  if (exam === 'AKT') return aktPracticeItems
+  return includeCaseStudies ? kfpPracticeItems : kfpExamFormatPracticeItems
 }
 
 function filterBySpecialty(pool: PracticeItem[], specialties?: Specialty[]): PracticeItem[] {
@@ -26,7 +34,7 @@ function filterBySpecialty(pool: PracticeItem[], specialties?: Specialty[]): Pra
   return pool.filter((i) => set.has(i.specialty))
 }
 
-/** Groups items by KFP case (AKT items are each their own singleton group), shuffles group order. */
+/** Groups items by KFP case/EMQ theme (AKT and standalone KFP MCQ items are each their own singleton group), shuffles group order. */
 function shuffledGroups(pool: PracticeItem[]): PracticeItem[][] {
   const byCase = new Map<string, PracticeItem[]>()
   for (const item of pool) {
@@ -51,12 +59,12 @@ function pickGroupsUpTo(pool: PracticeItem[], targetCount: number): PracticeItem
 
 export async function buildSession(params: BuildSessionParams): Promise<BuiltSession> {
   const { exam, mode } = params
-  const fullPool = practiceItemsForExam(exam)
+  const fullPool = basePool(exam, params.includeCaseStudies)
   const specialtyPool = filterBySpecialty(fullPool, params.specialties)
 
   if (mode === 'exam') {
     const config = EXAM_SIM_DEFAULTS[exam]
-    const items = exam === 'AKT' ? shuffle(fullPool).slice(0, config.questionCount) : shuffle(fullPool)
+    const items = exam === 'AKT' ? shuffle(fullPool).slice(0, config.questionCount) : pickGroupsUpTo(fullPool, config.questionCount)
     return { mode, exam, items, timeLimitSec: config.durationMinutes * 60 }
   }
 

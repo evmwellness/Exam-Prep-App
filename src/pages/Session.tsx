@@ -152,11 +152,16 @@ function SessionRunner({ built }: { built: BuiltSession }) {
         {current.exam === 'KFP' && current.caseTitle && (
           <div className="mb-3">
             <p className="text-xs uppercase tracking-wide text-amber-400/80 font-semibold">
-              Case: {current.caseTitle} · item {current.itemIndex}/{current.caseItemCount}
+              {current.kfpFormat === 'emq' ? 'Theme' : 'Case'}: {current.caseTitle} · item {current.itemIndex}/{current.caseItemCount}
             </p>
           </div>
         )}
         <p className="text-xs text-slate-500 mb-2">{current.specialty} · {current.topic}</p>
+        {current.instructions && (
+          <p className="text-xs italic text-sky-300/80 bg-sky-950/30 border border-sky-900/40 rounded-lg px-3 py-2 mb-3">
+            {current.instructions}
+          </p>
+        )}
         <p className="text-[15px] leading-relaxed text-slate-100 whitespace-pre-line mb-5">{current.displayStem}</p>
 
         <div className="space-y-2 mb-4">

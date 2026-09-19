@@ -73,7 +73,13 @@ export interface KfpItem {
   difficulty: Difficulty
 }
 
-/** A KFP clinical case: one vignette with several linked, progressively-revealed items. */
+/**
+ * A KFP clinical case: one vignette with several linked, progressively-revealed
+ * items. Kept as bonus clinical-reasoning practice — RACGP's current KFP
+ * sittings (per user report, last two sittings this year) use MCQ and
+ * Extended Matching Question formats, not this sequential case style, so
+ * this content is not used for exam-simulation/block modes by default.
+ */
 export interface KfpCase {
   id: string
   exam: 'KFP'
@@ -84,18 +90,67 @@ export interface KfpCase {
   items: KfpItem[]
 }
 
-/** A flattened, practiceable unit — either a whole AKT question or one KFP case item. */
+/** A single standalone KFP multiple choice question (single-best-answer, same shape as AKT). */
+export interface KfpQuestion {
+  id: string
+  exam: 'KFP'
+  format: 'mcq'
+  specialty: Specialty
+  topic: string
+  difficulty: Difficulty
+  stem: string
+  options: McqOption[]
+  correctKey: string
+  explanation: string
+  optionExplanations: Record<string, string>
+  reference?: string
+  tags?: string[]
+}
+
+/** One scenario within an EMQ theme, matched against the theme's shared option list. */
+export interface EmqStem {
+  id: string
+  vignette: string
+  correctKey: string
+  explanation: string
+  /** Explanation per shared-option key, scoped to why it is/isn't right for this stem. */
+  optionExplanations: Record<string, string>
+  difficulty: Difficulty
+}
+
+/** An Extended Matching Question theme: one shared option list, several scenarios to match against it. */
+export interface EmqTheme {
+  id: string
+  exam: 'KFP'
+  format: 'emq'
+  specialty: Specialty
+  topic: string
+  title: string
+  /** e.g. "For each scenario below, select the single most likely diagnosis. Each option may be used once, more than once, or not at all." */
+  instructions: string
+  /** Shared option list all stems in this theme are matched against. */
+  options: McqOption[]
+  stems: EmqStem[]
+}
+
+export type KfpFormat = 'mcq' | 'emq' | 'case'
+
+/** A flattened, practiceable unit — an AKT question, KFP MCQ, KFP EMQ stem, or legacy KFP case item. */
 export interface PracticeItem {
-  uid: string // AktQuestion.id, or `${caseId}::${itemId}` for KFP
+  uid: string
   exam: ExamType
   specialty: Specialty
   topic: string
   difficulty: Difficulty
+  /** Format tag for KFP items only, to filter exam-format vs bonus case content. */
+  kfpFormat?: KfpFormat
   /** Full stem text to display, including any KFP vignette + addendum. */
   displayStem: string
+  /** Format-specific guidance shown above the stem (e.g. EMQ matching instructions). */
+  instructions?: string
   caseId?: string
   caseTitle?: string
-  /** 1-based position of this item within its KFP case, for sequencing/display. */
+  /** 1-based position of this item within its KFP case/EMQ theme, for sequencing/display. */
   itemIndex?: number
   caseItemCount?: number
   options: McqOption[]

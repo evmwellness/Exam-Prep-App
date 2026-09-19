@@ -7,14 +7,17 @@ connection once installed.
 
 ## Features
 
-- **Original question bank**: 120 AKT single-best-answer questions and 14
-  KFP clinical cases (70 MCQ-adapted items), spanning all major curriculum
+- **Original question bank**: 120 AKT single-best-answer questions; for KFP,
+  100 single-best-answer MCQs and 10 Extended Matching Question (EMQ) themes
+  (50 items) matching RACGP's current KFP format (MCQ + EMQ, per recent
+  candidate reports), plus a bonus legacy bank of 14 sequential clinical
+  cases (70 items) for extra reasoning practice. Spans all major curriculum
   specialties. Content is AI-generated study material mapped to RACGP
   curriculum domains and current Australian general practice guidelines —
   not a reproduction of real past exam papers (RACGP does not publish
-  those). See the in-app Settings page for the full content disclaimer,
-  including an important note that the **real KFP exam is short-answer,
-  not multiple choice**.
+  those). See the in-app Settings page for the full content disclaimer.
+  Exam formats can change — verify against the current RACGP candidate
+  handbook before your sitting.
 - **Practice modes**: full exam simulation (timed to match question count),
   20–25 minute short interval learning blocks, and fully custom sessions
   (question count, specialty filters, weak-area weighting).
@@ -48,6 +51,7 @@ Vite, React, TypeScript, Tailwind CSS v4, Dexie (IndexedDB), React Router
 
 ## Expanding the question bank
 
-Question data lives in `src/data/akt/group*.ts` and `src/data/kfp/group*.ts`,
-typed against `src/types.ts`. Add new files following the same schema and
-wire them into `src/data/akt/index.ts` / `src/data/kfp/index.ts`.
+Question data lives in `src/data/akt/group*.ts` (AKT MCQs), `src/data/kfpMcq/group*.ts`
+(KFP MCQs), `src/data/kfpEmq/group*.ts` (KFP EMQ themes), and `src/data/kfp/group*.ts`
+(legacy KFP case bank), typed against `src/types.ts`. Add new files following
+the same schema and wire them into the matching `index.ts` aggregator.

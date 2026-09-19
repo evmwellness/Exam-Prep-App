@@ -36,6 +36,11 @@ export default function QuestionReview({ item, selectedKey, index, defaultOpen =
       {open && (
         <div className="px-3.5 pb-4 border-t border-slate-800 pt-3">
           <p className="text-xs text-slate-500 mb-2">{item.specialty} · {item.topic}</p>
+          {item.instructions && (
+            <p className="text-xs italic text-sky-300/80 bg-sky-950/30 border border-sky-900/40 rounded-lg px-3 py-2 mb-2">
+              {item.instructions}
+            </p>
+          )}
           <p className="text-sm text-slate-200 whitespace-pre-line mb-3">{item.displayStem}</p>
           <div className="space-y-1.5 mb-3">
             {item.options.map((opt) => {

@@ -177,9 +177,11 @@ export default function Settings() {
           practice guidelines — they are not reproductions of real past exam papers (RACGP does not publish those).
         </p>
         <p className="text-xs text-slate-400 leading-relaxed mb-2">
-          The real KFP exam uses short-answer/extended-response items, not multiple choice. The KFP cases here are
-          MCQ-adapted for quick phone drilling of clinical reasoning — keep practicing written responses via official
-          RACGP resources too.
+          Per recent candidate reports, RACGP's last two KFP sittings used multiple choice questions and Extended
+          Matching Questions (EMQ) rather than the older short-answer format — exam simulation and blocks draw from
+          that bank. The legacy sequential case-study bank is kept as bonus clinical-reasoning practice (turn it on
+          in Custom mode) but isn't the current exam mechanic. Formats can change again — check the current RACGP
+          candidate handbook before your sitting.
         </p>
         <p className="text-xs text-slate-400 leading-relaxed">
           Exam simulation timings are sensible defaults, not guaranteed to match the current RACGP candidate handbook —

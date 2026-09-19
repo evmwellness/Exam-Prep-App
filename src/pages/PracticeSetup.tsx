@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import clsx from 'clsx'
-import { practiceItemsForExam } from '../data/practiceItems'
+import { aktPracticeItems, kfpExamFormatPracticeItems, kfpPracticeItems } from '../data/practiceItems'
 import { buildSession } from '../lib/sessionBuilder'
 import { EXAM_SIM_DEFAULTS } from '../lib/examConfig'
 import type { ExamType, SessionMode, Specialty } from '../types'
@@ -23,6 +23,7 @@ export default function PracticeSetup() {
   const [customCount, setCustomCount] = useState(20)
   const [focusWeakAreas, setFocusWeakAreas] = useState(navState.quickMode === 'weak')
   const [specialties, setSpecialties] = useState<Specialty[]>(navState.specialty ? [navState.specialty] : [])
+  const [includeCaseStudies, setIncludeCaseStudies] = useState(false)
   const [isBuilding, setIsBuilding] = useState(false)
 
   useEffect(() => {
@@ -34,9 +35,10 @@ export default function PracticeSetup() {
   }, [location.key])
 
   const availableSpecialties = useMemo(() => {
-    const set = new Set(practiceItemsForExam(exam).map((i) => i.specialty))
+    const pool = exam === 'AKT' ? aktPracticeItems : includeCaseStudies ? kfpPracticeItems : kfpExamFormatPracticeItems
+    const set = new Set(pool.map((i) => i.specialty))
     return [...set].sort()
-  }, [exam])
+  }, [exam, includeCaseStudies])
 
   useEffect(() => {
     setSpecialties((prev) => prev.filter((s) => availableSpecialties.includes(s)))
@@ -56,6 +58,7 @@ export default function PracticeSetup() {
         customCount,
         specialties,
         focusWeakAreas,
+        includeCaseStudies: mode === 'custom' ? includeCaseStudies : false,
       })
       if (built.items.length === 0) {
         setIsBuilding(false)
@@ -88,9 +91,11 @@ export default function PracticeSetup() {
 
       {exam === 'KFP' && (
         <div className="text-xs text-amber-200/80 bg-amber-950/30 border border-amber-900/40 rounded-lg p-3 mb-4">
-          <strong>Format note:</strong> the real RACGP KFP exam is short-answer / extended-response, not
-          multiple choice. These cases are MCQ-adapted for fast phone drilling of clinical reasoning —
-          keep practicing written key-feature responses too via official RACGP resources.
+          <strong>Format note:</strong> per recent candidate reports, RACGP's last two KFP sittings used
+          multiple choice questions and Extended Matching Questions (EMQ) rather than the older
+          short-answer format. Exam simulation and practice blocks draw from that MCQ/EMQ bank — turn on
+          "bonus case-based scenarios" below in Custom mode for extra sequential clinical-reasoning
+          practice. Formats can change — check the current RACGP candidate handbook before your sitting.
         </div>
       )}
 
@@ -143,7 +148,7 @@ export default function PracticeSetup() {
           <input
             type="range"
             min={5}
-            max={exam === 'AKT' ? 100 : 70}
+            max={exam === 'AKT' ? 120 : includeCaseStudies ? 200 : 150}
             step={5}
             value={customCount}
             onChange={(e) => setCustomCount(Number(e.target.value))}
@@ -153,7 +158,7 @@ export default function PracticeSetup() {
       )}
 
       {mode !== 'exam' && (
-        <label className="flex items-center gap-2 mb-5 text-sm text-slate-300">
+        <label className="flex items-center gap-2 mb-3 text-sm text-slate-300">
           <input
             type="checkbox"
             checked={focusWeakAreas}
@@ -161,6 +166,18 @@ export default function PracticeSetup() {
             className="w-4 h-4 accent-amber-500"
           />
           Weight toward my weak areas
+        </label>
+      )}
+
+      {mode === 'custom' && exam === 'KFP' && (
+        <label className="flex items-center gap-2 mb-5 text-sm text-slate-300">
+          <input
+            type="checkbox"
+            checked={includeCaseStudies}
+            onChange={(e) => setIncludeCaseStudies(e.target.checked)}
+            className="w-4 h-4 accent-amber-500"
+          />
+          Include bonus case-based scenarios (extra practice, not the current MCQ/EMQ exam format)
         </label>
       )}
 

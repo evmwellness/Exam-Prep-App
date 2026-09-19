@@ -13,7 +13,7 @@ export const EXAM_SIM_DEFAULTS: Record<ExamType, { questionCount: number; durati
 /** Fallback seconds-per-question used until we have real attempt history. */
 export const DEFAULT_PACE_SEC: Record<ExamType, number> = {
   AKT: 74, // ~185min / 150q
-  KFP: 154, // ~180min / 70q, KFP items involve more reading per case
+  KFP: 130, // ~180min / 70q, mixed standalone MCQ + EMQ (shared option list read once per theme)
 }
 
 export const BLOCK_DURATION_OPTIONS_MIN = [20, 25] as const
