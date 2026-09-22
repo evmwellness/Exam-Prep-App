@@ -1,0 +1,44 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  @apply font-body text-slate-800;
+  background-color: #eaf6f6;
+  background-image: radial-gradient(circle at 10% 10%, #d9f4ee 0%, transparent 40%),
+    radial-gradient(circle at 90% 20%, #fdf0d5 0%, transparent 45%),
+    radial-gradient(circle at 50% 100%, #e4f3ff 0%, transparent 50%);
+  min-height: 100vh;
+}
+
+.font-display {
+  font-family: 'Baloo 2', system-ui, sans-serif;
+}
+
+::selection {
+  background: #ffd166;
+}
+
+.key-cap {
+  box-shadow: 0 3px 0 rgba(0, 0, 0, 0.25), inset 0 -2px 0 rgba(0, 0, 0, 0.08);
+}
+
+.key-cap.pressed {
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.25);
+  transform: translateY(2px);
+}
+
+.scrollbar-thin::-webkit-scrollbar {
+  height: 8px;
+  width: 8px;
+}
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 9999px;
+}
