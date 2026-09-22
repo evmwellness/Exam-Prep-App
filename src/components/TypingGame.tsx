@@ -14,6 +14,8 @@ interface Props {
   timeLimitSeconds?: number
   onComplete: (result: TypingResult) => void
   onGiveUp?: () => void
+  /** Hides the "next key" highlight on the virtual keyboard, for memory-recall testing. */
+  blind?: boolean
 }
 
 export default function TypingGame({
@@ -25,6 +27,7 @@ export default function TypingGame({
   timeLimitSeconds,
   onComplete,
   onGiveUp,
+  blind,
 }: Props) {
   const [typed, setTyped] = useState('')
   const [errorCount, setErrorCount] = useState(0)
@@ -191,7 +194,12 @@ export default function TypingGame({
         placeholder="Click here and start typing what you see above..."
       />
 
-      <Keyboard nextKey={nextChar} pressedKey={pressedKey} lastWasError={lastWasError} />
+      <Keyboard
+        nextKey={blind ? undefined : nextChar}
+        pressedKey={pressedKey}
+        lastWasError={lastWasError}
+        footerText={blind ? 'No hints - type it from memory!' : undefined}
+      />
 
       {onGiveUp && (
         <button

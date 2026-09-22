@@ -1,5 +1,21 @@
 import type { YearLevel } from '../types'
 
+// The cumulative letter/finger progression. Each stage only introduces keys
+// the previous stage hasn't already taught, so every word list below stays
+// strictly inside what's been taught by that point - no hunt-and-peck required.
+const PREP_KEYS = ['a', 's', 'd', 'f', 'j', 'k', 'l', ';']
+const YEAR1_NEW = ['g', 'h', 'r', 'v', 't', 'b', 'y', 'n', 'u', 'm', 'e', 'c', 'i', ',']
+const YEAR2_NEW = ['w', 'x', 'o', '.', 'q', 'z', 'p', "'"]
+
+const PREP_CUMULATIVE = [...PREP_KEYS]
+const YEAR1_CUMULATIVE = [...PREP_CUMULATIVE, ...YEAR1_NEW]
+const YEAR2_CUMULATIVE = [...YEAR1_CUMULATIVE, ...YEAR2_NEW] // full alphabet + core punctuation
+const YEAR3_CUMULATIVE = [...YEAR2_CUMULATIVE]
+const YEAR4_NEW = ['!', '?', '"']
+const YEAR4_CUMULATIVE = [...YEAR3_CUMULATIVE, ...YEAR4_NEW]
+const YEAR5_NEW = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0']
+const YEAR5_CUMULATIVE = [...YEAR4_CUMULATIVE, ...YEAR5_NEW]
+
 export const YEAR_LEVELS: YearLevel[] = [
   {
     id: 'prep',
@@ -13,21 +29,14 @@ export const YEAR_LEVELS: YearLevel[] = [
     description: "Meet Larry the Lion and find your Home Row Den!",
     keyGroup: {
       title: 'The Home Row Den',
-      newKeys: ['a', 's', 'd', 'f', 'j', 'k', 'l', ';'],
-      fingers: 'Rest your left hand on A S D F and your right hand on J K L ; — feel the little bumps on F and J!',
-      tip: "Larry says: keep your paws (fingers) resting gently on the home row so they can always find their way back!",
+      newKeys: PREP_KEYS,
+      reviewKeys: [],
+      fingers: 'Left pinky on A, ring on S, middle on D, index on F. Right index on J, middle on K, ring on L, pinky on ; . Feel the little bumps on F and J!',
+      tip: 'Larry says: this is the ONLY thing to learn today - rest your paws gently on these 8 keys and always come back home after every letter. No peeking, no other keys yet!',
     },
-    wordList: ['a', 'and', 'the', 'I', 'is', 'to', 'go', 'see', 'up', 'we', 'my', 'at', 'on', 'in', 'it', 'cat', 'dog', 'sun', 'run', 'big', 'red', 'mum', 'dad', 'yes', 'no', 'look', 'can', 'top', 'sat', 'hop'],
-    sentenceList: [
-      'I see the sun.',
-      'The cat can run.',
-      'We go up the hill.',
-      'My dad and mum sat.',
-      'Look at the big dog.',
-      'The red hen can hop.',
-      'I can see a top.',
-      'We sat in the sun.',
-    ],
+    cumulativeKeys: PREP_CUMULATIVE,
+    wordList: ['dad', 'sad', 'ask', 'all', 'fall', 'salad', 'flask', 'lads', 'adds', 'asks', 'fads', 'add', 'ads', 'lad', 'flasks', 'salads'],
+    sentenceList: ['Add a flask.', 'Dad asks Sal.', 'A sad lad asks.'],
     reading: {
       title: "Larry's Big Red Ball",
       paragraphs: [
@@ -46,7 +55,8 @@ export const YEAR_LEVELS: YearLevel[] = [
           correctIndex: 1,
         },
       ],
-      keySentence: 'Look at my ball, said Larry.',
+      keySentence: 'Dad asks Sal.',
+      typingInstruction: "Great reading! This sentence isn't from the story - it's a workout for your home row fingers instead.",
     },
   },
   {
@@ -61,20 +71,20 @@ export const YEAR_LEVELS: YearLevel[] = [
     description: 'Splash with Percy the Platypus and reach for new keys!',
     keyGroup: {
       title: "Percy's Pond Reach",
-      newKeys: ['e', 'i', 'r', 'u', 'm', ','],
-      fingers: 'Your index fingers stretch up to E, R, U and I, then dip down to M and the comma. Always bounce back home!',
-      tip: 'Percy says: reach out like paddling to a lily pad, then glide your finger straight back to the home row.',
+      newKeys: YEAR1_NEW,
+      reviewKeys: PREP_KEYS,
+      fingers: 'Left index reaches to G, R, T, V, B. Right index reaches to H, Y, U, N, M. Left middle reaches to E and C. Right middle reaches to I and the comma.',
+      tip: 'Percy says: quick recap first - hands back on A S D F and J K L ; ! Now let’s paddle out to these new keys using only our index and middle fingers.',
     },
-    wordList: ['was', 'said', 'they', 'have', 'one', 'all', 'are', 'come', 'from', 'of', 'his', 'her', 'went', 'like', 'made', 'day', 'play', 'home', 'jump', 'help', 'ball', 'fish', 'tree', 'book', 'girl', 'boy', 'frog', 'swim', 'pond', 'duck'],
+    cumulativeKeys: YEAR1_CUMULATIVE,
+    wordList: ['the', 'and', 'said', 'have', 'like', 'came', 'day', 'made', 'ball', 'fish', 'tree', 'girl', 'duck', 'they', 'are', 'his', 'her', 'hug', 'run', 'fun', 'sun', 'big', 'bag', 'sat', 'hat', 'cat', 'rat', 'mask', 'grab', 'drum', 'five', 'give', 'time', 'name', 'game', 'gate', 'safe', 'same', 'snake'],
     sentenceList: [
-      'They said the fish can swim.',
-      'We went to play at the pond.',
-      'Her brother likes to jump and run.',
-      'The girl and boy read a book.',
-      'I have a home by the big tree.',
-      'Come and help me carry the ball.',
-      'One duck swam past the green frog.',
-      'We made a cubby house from sticks.',
+      'The cat sat in the sun.',
+      'Give the duck a big hug.',
+      'Her cat likes fish.',
+      'Sam and Dave ran fast.',
+      'The girl had a red hat.',
+      'He can hit the drum and run.',
     ],
     reading: {
       title: 'Percy Finds a Pond',
@@ -100,7 +110,8 @@ export const YEAR_LEVELS: YearLevel[] = [
           correctIndex: 1,
         },
       ],
-      keySentence: 'Come and swim with us, said the duck.',
+      keySentence: 'The duck and fish are friends.',
+      typingInstruction: "Great reading! Here's a sentence using only the letters you've learned so far.",
     },
   },
   {
@@ -112,13 +123,15 @@ export const YEAR_LEVELS: YearLevel[] = [
     color: 'from-gum to-emerald-400',
     accent: 'text-gum',
     mascot: 'emu',
-    description: "Race with Ellie the Emu through trickier keys and words!",
+    description: "Race with Ellie the Emu and complete the whole keyboard!",
     keyGroup: {
-      title: "Ellie's Sprint Keys",
-      newKeys: ['w', 'o', 'c', '.', 't', 'y'],
-      fingers: 'Ring finger sprints to W and O, index fingers dash to T, Y and C, and reach down for the full stop.',
-      tip: "Ellie says: run fast but land softly - light taps make the speediest typist!",
+      title: 'All Four Fingers Unite',
+      newKeys: YEAR2_NEW,
+      reviewKeys: YEAR1_CUMULATIVE,
+      fingers: 'Left ring reaches W and X. Right ring reaches O and the full stop. Left pinky reaches Q and Z. Right pinky reaches P and the apostrophe.',
+      tip: "Ellie says: bring in your ring and pinky fingers now - that's all four fingers on each hand working together. Finish these and you'll know the WHOLE keyboard!",
     },
+    cumulativeKeys: YEAR2_CUMULATIVE,
     wordList: ['because', 'before', 'again', 'always', 'animal', 'around', 'better', 'brother', 'carry', 'could', 'does', 'every', 'family', 'favourite', 'friend', 'group', 'happened', 'important', 'listen', 'never', 'often', 'people', 'picture', 'question', 'remember', 'special', 'together', 'would', 'write', 'circle'],
     sentenceList: [
       'Our family always remembers to say thank you.',
@@ -167,13 +180,15 @@ export const YEAR_LEVELS: YearLevel[] = [
     color: 'from-sky to-blue-400',
     accent: 'text-sky',
     mascot: 'lion',
-    description: 'Larry returns with pinky-finger power and a treasure hunt!',
+    description: 'Larry shows you how to team up with the Shift key for capitals!',
     keyGroup: {
-      title: 'Pinky Power & Stretches',
-      newKeys: ['q', 'p', 'b', 'n', 'g', 'h'],
-      fingers: 'Your pinky fingers stretch up to Q and P, while your index fingers stretch inward to B, N, G and H.',
-      tip: 'Larry says: even the smallest paw (your pinky) has an important job - give it a gentle workout!',
+      title: 'Shift Into Capitals',
+      newKeys: ['Shift'],
+      reviewKeys: YEAR2_CUMULATIVE,
+      fingers: 'Hold Shift down with a pinky while another finger taps the letter - together they make a Capital Letter! You already know every letter, so this is just a new team-up trick.',
+      tip: 'Larry says: teamwork between fingers is just like teamwork between friends - it makes everything easier.',
     },
+    cumulativeKeys: YEAR3_CUMULATIVE,
     wordList: ['although', 'believe', 'calendar', 'chocolate', 'different', 'environment', 'February', 'government', 'guarantee', 'immediately', 'knowledge', 'library', 'mosquito', 'necessary', 'opportunity', 'particular', 'receive', 'restaurant', 'separate', 'surprise', 'their', 'there', 'through', 'thought', 'various', 'weather', 'Wednesday', 'journey', 'island', 'treasure'],
     sentenceList: [
       'Although it was raining, the explorers began their journey.',
@@ -222,30 +237,32 @@ export const YEAR_LEVELS: YearLevel[] = [
     color: 'from-purple-500 to-fuchsia-400',
     accent: 'text-purple-600',
     mascot: 'platypus',
-    description: 'Percy leads an expedition into capitals and longer words!',
+    description: 'Percy leads an expedition into punctuation and longer words!',
     keyGroup: {
-      title: 'Shift Into Capitals',
-      newKeys: ['z', 'x', 'v', 'Shift'],
-      fingers: 'Your pinky holds Shift down while another finger taps the letter - together they make a Capital Letter!',
-      tip: 'Percy says: teamwork between fingers is just like teamwork between friends - it makes everything easier.',
+      title: 'Punctuation Power',
+      newKeys: YEAR4_NEW,
+      reviewKeys: YEAR3_CUMULATIVE,
+      fingers: "The apostrophe is a right-pinky reach you already know. ! and ? live above 1 and / and need Shift too - a small stretch for your pinkies.",
+      tip: 'Percy says: punctuation gives your sentences feeling - try typing with excitement and curiosity!',
     },
+    cumulativeKeys: YEAR4_CUMULATIVE,
     wordList: ['accommodate', 'achieve', 'actually', 'address', 'appreciate', 'argument', 'beginning', 'business', 'category', 'cemetery', 'committee', 'definitely', 'disappear', 'embarrass', 'existence', 'foreign', 'independent', 'occasion', 'occurred', 'parliament', 'possession', 'privilege', 'rhythm', 'schedule', 'sincerely', 'twelfth', 'vehicle', 'yacht', 'explorer', 'ancient'],
     sentenceList: [
-      'The committee will definitely address the argument today.',
+      'The committee will definitely address the argument today!',
       'Larry tried to accommodate every guest at the ceremony.',
       "Percy's business began with a single ancient map.",
       "The explorer's vehicle disappeared into the foreign mist.",
       'By twelfth grade, she could recite the whole schedule.',
       'Parliament debated the rhythm of the new anthem.',
       'I appreciate your existence in this small category.',
-      'Sincerely, the yacht captain thanked the entire crew.',
+      "Sincerely, the yacht captain thanked the entire crew.",
     ],
     reading: {
       title: 'The Outback Expedition',
       paragraphs: [
         'Percy the Platypus had always wanted to lead an expedition into the ancient red centre of Australia. He planned the entire journey on a battered old schedule, marking each waterhole and cave along the way.',
         'His crew included Larry, Ellie, and a new friend, a foreign traveller named Zara the Zebra Finch, who had a wonderful sense of rhythm and always sang while they walked.',
-        'On the third day, a fierce storm caused their vehicle - an old wooden cart - to become bogged in red mud. "We will definitely need to work together," said Percy, and the whole committee of friends pushed until it was free.',
+        'On the third day, a fierce storm caused their vehicle - an old wooden cart - to become bogged in red mud. "We will definitely need to work together!" said Percy, and the whole committee of friends pushed until it was free.',
         'By the twelfth hour of their journey, they reached an enormous cave covered in ancient paintings. Ellie explained that the paintings were a great privilege to see, showing stories from long, long ago. Percy carefully sketched them into his journal, appreciating every detail, before they began the long journey home.',
       ],
       questions: [
@@ -270,7 +287,7 @@ export const YEAR_LEVELS: YearLevel[] = [
           correctIndex: 0,
         },
       ],
-      keySentence: 'We will definitely need to work together, said Percy.',
+      keySentence: 'We will definitely need to work together!',
     },
   },
   {
@@ -282,13 +299,15 @@ export const YEAR_LEVELS: YearLevel[] = [
     color: 'from-rose-500 to-amber-400',
     accent: 'text-rose-600',
     mascot: 'emu',
-    description: 'Ellie helps you master numbers, punctuation and a full NAPLAN-style story!',
+    description: 'Ellie helps you master numbers and a full NAPLAN-style story!',
     keyGroup: {
-      title: 'Numbers, Punctuation & Full Sentences',
-      newKeys: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '!', '?', "'"],
-      fingers: 'Each number shares a finger with the letter below it. Punctuation keys sit at the edges - a quick pinky or ring-finger stretch.',
-      tip: "Ellie says: exam writing needs numbers, capitals AND punctuation working together at full speed - you're ready for it!",
+      title: 'Numbers for the Exam',
+      newKeys: YEAR5_NEW,
+      reviewKeys: YEAR4_CUMULATIVE,
+      fingers: 'Each number shares a finger with the letter below it - 4 and 5 use your left index, 6 and 7 use your right index, and so on down the row.',
+      tip: "Ellie says: exam writing sometimes needs a date, an age or an address - numbers finish off your keyboard skills. You're ready for it!",
     },
+    cumulativeKeys: YEAR5_CUMULATIVE,
     wordList: ['accidentally', 'accompany', 'achievement', 'acknowledge', 'aggressive', 'ancient', 'apparent', 'appropriate', 'bureau', 'colleague', 'conscience', 'conscientious', 'controversy', 'correspond', 'deficient', 'desperate', 'exceed', 'exhausted', 'familiar', 'fascinate', 'forty', 'gauge', 'harass', 'humorous', 'immediately', 'incidentally', 'jeopardy', 'persistent', 'resilient', 'determined'],
     sentenceList: [
       'Ellie accidentally dropped the ancient gauge near the bureau.',

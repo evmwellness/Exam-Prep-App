@@ -7,6 +7,7 @@ import HomeScreen from './components/HomeScreen'
 import YearMap from './components/YearMap'
 import LessonHub from './components/LessonHub'
 import PracticeLesson from './components/PracticeLesson'
+import KeysLesson from './components/KeysLesson'
 import ReadingPractice from './components/ReadingPractice'
 import ExamMode from './components/ExamMode'
 
@@ -67,8 +68,11 @@ export default function App() {
             const backToHub = () => setView({ screen: 'hub', yearId: year.id })
             const earn = (stars: number) => recordStars(year.id, view.kind, stars)
 
-            if (view.kind === 'keys' || view.kind === 'words') {
-              return <PracticeLesson year={year} kind={view.kind} onExit={backToHub} onStarsEarned={earn} />
+            if (view.kind === 'keys') {
+              return <KeysLesson year={year} onExit={backToHub} onStarsEarned={earn} />
+            }
+            if (view.kind === 'words') {
+              return <PracticeLesson year={year} onExit={backToHub} onStarsEarned={earn} />
             }
             if (view.kind === 'reading') {
               return <ReadingPractice year={year} onExit={backToHub} onStarsEarned={earn} />

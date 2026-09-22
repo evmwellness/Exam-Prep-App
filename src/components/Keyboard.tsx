@@ -7,7 +7,7 @@ const ROWS: string[][] = [
 
 // finger index: 0 left pinky, 1 left ring, 2 left middle, 3 left index,
 // 4 right index, 5 right middle, 6 right ring, 7 right pinky
-const FINGER_MAP: Record<string, number> = {
+export const FINGER_MAP: Record<string, number> = {
   '1': 0, q: 0, a: 0, z: 0,
   '2': 1, w: 1, s: 1, x: 1,
   '3': 2, e: 2, d: 2, c: 2,
@@ -20,7 +20,18 @@ const FINGER_MAP: Record<string, number> = {
   '0': 7, p: 7, ';': 7, "'": 7,
 }
 
-const FINGER_COLORS = [
+export const FINGER_NAMES = [
+  'Left pinky',
+  'Left ring',
+  'Left middle',
+  'Left index',
+  'Right index',
+  'Right middle',
+  'Right ring',
+  'Right pinky',
+]
+
+export const FINGER_COLORS = [
   'bg-violet-200 border-violet-400 text-violet-900',
   'bg-blue-200 border-blue-400 text-blue-900',
   'bg-teal-200 border-teal-400 text-teal-900',
@@ -36,11 +47,16 @@ interface Props {
   pressedKey?: string
   lastWasError?: boolean
   compact?: boolean
+  /** Keys to keep steadily ring-highlighted (e.g. during a placement intro), independent of nextKey. */
+  highlightSet?: string[]
+  /** Swaps the footer caption for a "no hints" memory-test moment. */
+  footerText?: string
 }
 
-export default function Keyboard({ nextKey, pressedKey, lastWasError, compact }: Props) {
+export default function Keyboard({ nextKey, pressedKey, lastWasError, compact, highlightSet, footerText }: Props) {
   const normalizedNext = nextKey?.toLowerCase()
   const normalizedPressed = pressedKey?.toLowerCase()
+  const highlightLookup = new Set((highlightSet ?? []).map((k) => k.toLowerCase()))
 
   return (
     <div className={`select-none rounded-2xl bg-slate-800/90 p-2 shadow-inner sm:p-3 ${compact ? 'scale-90' : ''}`}>
@@ -51,6 +67,7 @@ export default function Keyboard({ nextKey, pressedKey, lastWasError, compact }:
               const finger = FINGER_MAP[key] ?? 0
               const isNext = normalizedNext === key
               const isPressed = normalizedPressed === key
+              const isSteadyHighlight = highlightLookup.has(key)
               return (
                 <div
                   key={key}
@@ -59,6 +76,7 @@ export default function Keyboard({ nextKey, pressedKey, lastWasError, compact }:
                     FINGER_COLORS[finger],
                     isPressed ? (lastWasError ? 'pressed animate-shake bg-red-300 border-red-500' : 'pressed bg-green-300 border-green-500') : '',
                     isNext && !isPressed ? 'ring-4 ring-yellow-400 scale-110 z-10 animate-bounceIn' : '',
+                    isSteadyHighlight && !isNext && !isPressed ? 'ring-4 ring-yellow-400 scale-110 z-10 animate-pulse' : '',
                   ].join(' ')}
                 >
                   {key}
@@ -76,7 +94,7 @@ export default function Keyboard({ nextKey, pressedKey, lastWasError, compact }:
         />
       </div>
       <p className="mt-2 text-center text-[10px] font-semibold uppercase tracking-wide text-slate-300 sm:text-xs">
-        Look, then type without peeking!
+        {footerText ?? 'Look, then type without peeking!'}
       </p>
     </div>
   )

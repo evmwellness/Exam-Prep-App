@@ -124,7 +124,7 @@ export default function ReadingPractice({ year, onExit, onStarsEarned }: Props) 
         mascot={year.mascot}
         mode="practice"
         title="Type the Key Sentence"
-        instructions="Great reading! Now type this important sentence from the story."
+        instructions={year.reading.typingInstruction ?? 'Great reading! Now type this important sentence from the story.'}
         onComplete={(res) => {
           setTypingResult(res)
           setStep('results')
