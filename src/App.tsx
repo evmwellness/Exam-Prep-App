@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import type { Level, Operation, QuizResult } from './types';
+import type { Level, Operation, QuizResult, SessionMinutes } from './types';
 import { loadHistory, saveResult, totalStarsEarned } from './data/storage';
 import { Header } from './components/Header';
 import { FloatingShapes } from './components/FloatingShapes';
@@ -14,7 +14,11 @@ type View = 'home' | 'setup' | 'quiz' | 'results' | 'progress';
 export default function App() {
   const [view, setView] = useState<View>('home');
   const [history, setHistory] = useState<QuizResult[]>(() => loadHistory());
-  const [selection, setSelection] = useState<{ operation: Operation; level: Level } | null>(null);
+  const [selection, setSelection] = useState<{
+    operation: Operation;
+    level: Level;
+    sessionMinutes: SessionMinutes;
+  } | null>(null);
   const [lastResult, setLastResult] = useState<QuizResult | null>(null);
 
   const stars = totalStarsEarned(history);
@@ -32,8 +36,8 @@ export default function App() {
     setView('progress');
   }
 
-  function beginQuiz(operation: Operation, level: Level) {
-    setSelection({ operation, level });
+  function beginQuiz(operation: Operation, level: Level, sessionMinutes: SessionMinutes) {
+    setSelection({ operation, level, sessionMinutes });
     setView('quiz');
   }
 
@@ -65,6 +69,7 @@ export default function App() {
           <Quiz
             operation={selection.operation}
             level={selection.level}
+            sessionMinutes={selection.sessionMinutes}
             onComplete={completeQuiz}
             onQuit={goHome}
           />
@@ -73,7 +78,7 @@ export default function App() {
         {view === 'results' && lastResult && (
           <Results
             result={lastResult}
-            onRetry={() => beginQuiz(lastResult.operation, lastResult.level)}
+            onRetry={() => beginQuiz(lastResult.operation, lastResult.level, lastResult.sessionMinutes)}
             onChooseAnother={goSetup}
             onHome={goHome}
           />

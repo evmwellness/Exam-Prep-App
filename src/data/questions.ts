@@ -124,18 +124,3 @@ export function generateChoices(question: Question): number[] {
   }
   return arr;
 }
-
-export function generateQuiz(operation: Operation, level: Level, count = 10): Question[] {
-  const questions: Question[] = [];
-  const seen = new Set<string>();
-  let attempts = 0;
-  while (questions.length < count && attempts < count * 20) {
-    attempts++;
-    const q = generateQuestion(operation, level);
-    const key = `${q.a}-${q.operation}-${q.b}`;
-    if (seen.has(key) && attempts < count * 15) continue;
-    seen.add(key);
-    questions.push(q);
-  }
-  return questions;
-}

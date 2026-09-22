@@ -1,4 +1,4 @@
-import type { Operation, OperationMeta, Level } from '../types';
+import type { Operation, OperationMeta, Level, SessionMinutes } from '../types';
 
 export const OPERATIONS: OperationMeta[] = [
   {
@@ -40,6 +40,11 @@ export const LEVELS: { level: Level; label: string; hint: string }[] = [
   { level: 2, label: 'Level 2', hint: 'Getting confident' },
   { level: 3, label: 'Level 3', hint: 'Building speed' },
   { level: 4, label: 'Level 4', hint: 'Super star' },
+];
+
+export const SESSION_LENGTHS: { minutes: SessionMinutes; label: string; hint: string }[] = [
+  { minutes: 5, label: '5 minutes', hint: 'A quick burst' },
+  { minutes: 10, label: '10 minutes', hint: 'A longer challenge' },
 ];
 
 export function getOperationMeta(op: Operation): OperationMeta {

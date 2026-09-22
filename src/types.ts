@@ -2,6 +2,8 @@ export type Operation = 'addition' | 'subtraction' | 'multiplication' | 'divisio
 
 export type Level = 1 | 2 | 3 | 4;
 
+export type SessionMinutes = 5 | 10;
+
 export interface Question {
   a: number;
   b: number;
@@ -23,6 +25,7 @@ export interface QuizResult {
   level: Level;
   total: number;
   correct: number;
+  sessionMinutes: SessionMinutes;
   durationSeconds: number;
   answers: QuizAnswer[];
 }

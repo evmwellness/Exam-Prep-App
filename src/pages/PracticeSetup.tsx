@@ -1,18 +1,19 @@
 import { useState } from 'react';
-import { OPERATIONS, LEVELS } from '../data/operations';
-import type { Level, Operation } from '../types';
+import { OPERATIONS, LEVELS, SESSION_LENGTHS } from '../data/operations';
+import type { Level, Operation, SessionMinutes } from '../types';
 import { Koala, Penguin } from '../components/Mascots';
 import { SpeechBubble } from '../components/SpeechBubble';
 import { randomTip } from '../data/concepts';
 
 interface PracticeSetupProps {
-  onBegin: (operation: Operation, level: Level) => void;
+  onBegin: (operation: Operation, level: Level, sessionMinutes: SessionMinutes) => void;
   onBack: () => void;
 }
 
 export function PracticeSetup({ onBegin, onBack }: PracticeSetupProps) {
   const [operation, setOperation] = useState<Operation | null>(null);
   const [level, setLevel] = useState<Level | null>(null);
+  const [sessionMinutes, setSessionMinutes] = useState<SessionMinutes | null>(null);
 
   return (
     <div className="px-4 pb-16 max-w-3xl mx-auto">
@@ -66,6 +67,29 @@ export function PracticeSetup({ onBegin, onBack }: PracticeSetupProps) {
         </div>
       )}
 
+      {operation && level && (
+        <div className="animate-bounce-in">
+          <h3 className="font-heading text-2xl font-extrabold text-center text-purple-700 mb-4">
+            Pick a session length
+          </h3>
+          <div className="grid grid-cols-2 gap-3 sm:gap-4 mb-8 max-w-md mx-auto">
+            {SESSION_LENGTHS.map((s) => (
+              <button
+                key={s.minutes}
+                onClick={() => setSessionMinutes(s.minutes)}
+                className={`rounded-2xl p-4 flex flex-col items-center gap-1 shadow-md bg-white transition-transform hover:scale-105 active:scale-95 border-4 ${
+                  sessionMinutes === s.minutes ? 'border-sky-400' : 'border-transparent'
+                }`}
+              >
+                <span className="text-2xl">⏱️</span>
+                <span className="font-heading font-extrabold text-xl text-slate-800">{s.label}</span>
+                <span className="text-xs text-slate-500 text-center">{s.hint}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
       {operation && (
         <div className="flex items-center justify-center gap-4 mb-8">
           <Penguin mood="thinking" className="w-16 h-16" />
@@ -77,8 +101,8 @@ export function PracticeSetup({ onBegin, onBack }: PracticeSetupProps) {
 
       <div className="flex justify-center">
         <button
-          disabled={!operation || !level}
-          onClick={() => operation && level && onBegin(operation, level)}
+          disabled={!operation || !level || !sessionMinutes}
+          onClick={() => operation && level && sessionMinutes && onBegin(operation, level, sessionMinutes)}
           className="font-heading font-extrabold text-xl text-white bg-gradient-to-br from-green-500 to-emerald-400 rounded-3xl px-10 py-4 shadow-lg hover:scale-105 active:scale-95 transition-transform disabled:opacity-40 disabled:hover:scale-100 disabled:cursor-not-allowed"
         >
           Start Quiz 🎯

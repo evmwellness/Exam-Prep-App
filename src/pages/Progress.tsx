@@ -94,6 +94,7 @@ export function ProgressPage({ history, onBack, onCleared }: ProgressPageProps) 
                 </p>
                 <p className="text-xs text-slate-400">
                   {date.toLocaleDateString()} {date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                  {' · '}⏱️ {r.sessionMinutes} min
                 </p>
               </div>
               <div className="text-right">
