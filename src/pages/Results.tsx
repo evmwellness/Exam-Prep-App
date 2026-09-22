@@ -14,17 +14,12 @@ interface ResultsProps {
 
 export function Results({ result, onRetry, onChooseAnother, onHome }: ResultsProps) {
   const meta = getOperationMeta(result.operation);
-  const hasQuestions = result.total > 0;
-  const percent = hasQuestions ? Math.round((result.correct / result.total) * 100) : 0;
+  const percent = Math.round((result.correct / result.total) * 100);
   const stars = starsForResult(result);
-  const great = hasQuestions && percent >= 70;
-  const pace = hasQuestions && result.durationSeconds > 0
-    ? Math.round((result.total / result.durationSeconds) * 60 * 10) / 10
-    : 0;
+  const great = percent >= 70;
 
-  const message = !hasQuestions
-    ? "Time's up already! Let's give that another go."
-    : percent === 100
+  const message =
+    percent === 100
       ? "Perfect score! You're a math superstar!"
       : percent >= 70
       ? 'Awesome work! You really know this!'
@@ -37,16 +32,11 @@ export function Results({ result, onRetry, onChooseAnother, onHome }: ResultsPro
       {great && <Confetti />}
 
       <p className="font-heading font-bold text-slate-500 mb-1">
-        {meta.label} · Level {result.level} · ⏱️ {result.sessionMinutes} min session
+        {meta.label} · Level {result.level}
       </p>
-      <h2 className="font-heading text-4xl sm:text-5xl font-extrabold text-purple-700 mb-2">
+      <h2 className="font-heading text-4xl sm:text-5xl font-extrabold text-purple-700 mb-4">
         {result.correct} / {result.total} Correct!
       </h2>
-      {hasQuestions && (
-        <p className="font-heading font-bold text-slate-500 mb-4">
-          About {pace} question{pace === 1 ? '' : 's'} per minute
-        </p>
-      )}
 
       <div className="text-4xl sm:text-5xl mb-6">
         {'⭐'.repeat(stars)}
@@ -61,27 +51,25 @@ export function Results({ result, onRetry, onChooseAnother, onHome }: ResultsPro
         <Koala mood={great ? 'excited' : 'happy'} className="w-24 h-24 sm:w-32 sm:h-32" />
       </div>
 
-      {hasQuestions && (
-        <div className="bg-white/80 rounded-3xl p-4 sm:p-6 shadow-md mb-8 text-left max-h-64 overflow-y-auto">
-          <h3 className="font-heading font-extrabold text-slate-700 mb-3">Question review</h3>
-          <ul className="space-y-2">
-            {result.answers.map((a, i) => {
-              const q = a.question;
-              const label = q.operation === 'division' ? `${q.a} ÷ ${q.b}` : `${q.a} ${meta.symbol} ${q.b}`;
-              return (
-                <li key={i} className="flex items-center justify-between text-sm sm:text-base">
-                  <span className="font-heading font-bold text-slate-600">
-                    {label} = {q.answer}
-                  </span>
-                  <span className={a.correct ? 'text-green-600 font-bold' : 'text-red-500 font-bold'}>
-                    {a.correct ? '✔ correct' : `✘ you said ${a.userAnswer}`}
-                  </span>
-                </li>
-              );
-            })}
-          </ul>
-        </div>
-      )}
+      <div className="bg-white/80 rounded-3xl p-4 sm:p-6 shadow-md mb-8 text-left max-h-64 overflow-y-auto">
+        <h3 className="font-heading font-extrabold text-slate-700 mb-3">Question review</h3>
+        <ul className="space-y-2">
+          {result.answers.map((a, i) => {
+            const q = a.question;
+            const label = q.operation === 'division' ? `${q.a} ÷ ${q.b}` : `${q.a} ${meta.symbol} ${q.b}`;
+            return (
+              <li key={i} className="flex items-center justify-between text-sm sm:text-base">
+                <span className="font-heading font-bold text-slate-600">
+                  {label} = {q.answer}
+                </span>
+                <span className={a.correct ? 'text-green-600 font-bold' : 'text-red-500 font-bold'}>
+                  {a.correct ? '✔ correct' : `✘ you said ${a.userAnswer}`}
+                </span>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
 
       <div className="flex flex-col sm:flex-row justify-center gap-3">
         <button

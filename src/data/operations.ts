@@ -42,9 +42,9 @@ export const LEVELS: { level: Level; label: string; hint: string }[] = [
   { level: 4, label: 'Level 4', hint: 'Super star' },
 ];
 
-export const SESSION_LENGTHS: { minutes: SessionMinutes; label: string; hint: string }[] = [
-  { minutes: 5, label: '5 minutes', hint: 'A quick burst' },
-  { minutes: 10, label: '10 minutes', hint: 'A longer challenge' },
+export const SCREEN_TIME_OPTIONS: { minutes: SessionMinutes; label: string; hint: string }[] = [
+  { minutes: 5, label: '5 minutes', hint: 'A quick practice session' },
+  { minutes: 10, label: '10 minutes', hint: 'A longer practice session' },
 ];
 
 export function getOperationMeta(op: Operation): OperationMeta {

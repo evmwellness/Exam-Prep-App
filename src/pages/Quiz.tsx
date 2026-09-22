@@ -1,6 +1,6 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
-import type { Level, Operation, Question, QuizAnswer, QuizResult, SessionMinutes } from '../types';
-import { generateChoices, generateQuestion } from '../data/questions';
+import { useMemo, useRef, useState } from 'react';
+import type { Level, Operation, Question, QuizAnswer, QuizResult } from '../types';
+import { generateChoices, generateQuizBlock } from '../data/questions';
 import { getOperationMeta } from '../data/operations';
 import { Koala, Penguin } from '../components/Mascots';
 import { SpeechBubble } from '../components/SpeechBubble';
@@ -9,75 +9,29 @@ import { CORRECT_PRAISE, ENCOURAGEMENTS, TRY_AGAIN, randomFrom, randomTip } from
 interface QuizProps {
   operation: Operation;
   level: Level;
-  sessionMinutes: SessionMinutes;
   onComplete: (result: QuizResult) => void;
   onQuit: () => void;
 }
 
-function formatTime(ms: number): string {
-  const totalSeconds = Math.max(0, Math.ceil(ms / 1000));
-  const minutes = Math.floor(totalSeconds / 60);
-  const seconds = totalSeconds % 60;
-  return `${minutes}:${seconds.toString().padStart(2, '0')}`;
-}
-
-export function Quiz({ operation, level, sessionMinutes, onComplete, onQuit }: QuizProps) {
+export function Quiz({ operation, level, onComplete, onQuit }: QuizProps) {
+  const questions = useMemo(() => generateQuizBlock(operation, level), [operation, level]);
   const meta = getOperationMeta(operation);
-  const sessionMs = sessionMinutes * 60 * 1000;
 
-  const [quizStartTime] = useState(() => performance.now());
-  const endTimeRef = useRef(quizStartTime + sessionMs);
-  const questionStart = useRef<number>(quizStartTime);
-  const finishedRef = useRef(false);
-
-  const [current, setCurrent] = useState<Question>(() => generateQuestion(operation, level));
+  const [index, setIndex] = useState(0);
   const [answers, setAnswers] = useState<QuizAnswer[]>([]);
   const [selected, setSelected] = useState<number | null>(null);
   const [showHint, setShowHint] = useState(false);
   const [feedback, setFeedback] = useState<{ correct: boolean; message: string } | null>(null);
-  const [remainingMs, setRemainingMs] = useState(sessionMs);
 
-  const answersRef = useRef<QuizAnswer[]>([]);
-  answersRef.current = answers;
+  const [quizStartTime] = useState(() => performance.now());
+  const questionStart = useRef<number>(quizStartTime);
+  const quizStart = useRef<number>(quizStartTime);
 
+  const current: Question = questions[index];
   const choices = useMemo(() => generateChoices(current), [current]);
 
-  function finalize() {
-    if (finishedRef.current) return;
-    finishedRef.current = true;
-    const finalAnswers = answersRef.current;
-    const durationSeconds = Math.round((performance.now() - quizStartTime) / 1000);
-    const result: QuizResult = {
-      id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
-      date: new Date().toISOString(),
-      operation,
-      level,
-      sessionMinutes,
-      total: finalAnswers.length,
-      correct: finalAnswers.filter((a) => a.correct).length,
-      durationSeconds,
-      answers: finalAnswers,
-    };
-    onComplete(result);
-  }
-
-  useEffect(() => {
-    const tick = () => {
-      const left = endTimeRef.current - performance.now();
-      if (left <= 0) {
-        setRemainingMs(0);
-        finalize();
-        return;
-      }
-      setRemainingMs(left);
-    };
-    const interval = window.setInterval(tick, 250);
-    return () => window.clearInterval(interval);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   function handleAnswer(choice: number) {
-    if (selected !== null || finishedRef.current) return;
+    if (selected !== null) return;
     setSelected(choice);
     const correct = choice === current.answer;
     const timeMs = performance.now() - questionStart.current;
@@ -86,19 +40,31 @@ export function Quiz({ operation, level, sessionMinutes, onComplete, onQuit }: Q
       correct,
       message: correct ? randomFrom(CORRECT_PRAISE) : `${randomFrom(TRY_AGAIN)} The answer was ${current.answer}.`,
     });
-    setAnswers((prev) => [...prev, answer]);
+
+    const nextAnswers = [...answers, answer];
+    setAnswers(nextAnswers);
 
     window.setTimeout(() => {
-      if (finishedRef.current) return;
-      if (endTimeRef.current - performance.now() <= 0) {
-        finalize();
-        return;
+      if (index + 1 >= questions.length) {
+        const durationSeconds = Math.round((performance.now() - quizStart.current) / 1000);
+        const result: QuizResult = {
+          id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+          date: new Date().toISOString(),
+          operation,
+          level,
+          total: questions.length,
+          correct: nextAnswers.filter((a) => a.correct).length,
+          durationSeconds,
+          answers: nextAnswers,
+        };
+        onComplete(result);
+      } else {
+        setIndex(index + 1);
+        setSelected(null);
+        setFeedback(null);
+        setShowHint(false);
+        questionStart.current = performance.now();
       }
-      setCurrent(generateQuestion(operation, level));
-      setSelected(null);
-      setFeedback(null);
-      setShowHint(false);
-      questionStart.current = performance.now();
     }, correct ? 1100 : 1900);
   }
 
@@ -106,8 +72,6 @@ export function Quiz({ operation, level, sessionMinutes, onComplete, onQuit }: Q
     operation === 'division' ? `${current.a} ÷ ${current.b}` : `${current.a} ${meta.symbol} ${current.b}`;
 
   const mascotMood = feedback ? (feedback.correct ? 'excited' : 'sad') : 'thinking';
-  const timeLow = remainingMs <= 30000;
-  const progressPercent = 100 - (remainingMs / sessionMs) * 100;
 
   return (
     <div className="px-4 pb-16 max-w-2xl mx-auto">
@@ -115,22 +79,15 @@ export function Quiz({ operation, level, sessionMinutes, onComplete, onQuit }: Q
         <button onClick={onQuit} className="font-heading font-bold text-purple-600 hover:underline">
           ← Quit
         </button>
-        <div
-          className={`font-heading font-extrabold text-lg sm:text-xl rounded-full px-4 py-1 shadow ${
-            timeLow ? 'bg-red-100 text-red-600 animate-pop' : 'bg-white/80 text-slate-600'
-          }`}
-        >
-          ⏱️ {formatTime(remainingMs)}
-        </div>
         <span className="font-heading font-bold text-slate-500">
-          Answered: {answers.length}
+          Question {index + 1} / {questions.length}
         </span>
       </div>
 
       <div className="w-full h-3 bg-white/70 rounded-full overflow-hidden mb-8 shadow-inner">
         <div
           className="h-full rounded-full transition-all duration-300"
-          style={{ width: `${progressPercent}%`, background: timeLow ? '#ef4444' : meta.color }}
+          style={{ width: `${(index / questions.length) * 100}%`, background: meta.color }}
         />
       </div>
 

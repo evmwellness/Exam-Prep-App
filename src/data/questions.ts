@@ -124,3 +124,23 @@ export function generateChoices(question: Question): number[] {
   }
   return arr;
 }
+
+const MIN_BLOCK_SIZE = 5;
+const MAX_BLOCK_SIZE = 10;
+
+/** A short practice block of 5-10 questions, so kids get frequent wins and breaks. */
+export function generateQuizBlock(operation: Operation, level: Level): Question[] {
+  const count = randInt(MIN_BLOCK_SIZE, MAX_BLOCK_SIZE);
+  const questions: Question[] = [];
+  const seen = new Set<string>();
+  let attempts = 0;
+  while (questions.length < count && attempts < count * 20) {
+    attempts++;
+    const q = generateQuestion(operation, level);
+    const key = `${q.a}-${q.operation}-${q.b}`;
+    if (seen.has(key) && attempts < count * 15) continue;
+    seen.add(key);
+    questions.push(q);
+  }
+  return questions;
+}

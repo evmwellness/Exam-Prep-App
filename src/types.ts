@@ -25,7 +25,6 @@ export interface QuizResult {
   level: Level;
   total: number;
   correct: number;
-  sessionMinutes: SessionMinutes;
   durationSeconds: number;
   answers: QuizAnswer[];
 }
@@ -37,4 +36,14 @@ export interface OperationMeta {
   color: string;
   colorSoft: string;
   emoji: string;
+}
+
+export interface ParentSettings {
+  sessionMinutes: SessionMinutes;
+}
+
+export interface ScreenSessionState {
+  startedAt: number; // epoch ms
+  sessionMinutes: SessionMinutes;
+  locked: boolean;
 }
