@@ -1,4 +1,4 @@
-import type { Operation, OperationMeta, Level, SessionMinutes } from '../types';
+import type { Operation, OperationMeta, SessionMinutes } from '../types';
 
 export const OPERATIONS: OperationMeta[] = [
   {
@@ -33,13 +33,6 @@ export const OPERATIONS: OperationMeta[] = [
     colorSoft: '#cdb4db',
     emoji: '🍕',
   },
-];
-
-export const LEVELS: { level: Level; label: string; hint: string }[] = [
-  { level: 1, label: 'Level 1', hint: 'Just starting out' },
-  { level: 2, label: 'Level 2', hint: 'Getting confident' },
-  { level: 3, label: 'Level 3', hint: 'Building speed' },
-  { level: 4, label: 'Level 4', hint: 'Super star' },
 ];
 
 export const SCREEN_TIME_OPTIONS: { minutes: SessionMinutes; label: string; hint: string }[] = [

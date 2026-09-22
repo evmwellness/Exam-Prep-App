@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import type { QuizResult } from '../types';
-import { clearHistory, computeStats, starsForResult } from '../data/storage';
+import { clearHistory, computeLevelStats, starsForResult } from '../data/storage';
 import { getOperationMeta } from '../data/operations';
+import { getLevelById, getStageMeta } from '../data/curriculum';
 import { Koala, Penguin } from '../components/Mascots';
 import { SpeechBubble } from '../components/SpeechBubble';
 
@@ -13,7 +14,7 @@ interface ProgressPageProps {
 
 export function ProgressPage({ history, onBack, onCleared }: ProgressPageProps) {
   const [confirmingClear, setConfirmingClear] = useState(false);
-  const stats = computeStats(history);
+  const stats = computeLevelStats(history);
 
   function handleClear() {
     clearHistory();
@@ -51,19 +52,20 @@ export function ProgressPage({ history, onBack, onCleared }: ProgressPageProps) 
 
       <div className="grid sm:grid-cols-2 gap-3 sm:gap-4 mb-8">
         {stats.map((s) => {
-          const meta = getOperationMeta(s.operation);
+          if (!s.level) return null;
+          const meta = getOperationMeta(s.level.operation);
+          const stageMeta = getStageMeta(s.level.stage);
           return (
-            <div
-              key={`${s.operation}-${s.level}`}
-              className="rounded-3xl p-4 shadow-md"
-              style={{ background: meta.colorSoft }}
-            >
+            <div key={s.levelId} className="rounded-3xl p-4 shadow-md" style={{ background: meta.colorSoft }}>
               <div className="flex items-center justify-between mb-2">
                 <span className="font-heading font-extrabold text-slate-700">
-                  {meta.emoji} {meta.label} · Level {s.level}
+                  {meta.emoji} {s.level.label}
                 </span>
                 <span className="font-heading font-bold text-sm text-slate-500">{s.attempts} tries</span>
               </div>
+              <p className="text-xs text-slate-500 font-heading font-bold mb-1">
+                {stageMeta.emoji} {stageMeta.label}
+              </p>
               <div className="flex justify-between text-sm text-slate-600 font-heading font-bold">
                 <span>Best: {Math.round(s.bestPercent)}%</span>
                 <span>Average: {Math.round(s.avgPercent)}%</span>
@@ -83,14 +85,16 @@ export function ProgressPage({ history, onBack, onCleared }: ProgressPageProps) 
       <h3 className="font-heading text-xl font-extrabold text-slate-700 mb-3">Quiz History</h3>
       <div className="bg-white/80 rounded-3xl shadow-md divide-y divide-slate-100 mb-6 max-h-96 overflow-y-auto">
         {history.map((r) => {
-          const meta = getOperationMeta(r.operation);
+          const level = getLevelById(r.levelId);
+          const meta = level ? getOperationMeta(level.operation) : null;
           const stars = starsForResult(r);
           const date = new Date(r.date);
           return (
             <div key={r.id} className="flex items-center justify-between px-4 py-3">
               <div>
                 <p className="font-heading font-bold text-slate-700">
-                  {meta.emoji} {meta.label} · Level {r.level}
+                  {meta ? `${meta.emoji} ` : ''}
+                  {level ? level.label : 'Memory Check'}
                 </p>
                 <p className="text-xs text-slate-400">
                   {date.toLocaleDateString()} {date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}

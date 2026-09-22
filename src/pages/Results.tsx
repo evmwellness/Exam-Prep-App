@@ -7,13 +7,14 @@ import { Confetti } from '../components/Confetti';
 
 interface ResultsProps {
   result: QuizResult;
+  titleLabel: string;
   onRetry: () => void;
   onChooseAnother: () => void;
+  onMemoryCheck?: () => void;
   onHome: () => void;
 }
 
-export function Results({ result, onRetry, onChooseAnother, onHome }: ResultsProps) {
-  const meta = getOperationMeta(result.operation);
+export function Results({ result, titleLabel, onRetry, onChooseAnother, onMemoryCheck, onHome }: ResultsProps) {
   const percent = Math.round((result.correct / result.total) * 100);
   const stars = starsForResult(result);
   const great = percent >= 70;
@@ -31,9 +32,7 @@ export function Results({ result, onRetry, onChooseAnother, onHome }: ResultsPro
     <div className="px-4 pb-16 max-w-2xl mx-auto text-center">
       {great && <Confetti />}
 
-      <p className="font-heading font-bold text-slate-500 mb-1">
-        {meta.label} · Level {result.level}
-      </p>
+      <p className="font-heading font-bold text-slate-500 mb-1">{titleLabel}</p>
       <h2 className="font-heading text-4xl sm:text-5xl font-extrabold text-purple-700 mb-4">
         {result.correct} / {result.total} Correct!
       </h2>
@@ -56,7 +55,8 @@ export function Results({ result, onRetry, onChooseAnother, onHome }: ResultsPro
         <ul className="space-y-2">
           {result.answers.map((a, i) => {
             const q = a.question;
-            const label = q.operation === 'division' ? `${q.a} ÷ ${q.b}` : `${q.a} ${meta.symbol} ${q.b}`;
+            const qMeta = getOperationMeta(q.operation);
+            const label = q.operation === 'division' ? `${q.a} ÷ ${q.b}` : `${q.a} ${qMeta.symbol} ${q.b}`;
             return (
               <li key={i} className="flex items-center justify-between text-sm sm:text-base">
                 <span className="font-heading font-bold text-slate-600">
@@ -71,7 +71,7 @@ export function Results({ result, onRetry, onChooseAnother, onHome }: ResultsPro
         </ul>
       </div>
 
-      <div className="flex flex-col sm:flex-row justify-center gap-3">
+      <div className="flex flex-col sm:flex-row justify-center gap-3 flex-wrap">
         <button
           onClick={onRetry}
           className="font-heading font-extrabold text-white bg-gradient-to-br from-pink-500 to-orange-400 rounded-2xl px-6 py-3 shadow-lg hover:scale-105 active:scale-95 transition-transform"
@@ -84,6 +84,14 @@ export function Results({ result, onRetry, onChooseAnother, onHome }: ResultsPro
         >
           🎯 Choose Another
         </button>
+        {onMemoryCheck && (
+          <button
+            onClick={onMemoryCheck}
+            className="font-heading font-extrabold text-white bg-gradient-to-br from-violet-500 to-indigo-400 rounded-2xl px-6 py-3 shadow-lg hover:scale-105 active:scale-95 transition-transform"
+          >
+            🧠 Quick Memory Check
+          </button>
+        )}
         <button
           onClick={onHome}
           className="font-heading font-extrabold text-slate-600 bg-white/70 rounded-2xl px-6 py-3 shadow hover:scale-105 active:scale-95 transition-transform"

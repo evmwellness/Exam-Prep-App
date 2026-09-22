@@ -1,6 +1,15 @@
 import { useEffect, useState } from 'react';
-import type { Level, Operation, ParentSettings, QuizResult, ScreenSessionState, SessionMinutes } from './types';
+import type {
+  CurriculumLevel,
+  ParentSettings,
+  QuizResult,
+  ScreenSessionState,
+  SessionMinutes,
+  Stage,
+} from './types';
 import { loadHistory, saveResult, totalStarsEarned } from './data/storage';
+import { getLevelById, getStageMeta } from './data/curriculum';
+import { getOperationMeta } from './data/operations';
 import {
   loadParentSettings,
   resumeOrStartSession,
@@ -12,22 +21,27 @@ import { FloatingShapes } from './components/FloatingShapes';
 import { ParentGate } from './components/ParentGate';
 import { TimeWarningBanner } from './components/TimeWarningBanner';
 import { Home } from './pages/Home';
-import { PracticeSetup } from './pages/PracticeSetup';
+import { StageSelect } from './pages/StageSelect';
+import { OperationRoad } from './pages/OperationRoad';
 import { Quiz } from './pages/Quiz';
 import { Results } from './pages/Results';
 import { ProgressPage } from './pages/Progress';
 import { ParentZone } from './pages/ParentZone';
 import { TimesUp } from './pages/TimesUp';
 
-type View = 'home' | 'setup' | 'quiz' | 'results' | 'progress';
+type View = 'home' | 'stage' | 'road' | 'quiz' | 'results' | 'progress';
 
 const WARNING_THRESHOLD_MS = 90 * 1000; // 1 minute 30 seconds
+const MEMORY_ACCENT = '#7c3aed';
 
 export default function App() {
   const [view, setView] = useState<View>('home');
   const [history, setHistory] = useState<QuizResult[]>(() => loadHistory());
-  const [selection, setSelection] = useState<{ operation: Operation; level: Level } | null>(null);
+  const [stage, setStage] = useState<Stage | null>(null);
+  const [quizLevels, setQuizLevels] = useState<CurriculumLevel[]>([]);
+  const [isMemoryCheck, setIsMemoryCheck] = useState(false);
   const [lastResult, setLastResult] = useState<QuizResult | null>(null);
+  const [sessionLevelIds, setSessionLevelIds] = useState<string[]>([]);
 
   const [parentSettings, setParentSettings] = useState<ParentSettings>(() => loadParentSettings());
   const [sessionState, setSessionState] = useState<ScreenSessionState>(() =>
@@ -60,23 +74,43 @@ export default function App() {
     setView('home');
   }
 
-  function goSetup() {
-    setSelection(null);
-    setView('setup');
+  function goStageSelect() {
+    setStage(null);
+    setView('stage');
+  }
+
+  function selectStage(s: Stage) {
+    setStage(s);
+    setView('road');
   }
 
   function goProgress() {
     setView('progress');
   }
 
-  function beginQuiz(operation: Operation, level: Level) {
-    setSelection({ operation, level });
+  function beginPracticeLevel(level: CurriculumLevel) {
+    setQuizLevels([level]);
+    setIsMemoryCheck(false);
+    setView('quiz');
+  }
+
+  function beginMemoryCheck() {
+    const levels = sessionLevelIds.map(getLevelById).filter((l): l is CurriculumLevel => Boolean(l));
+    if (levels.length === 0) return;
+    setQuizLevels(levels);
+    setIsMemoryCheck(true);
     setView('quiz');
   }
 
   function completeQuiz(result: QuizResult) {
+    if (isMemoryCheck) {
+      setLastResult(result);
+      setView('results');
+      return;
+    }
     const updated = saveResult(result);
     setHistory(updated);
+    setSessionLevelIds((prev) => (prev.includes(result.levelId) ? prev : [...prev, result.levelId]));
     setLastResult(result);
     setView('results');
   }
@@ -99,6 +133,18 @@ export default function App() {
   }
 
   const locked = sessionState.locked;
+  const currentLevel = quizLevels.length === 1 ? quizLevels[0] : null;
+  const quizTitle = isMemoryCheck ? '🧠 Quick Memory Check' : currentLevel?.label ?? '';
+  const quizAccent = isMemoryCheck
+    ? MEMORY_ACCENT
+    : currentLevel
+    ? getOperationMeta(currentLevel.operation).color
+    : MEMORY_ACCENT;
+  const resultsTitleLabel = isMemoryCheck
+    ? '🧠 Quick Memory Check'
+    : currentLevel
+    ? `${getStageMeta(currentLevel.stage).label} · ${currentLevel.label}`
+    : '';
 
   return (
     <div className="min-h-screen relative">
@@ -119,6 +165,7 @@ export default function App() {
           <ParentZone
             settings={parentSettings}
             sessionState={sessionState}
+            history={history}
             onChangeSessionMinutes={handleChangeSessionMinutes}
             onResetNow={handleResetSessionNow}
             onClose={() => setParentZoneOpen(false)}
@@ -128,15 +175,31 @@ export default function App() {
         ) : (
           <>
             {view === 'home' && (
-              <Home onStart={goSetup} onProgress={goProgress} quizzesCompleted={history.length} />
+              <Home
+                onStart={goStageSelect}
+                onProgress={goProgress}
+                onMemoryCheck={sessionLevelIds.length > 0 ? beginMemoryCheck : undefined}
+                quizzesCompleted={history.length}
+              />
             )}
 
-            {view === 'setup' && <PracticeSetup onBegin={beginQuiz} onBack={goHome} />}
+            {view === 'stage' && <StageSelect onSelect={selectStage} onBack={goHome} />}
 
-            {view === 'quiz' && selection && (
+            {view === 'road' && stage && (
+              <OperationRoad
+                stage={stage}
+                history={history}
+                initialOperation={currentLevel?.stage === stage ? currentLevel.operation : undefined}
+                onSelectLevel={beginPracticeLevel}
+                onBack={goStageSelect}
+              />
+            )}
+
+            {view === 'quiz' && quizLevels.length > 0 && (
               <Quiz
-                operation={selection.operation}
-                level={selection.level}
+                levels={quizLevels}
+                title={quizTitle}
+                accentColor={quizAccent}
                 onComplete={completeQuiz}
                 onQuit={goHome}
               />
@@ -145,8 +208,10 @@ export default function App() {
             {view === 'results' && lastResult && (
               <Results
                 result={lastResult}
-                onRetry={() => beginQuiz(lastResult.operation, lastResult.level)}
-                onChooseAnother={goSetup}
+                titleLabel={resultsTitleLabel}
+                onRetry={() => (isMemoryCheck ? beginMemoryCheck() : currentLevel && beginPracticeLevel(currentLevel))}
+                onChooseAnother={() => (stage ? setView('road') : goStageSelect())}
+                onMemoryCheck={!isMemoryCheck && sessionLevelIds.length > 0 ? beginMemoryCheck : undefined}
                 onHome={goHome}
               />
             )}

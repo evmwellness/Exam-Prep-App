@@ -4,10 +4,11 @@ import { SpeechBubble } from '../components/SpeechBubble';
 interface HomeProps {
   onStart: () => void;
   onProgress: () => void;
+  onMemoryCheck?: () => void;
   quizzesCompleted: number;
 }
 
-export function Home({ onStart, onProgress, quizzesCompleted }: HomeProps) {
+export function Home({ onStart, onProgress, onMemoryCheck, quizzesCompleted }: HomeProps) {
   return (
     <div className="flex flex-col items-center text-center px-4 pb-16 pt-4 sm:pt-8">
       <h1 className="font-heading text-4xl sm:text-6xl font-extrabold text-purple-700 drop-shadow-sm mb-2">
@@ -47,6 +48,15 @@ export function Home({ onStart, onProgress, quizzesCompleted }: HomeProps) {
           📈 My Progress
         </button>
       </div>
+
+      {onMemoryCheck && (
+        <button
+          onClick={onMemoryCheck}
+          className="mt-6 font-heading font-extrabold text-white bg-gradient-to-br from-violet-500 to-indigo-400 rounded-2xl px-6 py-3 shadow-lg hover:scale-105 active:scale-95 transition-transform"
+        >
+          🧠 Quick Memory Check
+        </button>
+      )}
 
       {quizzesCompleted > 0 && (
         <p className="mt-8 text-slate-500 font-heading">

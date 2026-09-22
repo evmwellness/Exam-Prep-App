@@ -1,108 +1,43 @@
-import type { Level, Operation, Question } from '../types';
+import type { CurriculumLevel, Question } from '../types';
 
 function randInt(min: number, max: number): number {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-function generateAddition(level: Level): Question {
-  let a: number, b: number;
-  switch (level) {
-    case 1:
-      a = randInt(1, 10);
-      b = randInt(1, 10);
-      break;
-    case 2:
-      a = randInt(1, 20);
-      b = randInt(1, 20);
-      break;
-    case 3:
-      a = randInt(10, 50);
-      b = randInt(10, 50);
-      break;
-    default:
-      a = randInt(20, 100);
-      b = randInt(20, 100);
-  }
+function generateRangeAddition(maxNumber: number): Question {
+  const a = randInt(1, maxNumber - 1);
+  const b = randInt(1, maxNumber - a);
   return { a, b, operation: 'addition', answer: a + b };
 }
 
-function generateSubtraction(level: Level): Question {
-  let a: number, b: number;
-  switch (level) {
-    case 1:
-      a = randInt(1, 10);
-      b = randInt(0, a);
-      break;
-    case 2:
-      a = randInt(1, 20);
-      b = randInt(0, a);
-      break;
-    case 3:
-      a = randInt(10, 50);
-      b = randInt(0, a);
-      break;
-    default:
-      a = randInt(20, 100);
-      b = randInt(0, a);
-  }
+function generateRangeSubtraction(maxNumber: number): Question {
+  const a = randInt(2, maxNumber);
+  const b = randInt(0, a);
   return { a, b, operation: 'subtraction', answer: a - b };
 }
 
-function generateMultiplication(level: Level): Question {
-  let a: number, b: number;
-  switch (level) {
-    case 1:
-      a = randInt(1, 5);
-      b = randInt(1, 5);
-      break;
-    case 2:
-      a = randInt(1, 10);
-      b = randInt(1, 10);
-      break;
-    case 3:
-      a = randInt(1, 12);
-      b = randInt(1, 12);
-      break;
-    default:
-      a = randInt(10, 20);
-      b = randInt(1, 12);
-  }
+function generateTableMultiplication(table: number): Question {
+  const other = randInt(1, 12);
+  const [a, b] = Math.random() < 0.5 ? [table, other] : [other, table];
   return { a, b, operation: 'multiplication', answer: a * b };
 }
 
-function generateDivision(level: Level): Question {
-  let divisor: number, quotient: number;
-  switch (level) {
-    case 1:
-      divisor = randInt(1, 5);
-      quotient = randInt(1, 5);
-      break;
-    case 2:
-      divisor = randInt(1, 10);
-      quotient = randInt(1, 10);
-      break;
-    case 3:
-      divisor = randInt(2, 12);
-      quotient = randInt(2, 12);
-      break;
-    default:
-      divisor = randInt(2, 12);
-      quotient = randInt(10, 20);
-  }
-  const dividend = divisor * quotient;
-  return { a: dividend, b: divisor, operation: 'division', answer: quotient };
+function generateTableDivision(table: number): Question {
+  const quotient = randInt(1, 12);
+  const dividend = table * quotient;
+  return { a: dividend, b: table, operation: 'division', answer: quotient };
 }
 
-export function generateQuestion(operation: Operation, level: Level): Question {
-  switch (operation) {
+export function generateQuestion(level: CurriculumLevel): Question {
+  switch (level.operation) {
     case 'addition':
-      return generateAddition(level);
+      return generateRangeAddition(level.maxNumber ?? 20);
     case 'subtraction':
-      return generateSubtraction(level);
+      return generateRangeSubtraction(level.maxNumber ?? 20);
     case 'multiplication':
-      return generateMultiplication(level);
+      return generateTableMultiplication(level.table ?? 2);
     case 'division':
-      return generateDivision(level);
+      return generateTableDivision(level.table ?? 2);
   }
 }
 
@@ -128,17 +63,27 @@ export function generateChoices(question: Question): number[] {
 const MIN_BLOCK_SIZE = 5;
 const MAX_BLOCK_SIZE = 10;
 
-/** A short practice block of 5-10 questions, so kids get frequent wins and breaks. */
-export function generateQuizBlock(operation: Operation, level: Level): Question[] {
-  const count = randInt(MIN_BLOCK_SIZE, MAX_BLOCK_SIZE);
+/** A short practice block of 5-10 questions from a single curriculum level. */
+export function generateQuizBlock(level: CurriculumLevel): Question[] {
+  return generateMixedBlock([level]);
+}
+
+/**
+ * A short block of 5-10 questions drawn evenly at random from one or more
+ * curriculum levels — used both for single-level practice (one level) and
+ * the end-of-session memory check (several levels mixed together).
+ */
+export function generateMixedBlock(levels: CurriculumLevel[], count?: number): Question[] {
+  const size = count ?? randInt(MIN_BLOCK_SIZE, MAX_BLOCK_SIZE);
   const questions: Question[] = [];
   const seen = new Set<string>();
   let attempts = 0;
-  while (questions.length < count && attempts < count * 20) {
+  while (questions.length < size && attempts < size * 20) {
     attempts++;
-    const q = generateQuestion(operation, level);
-    const key = `${q.a}-${q.operation}-${q.b}`;
-    if (seen.has(key) && attempts < count * 15) continue;
+    const level = levels[randInt(0, levels.length - 1)];
+    const q = generateQuestion(level);
+    const key = `${level.id}-${q.a}-${q.operation}-${q.b}`;
+    if (seen.has(key) && attempts < size * 15) continue;
     seen.add(key);
     questions.push(q);
   }
