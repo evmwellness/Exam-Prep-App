@@ -1,3 +1,5 @@
+> This repo also contains **[check Prep](check-prep/README.md)**: 20-minute RACGP _check_ summaries with AKT/KFP questions (in `check-prep/`).
+
 # Type Mates 🦁🦆🐦
 
 A colourful, playful touch-typing and reading app for Australian primary school kids, from **Prep to Year 5** - built to get students exam-ready for the **NAPLAN** story-writing task.
