@@ -1,0 +1,576 @@
+import type { UnitExtension } from '../../types'
+
+const extra: Record<string, UnitExtension> = {
+  '585': {
+    sections: [
+      {
+        heading: 'The adolescent consultation',
+        points: [
+          'Adolescence (about 10–24) is a time of rapid physical, cognitive and social change. Risk-taking, identity formation and increasing independence are normal.',
+          'Structure: see the young person with the parent first (history, concerns), then alone (routine from about 12–14), then together to agree the plan. Explain this structure in advance.',
+          'Confidentiality: explain clearly at the start: "What you tell me stays between us, unless I\'m worried about your safety or someone else\'s." Document the discussion.',
+          'Build rapport: be genuine, non-judgemental and curious. Use plain language and ask about interests. Avoid lecturing.',
+          'Access barriers: cost (bulk billing), transport, appointment times, fear of parents finding out (Medicare and My Health Record privacy), and embarrassment. Youth-friendly services (headspace) help.',
+        ],
+      },
+      {
+        heading: 'HEEADSSS assessment',
+        points: [
+          'Home: who lives there, relationships, safety, recent changes.',
+          'Education and employment: school performance, attendance, bullying, future plans, work.',
+          'Eating and exercise: body image, dieting, weight changes, disordered eating behaviours, activity.',
+          'Activities: friends, hobbies, sport, screen time, social media, gaming.',
+          'Drugs: tobacco, vaping, alcohol, cannabis and other drugs (use a graded approach: peers first, then self).',
+          'Sexuality: attraction, identity, relationships, sexual activity, contraception, STIs, consent, coercion.',
+          'Suicide and depression: mood, self-harm, suicidal thoughts. Safety: online safety, violence, abuse, risk-taking (driving, fights), and sun and skin safety.',
+        ],
+      },
+      {
+        heading: 'Consent, confidentiality and the law',
+        points: [
+          'Mature minor principle (Gillick competence): a young person under 18 can consent to medical treatment if they understand the nature, consequences and risks. There is no fixed age. Assess for each decision.',
+          'In South Australia, legislation allows people 16 and over to consent to their own treatment, and those under 16 can consent with two practitioners\' agreement.',
+          'Medicare: young people can get their own Medicare card from 15. Parents cannot access a child\'s Medicare claims history after 14 without consent.',
+          'My Health Record: from 14, the young person controls access to their record.',
+          'Limits of confidentiality: serious risk of harm to self or others, child abuse (mandatory reporting), and some court orders.',
+          'Sexual activity and the law: ages of consent vary (16 or 17 by state). Mandatory reporting depends on age, age gap and exploitation concerns. Know your state rules.',
+        ],
+      },
+      {
+        heading: 'Contraception and sexual health',
+        points: [
+          'LARCs (implant and IUDs) are the most effective and first-line for adolescents. They suit nulliparous young people. The implant lasts 3 years and the 52 mg LNG-IUD 8 years (per current TGA approval).',
+          'Other options: COC (acne benefit, cycle control), progestogen-only pill, DMPA (bone density concerns with long-term use in adolescents), vaginal ring, and condoms (STI prevention; recommend dual protection).',
+          'Emergency contraception: copper IUD (the most effective, within 5 days), ulipristal (within 5 days, better than levonorgestrel), levonorgestrel (within 72 hours, less effective over 70 kg).',
+          'STI testing: chlamydia and gonorrhoea NAAT (self-collected swab or first-pass urine) annually for sexually active young people, plus syphilis and HIV by risk.',
+          'HPV vaccine: a single dose in the school program at 12–13, with catch-up to 25. Also hepatitis B if not immune.',
+          'Discuss consent, respectful relationships, sexting and image-based abuse, and where to get help.',
+        ],
+      },
+      {
+        heading: 'Mental health in adolescence',
+        points: [
+          'About 1 in 7 young people have a mental disorder in a year. Anxiety, depression, ADHD and conduct problems are most common. Suicide is a leading cause of death in young people.',
+          'Warning signs: withdrawal, declining school performance, irritability, sleep changes, self-harm, substance use, and talk of hopelessness.',
+          'Self-harm: assess the method, intent, frequency and wound care. Self-harm is a risk factor for suicide. Respond calmly, with a safety plan, harm minimisation and a referral.',
+          'Management: psychological therapy first (CBT, IPT, family therapy). headspace or a Mental Health Treatment Plan. SSRIs (fluoxetine first line) for moderate to severe depression, with close monitoring.',
+          'Eating disorders: most common in adolescent girls but increasing in boys. Watch for weight loss, amenorrhoea, over-exercise and bradycardia. Family-based treatment for anorexia.',
+          'Crisis supports: Kids Helpline (1800 55 1800, ages 5–25), Lifeline, 13YARN, eheadspace.',
+        ],
+      },
+      {
+        heading: 'Common physical health issues',
+        points: [
+          'Acne: effective treatment early prevents scarring and supports mental health (topical retinoid, BPO, oral antibiotics, COC, isotretinoin via dermatologist).',
+          'Menstrual problems: dysmenorrhoea (NSAIDs starting before the period, COC; consider endometriosis if severe or not responding), HMB (screen for von Willebrand disease), irregular cycles (common in the first 2 years, but consider PCOS, thyroid disease, eating disorders and pregnancy).',
+          'Sleep: the circadian rhythm shifts later in puberty. Delayed sleep phase and short sleep (screens) affect mood and learning. Use sleep hygiene, morning light and consistent wake times.',
+          'Obesity and type 2 diabetes: rising in adolescents, especially Aboriginal and Torres Strait Islander youth. Screen for complications and use family-based interventions.',
+          'Sport and musculoskeletal: Osgood–Schlatter disease, patellofemoral pain, stress fractures (RED-S), concussion.',
+          'Chronic illness: transition planning (from about 14) with a transition coordinator, self-management skills, and seeing the young person alone.',
+        ],
+      },
+      {
+        heading: 'Transition to adult healthcare',
+        points: [
+          'Transition is a planned, gradual process of moving from paediatric to adult services, not a one-off transfer.',
+          'Poorly managed transition leads to lost follow-up, worse disease control (for example diabetes, epilepsy, cystic fibrosis, IBD) and increased admissions.',
+          'Start conversations from about 12–14, build self-management skills (knowing their condition and medicines, making appointments, ordering scripts), and see the young person independently.',
+          'The GP provides continuity: a stable medical home, coordinating referrals and covering general health (mental health, sexual health, vaccinations, substance use).',
+          'Transition clinics and youth-specific adult services improve outcomes. NDIS and education supports may need re-planning at 18.',
+        ],
+      },
+    ],
+    keyNumbers: [
+      'Own Medicare card from 15',
+      'My Health Record control from 14',
+      'Implant: 3 years; 52 mg LNG-IUD: up to 8 years',
+      'Ulipristal: within 120 h; LNG EC: within 72 h',
+      'Annual chlamydia/gonorrhoea test for sexually active young people',
+      'HPV: single dose at 12–13; catch-up to 25',
+      '~1 in 7 young people have a mental disorder in a year',
+      'Kids Helpline: 1800 55 1800',
+    ],
+    workedCase: {
+      title: 'A 16-year-old wants contraception',
+      paragraphs: [
+        'Mia, 16, attends alone and asks for "the pill". She has been with her 17-year-old boyfriend for 6 months and they have had sex without condoms twice, most recently 4 days ago. She has painful periods that cause her to miss school. She does not want her parents to know.',
+        'You explain confidentiality and its limits. You assess her as a mature minor: she understands contraceptive options, risks and implications. HEEADSSS reveals no coercion, a relationship age gap within legal limits, no substance use, good school engagement and mild anxiety.',
+        'Because she had unprotected sex 4 days ago, you offer emergency contraception. She chooses ulipristal (within 120 hours), and you explain it may delay ovulation and that she should start hormonal contraception 5 days after ulipristal. You discuss all options, including LARC. She chooses an etonogestrel implant, inserted 5 days later after a negative pregnancy test, with condoms until then and for STI protection.',
+        'You arrange an STI screen (chlamydia and gonorrhoea self-collected swab) and a pregnancy test at 3–4 weeks. For dysmenorrhoea you advise NSAIDs starting before her period. If the implant bleeding pattern is not tolerated, you discuss switching to or adding the COC. You invite her back at any time and mention headspace for her anxiety.',
+      ],
+    },
+    questions: [
+      {
+        kind: 'emq',
+        theme: 'Adolescent sexual health',
+        lead: 'Choose the SINGLE most appropriate option for each young person.',
+        options: [
+          'Copper IUD as emergency contraception',
+          'Ulipristal acetate',
+          'Levonorgestrel emergency contraception',
+          'Etonogestrel implant',
+          'Combined oral contraceptive pill',
+          'Chlamydia/gonorrhoea NAAT',
+          'Mandatory report to child protection',
+          'No contraception needed',
+        ],
+        items: [
+          { stem: 'A 17-year-old had unprotected sex 4 days ago and wants the most effective emergency contraception.', answer: 0 },
+          { stem: 'A 13-year-old discloses sexual activity with a 22-year-old man.', answer: 6 },
+          { stem: 'A 16-year-old wants reliable long-term contraception she doesn\'t have to remember daily.', answer: 3 },
+          { stem: 'An asymptomatic 18-year-old with a new partner asks for a sexual health check.', answer: 5 },
+        ],
+      },
+    ],
+    kfp: [
+      {
+        title: 'Axle is struggling',
+        scenario:
+          'Axle, 15, is brought by his father because his grades have dropped and he is "always angry". He has quit football and spends nights gaming. His father found vapes in his room. His parents separated 6 months ago.',
+        questions: [
+          {
+            kind: 'multi',
+            stem: 'Which THREE steps are most important in structuring this consultation?',
+            options: [
+              'Speak with Axle alone for part of the consultation',
+              'Explain confidentiality and its limits to Axle and his father',
+              'Use a HEEADSSS assessment',
+              'Conduct the whole consultation with his father present',
+              'Order a drug screen without consent',
+              'Advise the father to confiscate all devices immediately',
+            ],
+            answers: [0, 1, 2],
+          },
+          {
+            kind: 'sba',
+            context: 'Alone, Axle reports low mood for 4 months, poor sleep, vaping daily, and that he sometimes cuts his arm "to feel better". He has no suicide plan.',
+            stem: 'What is the most appropriate immediate response to the self-harm?',
+            options: [
+              'Tell his father immediately without discussion',
+              'Assess wounds and suicide risk, develop a safety plan, and discuss harm minimisation',
+              'Advise him to stop and review in 3 months',
+              'Admit to hospital',
+              'Ignore – it is attention seeking',
+            ],
+            answer: 1,
+          },
+          {
+            kind: 'multi',
+            stem: 'Which THREE interventions are most appropriate?',
+            options: [
+              'Referral to headspace or a psychologist (Mental Health Treatment Plan)',
+              'Support to reduce and quit vaping (Quitline, NRT if dependent)',
+              'Sleep and screen-time strategies',
+              'Start an antipsychotic',
+              'Varenicline',
+              'Suggest he stops school',
+            ],
+            answers: [0, 1, 2],
+          },
+          {
+            kind: 'sba',
+            stem: 'Axle asks you not to tell his father about the self-harm. What is the best approach?',
+            options: [
+              'Agree completely and never involve family',
+              'Explain your concerns, explore his reasons, and negotiate what can be shared to support his safety (unless serious imminent risk requires disclosure)',
+              'Tell his father everything regardless',
+              'Tell the school',
+              'Refuse to see him again',
+            ],
+            answer: 1,
+          },
+          {
+            kind: 'emq',
+            theme: 'Follow-up',
+            lead: 'Choose the SINGLE best action for each development.',
+            options: [
+              'Continue plan with review in 1–2 weeks',
+              'Urgent crisis assessment',
+              'Consider fluoxetine in addition to therapy',
+              'Family therapy / support for separation',
+              'Stop all follow-up',
+            ],
+            items: [
+              { stem: 'He reveals a plan to overdose on his mother\'s tablets', answer: 1 },
+              { stem: 'Moderate depression persists after 8 weeks of CBT', answer: 2 },
+              { stem: 'Conflict between his parents about custody is a major trigger', answer: 3 },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+  '584': {
+    sections: [
+      {
+        heading: 'Hypertension: diagnosis in practice',
+        points: [
+          'Measure correctly: seated, back supported, arm at heart level, correct cuff size, after 5 minutes of rest, 2–3 readings. Check both arms at the first visit.',
+          'Thresholds for diagnosis: clinic 140/90 or higher. Home average 135/85 or higher (7 days, twice daily, 2 readings each). ABPM daytime 135/85, 24-hour 130/80 or higher.',
+          'White-coat hypertension (high in clinic, normal out of office) needs monitoring rather than treatment. Masked hypertension (normal in clinic, high out of office) carries risk. Out-of-office BP detects both.',
+          'Workup: UEC, eGFR, urine ACR, fasting lipids, glucose or HbA1c, ECG (LVH, AF), and fundoscopy for severe hypertension.',
+          'Consider secondary causes when: young onset (under 40), resistant hypertension (3 or more drugs including a diuretic), hypokalaemia (primary aldosteronism, which is more common than thought, so check the aldosterone:renin ratio), renal impairment (renovascular disease), OSA, phaeochromocytoma symptoms, medicines (NSAIDs, OCP, decongestants, venlafaxine), or alcohol.',
+          'Hypertensive urgency (BP 180/110 or more without organ damage): reduce over days with oral agents. Emergency (with organ damage such as encephalopathy, ACS, AKI or pulmonary oedema): hospital.',
+        ],
+      },
+      {
+        heading: 'Hypertension: treatment',
+        points: [
+          'Lifestyle: salt reduction (under 5 g a day), weight loss, the DASH or Mediterranean diet, physical activity, alcohol reduction, and quitting smoking. Each lowers BP by several mmHg.',
+          'First-line: ACEi or ARB, dihydropyridine CCB (amlodipine), or thiazide-like diuretic (indapamide, chlorthalidone). Combining low doses of two classes is more effective than maximising one. Single-pill combinations improve adherence.',
+          'Choose by comorbidity: ACEi or ARB for diabetes with albuminuria, CKD or heart failure. Beta-blockers for angina, post-MI, heart failure or AF rate control (not first line for uncomplicated hypertension). Avoid ACEi and ARB in pregnancy.',
+          'Resistant hypertension: confirm adherence and out-of-office BP, check for secondary causes, then add spironolactone (the most effective fourth-line agent).',
+          'Targets: generally under 130/80 for adults if tolerated. Individualise in frail older people (avoid orthostatic hypotension and falls).',
+          'Monitor K⁺ and creatinine after starting or increasing ACEi, ARB, diuretics or spironolactone (at 1–2 weeks). Up to a 30% creatinine rise is acceptable with ACEi or ARB.',
+        ],
+      },
+      {
+        heading: 'Lipids and familial hypercholesterolaemia',
+        points: [
+          'Lipid testing: non-fasting samples are acceptable for most people. Measure total cholesterol, LDL, HDL, triglycerides and non-HDL. Consider Lp(a) once in a lifetime (a genetic risk factor).',
+          'Statins: first-line. Intensity by risk. Check baseline LFT and CK if symptomatic. Most muscle symptoms are not caused by the statin (nocebo effect), so rechallenge or try an alternative statin.',
+          'Add-on therapies: ezetimibe (about 20% extra LDL lowering), PCSK9 inhibitors (evolocumab; PBS criteria for FH or CVD with LDL above thresholds despite maximum therapy), and inclisiran (twice-yearly siRNA).',
+          'Familial hypercholesterolaemia: autosomal dominant, about 1 in 250 people. LDL is usually over 5 mmol/L in adults (over 4 in children). Look for tendon xanthomas, corneal arcus under 45, and premature CVD in the family.',
+          'FH diagnosis: Dutch Lipid Clinic Network score, then genetic testing (LDLR, APOB, PCSK9). Cascade testing of first-degree relatives (including children from about 5–10). Early statin treatment normalises life expectancy.',
+          'Hypertriglyceridaemia: lifestyle, glycaemic control and alcohol reduction first. Fibrates or omega-3 for very high levels (over 10 mmol/L carries pancreatitis risk).',
+        ],
+      },
+      {
+        heading: 'Chest pain assessment in general practice',
+        points: [
+          'Always consider life-threatening causes: ACS, aortic dissection, PE, tension pneumothorax, pericarditis with tamponade, oesophageal rupture.',
+          'ACS features: central pressure, heaviness or tightness radiating to the arm, jaw or neck, with sweating, nausea or breathlessness, at rest or lasting over 10 minutes. Atypical presentations occur in women, older people and people with diabetes.',
+          'In general practice: ECG within 10 minutes (a normal ECG does not exclude ACS), aspirin 300 mg (chewed) unless allergic or bleeding, GTN for ongoing pain if BP allows, oxygen only if SpO2 is under 90%, and call 000 for transfer. Don\'t send the patient for outpatient troponin.',
+          'Stable chest pain (exertional, relieved by rest): assess pre-test probability. Arrange CT coronary angiography or functional testing (stress echo), start aspirin, a statin and GTN, and refer to cardiology.',
+          'Non-cardiac causes: musculoskeletal (reproducible with palpation), GORD, anxiety or panic, pleuritic (pneumonia, PE), herpes zoster (pre-rash).',
+          'Aortic dissection: sudden, tearing pain radiating to the back, BP difference between the arms, pulse deficits. Hypertension and Marfan syndrome are risk factors. This is an emergency.',
+        ],
+      },
+      {
+        heading: 'After ACS: secondary prevention',
+        points: [
+          'Medicines (use the acronym ABCDE): Antiplatelets (aspirin lifelong plus a P2Y12 inhibitor such as ticagrelor or clopidogrel for 12 months, adjusted for bleeding risk), Beta-blocker (especially with reduced EF), Cholesterol (high-intensity statin, LDL under 1.8 or under 1.4), Diet and lifestyle, ACE inhibitor or ARB (especially with LV dysfunction, diabetes or hypertension), plus an SGLT2 inhibitor or MRA if heart failure.',
+          'Cardiac rehabilitation (referral for everyone after ACS) reduces mortality and readmission. Uptake is low, so encourage it.',
+          'Stop smoking (the most effective intervention), aim for a healthy weight, exercise, and control BP and diabetes. Vaccinate against influenza.',
+          'Depression is common after ACS and worsens outcomes. Screen and treat (SSRIs are safe).',
+          'Driving (Assessing Fitness to Drive): private licences typically require a non-driving period after MI (for example 2 weeks) or longer after CABG. Commercial standards are stricter. Check the current standard.',
+          'Sexual activity: generally safe once the person can manage moderate exertion (for example 2 flights of stairs). Avoid PDE5 inhibitors with nitrates.',
+        ],
+      },
+      {
+        heading: 'Peripheral arterial disease',
+        points: [
+          'Risk factors: smoking (the strongest), diabetes, hypertension, dyslipidaemia, CKD and age. PAD indicates high cardiovascular risk overall.',
+          'Symptoms: intermittent claudication (calf, thigh or buttock pain on walking, relieved by rest within minutes), rest pain (worse at night, relieved by hanging the leg down), non-healing wounds, and gangrene. Many people are asymptomatic.',
+          'Examination: reduced or absent pulses, cool pale skin, hair loss, shiny skin, delayed capillary refill, and Buerger test (pallor on elevation, rubor when dependent).',
+          'ABI: 0.9 or less is diagnostic. 0.4–0.9 is mild to moderate disease. Under 0.4 is severe. Over 1.3 means non-compressible (calcified) vessels, so use toe pressures.',
+          'Management: stop smoking, supervised exercise therapy (walking to near-maximal pain, 30–45 minutes 3 times a week for 12 weeks), a statin, an antiplatelet (clopidogrel or aspirin), BP and glucose control, and foot care.',
+          'Refer: lifestyle-limiting claudication despite exercise, rest pain, tissue loss (chronic limb-threatening ischaemia), or acute limb ischaemia (the 6 Ps: an emergency).',
+        ],
+      },
+    ],
+    keyNumbers: [
+      'Home BP ≥135/85; ABPM 24-h ≥130/80',
+      'Target <130/80 for most adults (individualise in frailty)',
+      'Salt <5 g/day',
+      'FH: ~1 in 250; LDL >5 mmol/L (adults)',
+      'Post-ACS: DAPT 12 months, high-intensity statin, cardiac rehab',
+      'LDL target <1.8 (or <1.4 very high risk)',
+      'ABI ≤0.9 = PAD; >1.3 = non-compressible',
+      'Suspected ACS: aspirin 300 mg + ECG + call 000',
+      'Resistant HTN: add spironolactone',
+    ],
+    workedCase: {
+      title: 'Juanita is seeking reassurance',
+      paragraphs: [
+        'Juanita, 38, is worried because her father and his brother both had heart attacks in their early 50s. She is well, a non-smoker, BMI 24. Her fasting LDL is 5.8 mmol/L, and she has thickened Achilles tendons.',
+        'Using the Dutch Lipid Clinic Network criteria (premature CVD in first-degree relatives, LDL 5–6.4, tendon xanthoma), she scores in the "definite FH" range. You exclude secondary causes (TSH, UEC, LFT, glucose, urine protein, and medicines).',
+        'You refer her to a lipid clinic for genetic testing, which confirms an LDLR variant. She starts rosuvastatin 20 mg plus ezetimibe to reach an LDL under 2.5 (primary prevention in FH), and later qualifies for a PCSK9 inhibitor because her LDL remains high on maximum therapy.',
+        'You organise cascade testing: her two children (aged 8 and 11) have lipid testing, and her 11-year-old is affected and starts a statin under paediatric guidance. You also discuss contraception, because statins are stopped before planned pregnancy.',
+      ],
+    },
+    questions: [
+      {
+        kind: 'emq',
+        theme: 'Cardiovascular presentations',
+        lead: 'Choose the SINGLE most appropriate immediate management for each patient.',
+        options: [
+          'Aspirin 300 mg, ECG and call 000',
+          'Outpatient CT coronary angiogram',
+          'Home BP monitoring before starting treatment',
+          'Start ACEi and CCB combination',
+          'Check aldosterone:renin ratio',
+          'Supervised exercise program and statin',
+          'Urgent vascular surgery referral',
+          'Reassure – musculoskeletal pain',
+        ],
+        items: [
+          { stem: 'A 45-year-old with BP 152/94 in clinic on two occasions, no end-organ damage.', answer: 2 },
+          { stem: 'A 38-year-old with hypertension on 3 drugs, K⁺ 3.2 mmol/L.', answer: 4 },
+          { stem: 'A 68-year-old smoker with calf pain after 200 m, ABI 0.7.', answer: 5 },
+          { stem: 'A 70-year-old with sudden severe leg pain, pale, cold and pulseless foot.', answer: 6 },
+        ],
+      },
+    ],
+    kfp: [
+      {
+        title: 'Chest pain in the clinic',
+        scenario:
+          'Ray, 61, a smoker with diabetes, walks into your clinic at 10 am with 40 minutes of central chest heaviness radiating to his left arm, with sweating. BP 150/90, HR 96, SpO2 96%.',
+        questions: [
+          {
+            kind: 'multi',
+            stem: 'Which FOUR immediate actions are most appropriate?',
+            options: [
+              'Call 000 for ambulance transfer',
+              '12-lead ECG within 10 minutes',
+              'Aspirin 300 mg chewed (if no contraindication)',
+              'GTN sublingually if BP allows',
+              'Routine oxygen at 15 L/min',
+              'Send him for a troponin at the local pathology collection centre',
+            ],
+            answers: [0, 1, 2, 3],
+          },
+          {
+            kind: 'sba',
+            context: 'The ECG shows ST elevation in leads II, III and aVF.',
+            stem: 'What does this indicate?',
+            options: ['Anterior STEMI', 'Inferior STEMI', 'Pericarditis', 'Normal variant', 'Lateral NSTEMI'],
+            answer: 1,
+          },
+          {
+            kind: 'multi',
+            context: 'He has primary PCI and is discharged on day 3. He sees you a week later.',
+            stem: 'Which THREE medicines should he be taking (assuming no contraindications)?',
+            options: [
+              'Aspirin plus a P2Y12 inhibitor (e.g. ticagrelor)',
+              'High-intensity statin',
+              'ACE inhibitor (or ARB) and/or beta-blocker as indicated',
+              'Warfarin',
+              'Long-term NSAID',
+              'Digoxin',
+            ],
+            answers: [0, 1, 2],
+          },
+          {
+            kind: 'multi',
+            stem: 'Which THREE non-drug measures are most important?',
+            options: [
+              'Cardiac rehabilitation referral',
+              'Smoking cessation (pharmacotherapy + Quitline)',
+              'Screen for depression',
+              'Strict bed rest for 6 weeks',
+              'Avoid all physical activity',
+              'Stop diabetes medicines',
+            ],
+            answers: [0, 1, 2],
+          },
+          {
+            kind: 'emq',
+            theme: 'Follow-up issues',
+            lead: 'Choose the SINGLE best response for each question.',
+            options: [
+              'Continue DAPT – do not stop without cardiology advice',
+              'Driving restriction per Assessing Fitness to Drive',
+              'Sexual activity generally safe once he can climb 2 flights of stairs; no PDE5i with nitrates',
+              'LDL target <1.8 (or lower); add ezetimibe if needed',
+              'Stop statin if LDL falls below 2',
+            ],
+            items: [
+              { stem: 'His dentist wants him to stop ticagrelor for a tooth extraction', answer: 0 },
+              { stem: 'His LDL is 2.4 on atorvastatin 80 mg', answer: 3 },
+              { stem: '"When can I drive again?"', answer: 1 },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+  '583': {
+    sections: [
+      {
+        heading: 'Haematuria: assessment',
+        points: [
+          'Visible (macroscopic) haematuria: any episode in an adult needs investigation for urological cancer, unless clearly explained by proven UTI that resolves.',
+          'Non-visible (microscopic) haematuria: confirm persistence (2 of 3 dipsticks positive, or microscopy over 10 RBC/µL) and exclude UTI, menstruation, vigorous exercise and recent instrumentation.',
+          'Urological causes: bladder cancer (painless visible haematuria, smoking, occupational dyes and chemicals, older age), kidney cancer, prostate enlargement or cancer, stones, infection, trauma.',
+          'Nephrological causes: glomerulonephritis (IgA nephropathy after upper respiratory infection, dysmorphic RBCs, red cell casts, proteinuria, hypertension, reduced eGFR).',
+          'Investigations: urine MCS, urine cytology (limited sensitivity), UEC, FBC, coagulation if on anticoagulants (anticoagulants unmask pathology but do not explain haematuria), and ACR or PCR. CT urogram plus cystoscopy for visible haematuria. Renal ultrasound for non-visible haematuria in lower-risk people.',
+          'Refer to nephrology for proteinuria, reduced eGFR, hypertension with haematuria, or dysmorphic RBCs.',
+        ],
+      },
+      {
+        heading: 'Kidney stones',
+        points: [
+          'Renal colic: sudden severe loin pain radiating to the groin, restlessness, nausea and vomiting, and haematuria (about 85%).',
+          'Imaging: non-contrast CT KUB (the gold standard, and low-dose protocols are available). Ultrasound in pregnancy, children, or to avoid radiation (shows hydronephrosis).',
+          'Pain relief: NSAIDs (for example diclofenac or indomethacin suppository) are first line and reduce ureteric spasm. Add opioids if needed. Avoid NSAIDs in renal impairment.',
+          'Spontaneous passage: under 5 mg about 70–90%, 5–10 mm about 50%. Tamsulosin 400 microgram daily increases passage of distal ureteric stones 5–10 mm.',
+          'Urgent referral: infection with obstruction (fever, rigors; needs urgent decompression by stent or nephrostomy), AKI, a solitary kidney, bilateral obstruction, intractable pain or vomiting, or a stone unlikely to pass (over 10 mm).',
+          'Prevention (after a first stone, and a metabolic workup for recurrent stones): fluids for over 2.5 L urine a day, reduced salt (under 6 g a day), normal dietary calcium (low calcium increases stones), less animal protein, fewer oxalate-rich foods if calcium oxalate stones, citrate (lemon juice, potassium citrate), and thiazides for hypercalciuria.',
+        ],
+      },
+      {
+        heading: 'Urinary tract infections',
+        points: [
+          'Uncomplicated cystitis in non-pregnant women: dysuria, frequency and urgency without fever or loin pain. Diagnosis can be clinical. Urine culture if atypical, recurrent, or treatment fails.',
+          'Treatment options (per current Therapeutic Guidelines): trimethoprim 300 mg daily for 3 days, nitrofurantoin 100 mg 6-hourly for 5 days (avoid if eGFR under 30), or cefalexin 500 mg 12-hourly for 5 days. Check local resistance.',
+          'Pyelonephritis: fever, loin pain, rigors, nausea. Urine culture and blood tests, oral amoxicillin–clavulanate or cefalexin for mild cases (per TG), and IV if unwell or vomiting. Imaging if not improving or recurrent.',
+          'Men: a UTI is complicated. Treat for 7 days (14 if febrile or prostatitis is suspected), with culture. Investigate after a first UTI with renal tract ultrasound and post-void residual, and consider prostatitis or an STI in younger men.',
+          'Pregnancy: treat asymptomatic bacteriuria and cystitis (cefalexin, nitrofurantoin, avoiding it near term, or amoxicillin–clavulanate by sensitivities). Test of cure after treatment. Pyelonephritis needs hospital admission.',
+          'Older people: don\'t screen or treat asymptomatic bacteriuria (common, not harmful). Delirium alone is not a UTI unless there are urinary symptoms or sepsis without another source.',
+          'Catheter-associated UTI: treat only if symptomatic. Replace the catheter before collecting a culture.',
+        ],
+      },
+      {
+        heading: 'Recurrent UTI in women',
+        points: [
+          'Defined as 2 or more in 6 months or 3 or more in 12 months, culture-confirmed.',
+          'Risk factors: sexual intercourse, spermicide use, postmenopausal oestrogen deficiency, incomplete emptying, diabetes, and a family history.',
+          'Investigate if atypical (men, haematuria persisting after treatment, stones, Proteus infection, pyelonephritis) with renal tract ultrasound and post-void residual.',
+          'Prevention: adequate hydration, post-coital voiding (limited evidence), avoiding spermicides, vaginal oestrogen in postmenopausal women (effective), methenamine hippurate (as effective as antibiotics in some trials), cranberry products (modest benefit), and D-mannose (limited evidence).',
+          'Antibiotic prophylaxis (continuous low dose, for example trimethoprim 150 mg nightly or nitrofurantoin 50 mg nightly, or post-coital) for 3–6 months if other measures fail. Weigh resistance risk.',
+          'Self-start antibiotic courses with a urine culture for women with reliable recognition of symptoms.',
+        ],
+      },
+      {
+        heading: 'Urinary incontinence and nocturia',
+        points: [
+          'Types: stress (with coughing or sneezing: pelvic floor weakness, childbirth, menopause, obesity), urge or overactive bladder (sudden urgency), mixed, overflow (retention: prostate enlargement, anticholinergics, neurological), and functional (mobility, cognition).',
+          'Assessment: history (bladder diary for 3 days), fluid and caffeine intake, medicines, bowel function, neurological symptoms, urinalysis, post-void residual, and a pelvic exam (prolapse, atrophy).',
+          'Stress incontinence: supervised pelvic floor muscle training (3 months or more, via a continence physiotherapist), weight loss, and continence pessaries. Surgery (mid-urethral slings, colposuspension, bulking agents) after informed discussion. The vaginal mesh history in Australia means careful consent.',
+          'Urge incontinence: bladder training (gradually extending voiding intervals), reducing caffeine and alcohol, vaginal oestrogen, mirabegron (β3-agonist, monitor BP), and antimuscarinics (oxybutynin, solifenacin; anticholinergic burden, so avoid in older people with cognitive impairment). Botulinum toxin or neuromodulation for refractory cases.',
+          'Nocturia: consider nocturnal polyuria (over a third of 24-hour urine at night: heart failure, OSA, evening fluids, diabetes, diuretic timing), reduced bladder capacity (overactive bladder, BPH) and sleep disorders.',
+          'Continence Foundation of Australia helpline and resources. Continence aids funding schemes (for example the CAPS scheme).',
+        ],
+      },
+      {
+        heading: 'Scrotal conditions',
+        points: [
+          'Testicular torsion: peak ages are neonates and adolescents (12–18). Sudden severe testicular pain, nausea and vomiting, a high-riding testis with a horizontal lie, and an absent cremasteric reflex. Salvage is about 90% within 6 hours and falls after that.',
+          'Torsion management: immediate surgical referral for exploration and bilateral orchidopexy. Doppler ultrasound should not delay surgery if clinical suspicion is high. Manual detorsion ("opening the book") only if surgery is significantly delayed.',
+          'Torsion of the testicular appendage: localised upper pole tenderness, sometimes a "blue dot" sign, with a normal cremasteric reflex. Self-limiting. Analgesia.',
+          'Epididymo-orchitis: gradual onset, fever, dysuria, a tender epididymis, and positive Prehn sign (relief on elevation; unreliable). Under 35 or at STI risk: chlamydia and gonorrhoea. Treat with ceftriaxone plus doxycycline. Enteric organisms in older men or after instrumentation. Mumps orchitis in unvaccinated people.',
+          'Testicular cancer: ages 15–40, a painless lump or heaviness. Risk factors are cryptorchidism, previous testicular cancer and family history. Scrotal ultrasound, tumour markers (AFP, β-hCG, LDH), and urgent urology referral. Highly curable (over 95%). Offer sperm banking before treatment.',
+          'Other scrotal lumps: hydrocele (transilluminates, testis within), varicocele (left more than right, "bag of worms", infertility; image the kidney if right-sided or of sudden onset), epididymal cyst (separate from the testis, above it), and inguinoscrotal hernia (cannot get above it).',
+        ],
+      },
+    ],
+    keyNumbers: [
+      'Visible haematuria: CT urogram + cystoscopy',
+      'Non-visible haematuria: >10 RBC/µL on 2 of 3 tests',
+      'Stones <5 mm: ~70–90% pass; tamsulosin for 5–10 mm distal',
+      'Urine output >2.5 L/day to prevent stones',
+      'Trimethoprim 300 mg × 3 days (uncomplicated cystitis)',
+      'Men with UTI: 7 days (14 if prostatitis)',
+      'Recurrent UTI: ≥2 in 6 months or ≥3 in 12 months',
+      'Torsion: salvage ~90% within 6 hours',
+      'Testicular cancer cure rate >95%',
+      'Nocturnal polyuria: >1/3 of 24-h urine at night',
+    ],
+    workedCase: {
+      title: 'Daniel has received a reminder letter',
+      paragraphs: [
+        'Daniel, 66, a retired painter and decorator and ex-smoker (40 pack-years), comes in because of a bowel screening reminder. He mentions in passing that he noticed "pink urine" twice last month without pain. He takes apixaban for AF.',
+        'You explain that visible haematuria needs investigation even on an anticoagulant, and that his smoking history and occupational exposure to solvents and dyes increase his bladder cancer risk. Urinalysis shows blood, with no nitrites or leucocytes. Urine culture is negative. Renal function is normal.',
+        'You refer him urgently to urology for a CT urogram and flexible cystoscopy. Cystoscopy shows a 2 cm papillary bladder tumour, resected by TURBT (non-muscle-invasive, high grade). He receives intravesical BCG therapy and cystoscopic surveillance.',
+        'You also complete his bowel screening, support him to stay smoke-free, and review his apixaban dosing around procedures. You explain that bladder cancer surveillance will be long term.',
+      ],
+    },
+    questions: [
+      {
+        kind: 'emq',
+        theme: 'Urological presentations',
+        lead: 'Choose the SINGLE most likely diagnosis for each patient.',
+        options: [
+          'Bladder cancer',
+          'Renal colic (ureteric stone)',
+          'IgA nephropathy',
+          'Testicular torsion',
+          'Epididymo-orchitis',
+          'Testicular cancer',
+          'Hydrocele',
+          'Overactive bladder',
+        ],
+        items: [
+          { stem: 'A 20-year-old with visible haematuria 2 days after a sore throat, with mild hypertension.', answer: 2 },
+          { stem: 'A 28-year-old with a painless firm lump in the testis that does not transilluminate.', answer: 5 },
+          { stem: 'A 72-year-old ex-smoker with painless visible haematuria and no infection.', answer: 0 },
+          { stem: 'A 60-year-old woman with sudden urgency, frequency and nocturia; urine culture negative.', answer: 7 },
+        ],
+      },
+    ],
+    kfp: [
+      {
+        title: 'Renal colic with fever',
+        scenario:
+          'Lachlan, 45, has 12 hours of severe right loin pain radiating to the groin, vomiting, and now fever of 38.9 °C with rigors. HR 112, BP 104/68. Urine dipstick shows blood, leucocytes and nitrites.',
+        questions: [
+          {
+            kind: 'sba',
+            stem: 'What is the most likely diagnosis?',
+            options: [
+              'Uncomplicated renal colic',
+              'Obstructed, infected kidney (pyonephrosis / obstructive pyelonephritis)',
+              'Appendicitis',
+              'Musculoskeletal back pain',
+              'Uncomplicated cystitis',
+            ],
+            answer: 1,
+          },
+          {
+            kind: 'sba',
+            stem: 'What is the most appropriate immediate management?',
+            options: [
+              'Oral antibiotics and review in 48 hours',
+              'Urgent transfer to hospital for IV antibiotics, imaging and urgent urological decompression (stent or nephrostomy)',
+              'Tamsulosin and NSAIDs at home',
+              'Outpatient CT KUB next week',
+              'Fluid loading at home',
+            ],
+            answer: 1,
+          },
+          {
+            kind: 'multi',
+            stem: 'Which THREE investigations will be needed in hospital?',
+            options: ['Blood cultures and urine culture', 'FBC, UEC and CRP', 'CT KUB (non-contrast)', 'Colonoscopy', 'Serum amylase only', 'Testicular ultrasound'],
+            answers: [0, 1, 2],
+          },
+          {
+            kind: 'multi',
+            context: 'He recovers after stent placement and later stone removal. Stone analysis shows calcium oxalate.',
+            stem: 'Which THREE preventive measures are most appropriate?',
+            options: [
+              'Increase fluid intake to produce >2.5 L urine daily',
+              'Reduce dietary salt',
+              'Maintain normal dietary calcium intake',
+              'Strict low-calcium diet',
+              'High-dose vitamin C supplements',
+              'High animal-protein diet',
+            ],
+            answers: [0, 1, 2],
+          },
+          {
+            kind: 'emq',
+            theme: 'Stone management',
+            lead: 'Choose the SINGLE most appropriate management for each patient.',
+            options: [
+              'Analgesia (NSAID) and trial of passage with tamsulosin',
+              'Urgent urology referral / decompression',
+              'Metabolic stone workup (24-h urine, calcium, urate)',
+              'Ultrasound (avoid CT)',
+              'No follow-up needed',
+            ],
+            items: [
+              { stem: 'A 6 mm distal ureteric stone, afebrile, normal renal function, pain controlled', answer: 0 },
+              { stem: 'A pregnant woman with suspected renal colic', answer: 3 },
+              { stem: 'A man with his fourth stone episode in 3 years', answer: 2 },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+}
+
+export default extra
