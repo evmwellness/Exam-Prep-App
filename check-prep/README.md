@@ -2,18 +2,18 @@
 
 A simple study app for the Australian **FRACGP AKT and KFP exams**. It covers the **last 60 RACGP _check_ units**: Unit 583 (Jun 2021) to Unit 637 (Sep 2026), plus Supplements 1, 2, 4, 5 and 6.
 
-Each unit is a 20-minute session:
+Each unit is a study session with three tabs:
 
-1. **Summary (~9 min)**: overview, 4 key-point sections, red flags and AKT/KFP exam tips
-2. **AKT MCQs (~6 min)**: 5 single-best-answer questions with explanations. Options are shuffled on every attempt.
-3. **KFP case (~5 min)**: a key-feature case. Write short answers, reveal the model answer and self-mark.
+1. **Summary (~16–20 min reading)**: overview, key-point sections, a "numbers, doses & criteria" list, a worked case, red flags, exam traps and AKT/KFP tips.
+2. **AKT (9 marks)**: 5 single-best-answer MCQs plus a 4-item extended matching question (EMQ), with explanations. SBA options are shuffled on every attempt.
+3. **KFP (5–8 marks)**: a key-feature case in the current KFP format. The scenario unfolds in stages, and each stage has a single-best-answer, "choose N" or extended matching question. "Choose N" questions give partial marks.
 
 Other features:
 
 - Topics covered and the main specialty (plus related specialties) shown for every unit
 - Search by topic, and filter or browse by specialty
 - Mixed AKT quiz (10/20/40 questions) across all units or one specialty
-- Built-in 20-minute timer with suggested pacing
+- Built-in timer sized to each unit (reading time plus about 45 seconds per mark)
 - Progress (read, best AKT score, KFP done) saved in the browser
 
 ## About the content
@@ -27,8 +27,9 @@ applying anything in practice, and complete the real units on gplearning for CPD
 
 ## Adding a new month's unit
 
-Add a `Unit` object (see `src/types.ts`) to any file in `src/data/units/`, or create a new `batchNN.ts` that default-exports a
-`Unit[]`. Files are picked up automatically and sorted newest first.
+Add a `BaseUnit` object (see `src/types.ts`) to any file in `src/data/units/`, or create a new `batchNN.ts` that default-exports a
+`BaseUnit[]`. Then add its extended sections, worked case, EMQ and KFP case to a file in `src/data/extra/` (a `Record<string, UnitExtension>`
+keyed by unit id), and any further reading to `src/data/topup/`. Files are picked up automatically and sorted newest first.
 
 ## Running it
 
