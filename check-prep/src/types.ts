@@ -42,7 +42,7 @@ export interface MCQ {
   options: string[]
   /** index into options */
   answer: number
-  explanation: string
+  explanation?: string
 }
 
 /** "Choose N" – several correct options (KFP style) */
@@ -53,7 +53,7 @@ export interface MultiMCQ {
   options: string[]
   /** indices into options */
   answers: number[]
-  explanation: string
+  explanation?: string
 }
 
 /** Extended matching: one option list, several stems */

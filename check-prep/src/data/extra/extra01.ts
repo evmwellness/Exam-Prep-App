@@ -506,6 +506,17 @@ const extra: Record<string, UnitExtension> = {
           'Offer vaccination (influenza, pneumococcal) and assess ability to work or study. Chronic pain and diarrhoea have major social consequences.',
         ],
       },
+      {
+        heading: 'Pancreatic ductal adenocarcinoma: from suspicion to referral',
+        points: [
+          'Symptoms are vague and often dismissed: new dyspepsia over 55 not responding to a PPI, epigastric or back pain (worse lying flat, better leaning forward), early satiety, fatigue, weight loss, and new-onset or suddenly worsening diabetes.',
+          'Signs: jaundice, a palpable gallbladder (Courvoisier), hepatomegaly, an epigastric mass, supraclavicular node (Virchow), migratory thrombophlebitis. Many patients have no signs.',
+          'First-line test: pancreatic protocol (multiphase) CT abdomen. Ultrasound may show a dilated bile duct or mass but can miss small tumours, especially in the body or tail.',
+          'Bloods: LFT, FBC, UEC, glucose/HbA1c, lipase, CA19-9 (supportive only). A normal CA19-9 does not exclude cancer.',
+          'Optimal Care Pathway: suspected pancreatic cancer should be reviewed by a specialist within 2 weeks. A high-volume multidisciplinary team improves resection outcomes.',
+          'While awaiting review: start PERT for steatorrhoea, manage pain, check for VTE, and offer psychosocial support (Pancare Foundation, cancer nurse coordinators).',
+        ],
+      },
     ],
     keyNumbers: [
       'Acute pancreatitis: lipase ≥3 × ULN (2 of 3 criteria)',
