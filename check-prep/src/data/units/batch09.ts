@@ -1,6 +1,6 @@
-import type { Unit } from '../../types'
+import type { BaseUnit } from '../../types'
 
-const units: Unit[] = [
+const units: BaseUnit[] = [
   {
     id: '602',
     label: 'Unit 602',
@@ -98,36 +98,6 @@ const units: Unit[] = [
         options: ['Diazepam long-term', 'Naltrexone or acamprosate', 'Disulfiram in all patients', 'Quetiapine', 'Zolpidem'],
         answer: 1,
         explanation: 'Naltrexone and acamprosate are first-line relapse-prevention medicines.',
-      },
-    ],
-    kfp: [
-      {
-        title: 'Dakota is worried about his drinking',
-        scenario:
-          'Dakota, 38, served 12 years in the army including two deployments. Since discharge 2 years ago he drinks 8–10 beers a night, sleeps poorly and has nightmares. He has recently separated from his partner.',
-        questions: [
-          {
-            prompt: 'List the screening assessments you would perform.',
-            limit: 'Up to 5',
-            answers: [
-              'AUDIT (alcohol) and withdrawal history',
-              'PCL-5 / PC-PTSD-5 for PTSD',
-              'K10/PHQ-9 for depression and anxiety',
-              'Suicide risk assessment including firearm access',
-              'Physical: LFT, FBC (MCV), BP, weight',
-            ],
-          },
-          {
-            prompt: 'List the supports and referrals available to him.',
-            limit: 'Up to 4',
-            answers: [
-              'Veteran White Card – Non-Liability Health Care for mental health and alcohol treatment',
-              'Open Arms counselling',
-              'Psychologist for trauma-focused therapy',
-              'Alcohol treatment (withdrawal plan, naltrexone/acamprosate) and Veteran Health Check',
-            ],
-          },
-        ],
       },
     ],
   },
@@ -242,35 +212,6 @@ const units: Unit[] = [
         explanation: 'Iron doses raise hepcidin for about 24 hours. Alternate-day dosing improves fractional absorption and reduces GI side effects.',
       },
     ],
-    kfp: [
-      {
-        title: 'Virginia has heavy periods',
-        scenario:
-          'Virginia, 42, has had increasingly heavy periods for a year, flooding through pads and passing clots. She feels exhausted. Hb 98 g/L, MCV 72, ferritin 5.',
-        questions: [
-          {
-            prompt: 'List the investigations you would arrange.',
-            limit: 'Up to 4',
-            answers: [
-              'Pelvic (transvaginal) ultrasound',
-              'TSH, pregnancy test',
-              'Cervical screening if due; STI screen as indicated',
-              'Coagulation screen / von Willebrand studies if bleeding history',
-            ],
-          },
-          {
-            prompt: 'Ultrasound shows a 3 cm intramural fibroid; cavity normal. List your management.',
-            limit: 'Up to 4',
-            answers: [
-              'Iron replacement – oral (alternate day) or IV if intolerant/severe symptoms',
-              'LNG-IUD (52 mg) as first-line medical treatment',
-              'Tranexamic acid ± NSAID during menses as alternative/adjunct',
-              'Gynaecology referral if medical treatment fails or larger/submucosal fibroid; endometrial sampling if risk factors',
-            ],
-          },
-        ],
-      },
-    ],
   },
   {
     id: '600',
@@ -374,30 +315,6 @@ const units: Unit[] = [
         options: ['Barlow', 'Ortolani', 'Trendelenburg', 'Galeazzi', 'Thomas'],
         answer: 1,
         explanation: 'Ortolani relocates (abduction with anterior pressure). Barlow dislocates an unstable hip.',
-      },
-    ],
-    kfp: [
-      {
-        title: 'Adrian has a sore left leg',
-        scenario:
-          'Adrian, 7, has had a limp and left thigh pain for 3 days, worse today. He has a temperature of 38.9 °C and refuses to weight-bear. He had a sore throat last week.',
-        questions: [
-          {
-            prompt: 'List the most important differential diagnoses.',
-            limit: 'Up to 4',
-            answers: ['Septic arthritis of the hip', 'Osteomyelitis (femur/pelvis)', 'Transient synovitis', 'Malignancy (e.g. leukaemia, Ewing sarcoma)'],
-          },
-          {
-            prompt: 'List the investigations and immediate management.',
-            limit: 'Up to 4',
-            answers: [
-              'Urgent same-day referral to ED/paediatric orthopaedics',
-              'FBC, ESR, CRP, blood cultures',
-              'Hip ultrasound (effusion) ± X-ray; MRI if osteomyelitis suspected',
-              'Joint aspiration and IV antibiotics if septic arthritis suspected',
-            ],
-          },
-        ],
       },
     ],
   },
@@ -518,36 +435,6 @@ const units: Unit[] = [
         explanation: 'Pilonidal disease is linked to young males, hair, obesity, a deep natal cleft and prolonged sitting.',
       },
     ],
-    kfp: [
-      {
-        title: 'Raquel has been bitten by a dog',
-        scenario:
-          'Raquel, 34, was bitten on the dorsum of her right hand by a neighbour\'s dog 6 hours ago. There are two 1 cm puncture wounds over the 3rd MCP joint. She has type 1 diabetes. Tetanus status unknown.',
-        questions: [
-          {
-            prompt: 'List the key elements of assessment.',
-            limit: 'Up to 4',
-            answers: [
-              'Tendon function (flexion/extension) and neurovascular status',
-              'Joint penetration (MCP) – consider X-ray for fracture/foreign body (tooth)',
-              'Signs of infection',
-              'Tetanus and vaccination history; immune status (diabetes)',
-            ],
-          },
-          {
-            prompt: 'List your management.',
-            limit: 'Up to 5',
-            answers: [
-              'Irrigate and debride; do not suture puncture wound',
-              'Amoxicillin–clavulanate prophylaxis 3–5 days',
-              'Tetanus vaccine + tetanus immunoglobulin (unknown status, tetanus-prone)',
-              'Elevation and review in 24 hours',
-              'Refer to hand surgeon if joint involvement ("fight-bite"-type) or signs of infection',
-            ],
-          },
-        ],
-      },
-    ],
   },
   {
     id: '598',
@@ -651,36 +538,6 @@ const units: Unit[] = [
         options: ['Sertraline', 'Referral via link worker to a local men\'s shed', 'Benzodiazepine', 'Psychiatry referral', 'Holter monitor'],
         answer: 1,
         explanation: 'Social prescribing connects people to community activities that address loneliness.',
-      },
-    ],
-    kfp: [
-      {
-        title: 'Janice\'s stress is increasing',
-        scenario:
-          'Janice, 48, is stressed and sleeping poorly. She mentions money is tight and she has "been playing the pokies a bit more" since her divorce. She has borrowed from her sister and hidden this from her.',
-        questions: [
-          {
-            prompt: 'List the key areas to assess.',
-            limit: 'Up to 5',
-            answers: [
-              'Gambling severity (Lie/Bet, PGSI) – frequency, losses, chasing',
-              'Depression and suicide risk',
-              'Alcohol and other substance use',
-              'Financial situation, debts, housing, family impact',
-              'Family violence / safety and social supports',
-            ],
-          },
-          {
-            prompt: 'List your management.',
-            limit: 'Up to 4',
-            answers: [
-              'Refer to Gambling Help (1800 858 858) / gambling counselling (CBT)',
-              'Financial counselling',
-              'Self-exclusion (venue exclusion, BetStop for online), limit cash access',
-              'Mental Health Treatment Plan and follow-up; sleep hygiene/CBT-i',
-            ],
-          },
-        ],
       },
     ],
   },

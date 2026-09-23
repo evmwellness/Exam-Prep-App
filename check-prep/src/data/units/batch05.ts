@@ -1,6 +1,6 @@
-import type { Unit } from '../../types'
+import type { BaseUnit } from '../../types'
 
-const units: Unit[] = [
+const units: BaseUnit[] = [
   {
     id: '620',
     label: 'Unit 620',
@@ -98,31 +98,6 @@ const units: Unit[] = [
         options: ['Urgent delivery', 'Emollients, topical corticosteroids and antihistamines', 'Oral prednisolone 60 mg', 'Ursodeoxycholic acid', 'Oral aciclovir'],
         answer: 1,
         explanation: 'This is polymorphic eruption of pregnancy, which is benign and managed symptomatically.',
-      },
-    ],
-    kfp: [
-      {
-        title: 'Jess has painful lumps in her groin',
-        scenario:
-          'Jess, 24, has had recurrent painful "boils" in both groins and under her breasts for 4 years, with several courses of antibiotics and incisions. She smokes and has BMI 33. Examination shows nodules, two draining sinus tracts and rope-like scarring.',
-        questions: [
-          {
-            prompt: 'What is the most likely diagnosis and its stage?',
-            limit: 'Up to 2',
-            answers: ['Hidradenitis suppurativa', 'Hurley stage II (sinus tracts and scarring)'],
-          },
-          {
-            prompt: 'List your management plan.',
-            limit: 'Up to 5',
-            answers: [
-              'Explain chronic inflammatory (not hygiene/infection) nature; psychosocial support; screen for depression',
-              'Smoking cessation and weight management',
-              'Antiseptic washes + topical clindamycin',
-              'Oral doxycycline 100 mg daily for 12 weeks (or clindamycin + rifampicin)',
-              'Dermatology referral for biologics/surgery if inadequate response; analgesia',
-            ],
-          },
-        ],
       },
     ],
   },
@@ -223,31 +198,6 @@ const units: Unit[] = [
         options: ['Vitamin C', 'Nicotinamide (niacinamide) 500 mg twice daily', 'Zinc', 'Fish oil', 'Vitamin E'],
         answer: 1,
         explanation: 'Nicotinamide reduced new non-melanoma skin cancers by about 23% in high-risk patients (ONTRAC trial).',
-      },
-    ],
-    kfp: [
-      {
-        title: 'Lee is irritated by her itchy skin',
-        scenario:
-          'Lee, 78, has had itchy skin over her legs and back for 3 months, worse in winter. She showers twice daily with hot water and a perfumed soap. Examination: dry, fine-cracked "crazy paving" skin on the shins with some excoriations.',
-        questions: [
-          {
-            prompt: 'What is the most likely diagnosis?',
-            limit: 'Up to 1',
-            answers: ['Asteatotic eczema (eczema craquelé) secondary to xerosis'],
-          },
-          {
-            prompt: 'List your management advice.',
-            limit: 'Up to 5',
-            answers: [
-              'Reduce showering frequency/time; lukewarm water',
-              'Soap-free, fragrance-free pH-balanced cleanser',
-              'Liberal thick emollient/ointment applied after bathing and at least twice daily',
-              'Moderate-potency topical corticosteroid ointment to inflamed areas for short course',
-              'Consider bloods (FBC, iron, UEC, LFT, TSH) if itch persists or is generalised',
-            ],
-          },
-        ],
       },
     ],
   },
@@ -354,36 +304,6 @@ const units: Unit[] = [
         options: ['Repeat antibody', 'HCV RNA (PCR)', 'LFT', 'Liver ultrasound', 'HCV genotype only'],
         answer: 1,
         explanation: 'About 25% of people clear HCV spontaneously. HCV RNA confirms current infection, which DAAs can then cure.',
-      },
-    ],
-    kfp: [
-      {
-        title: 'Anna has a sore arm',
-        scenario:
-          'Anna, 30, injects methamphetamine and occasionally heroin. She presents with a painful, red, swollen area in her left antecubital fossa for 3 days. T 38.2 °C, HR 105. She is not interested in stopping drug use.',
-        questions: [
-          {
-            prompt: 'List the key examination findings and investigations.',
-            limit: 'Up to 5',
-            answers: [
-              'Examine for fluctuance (abscess) and extent of cellulitis; mark borders',
-              'Cardiac auscultation for new murmur (endocarditis)',
-              'Check distal pulses/perfusion (arterial injury) and DVT signs',
-              'Blood cultures, FBC, CRP; swab any pus; ultrasound for collection',
-              'BBV screen (HCV Ab/RNA, HIV, HBV) and pregnancy test',
-            ],
-          },
-          {
-            prompt: 'List harm-reduction measures you would provide.',
-            limit: 'Up to 4',
-            answers: [
-              'Take-home naloxone and overdose education',
-              'Safer injecting advice and NSP access (sterile equipment, site rotation, hygiene)',
-              'Vaccination for hepatitis A/B, tetanus; HCV treatment if positive',
-              'Offer opioid dependence treatment and ongoing non-judgemental follow-up',
-            ],
-          },
-        ],
       },
     ],
   },
@@ -497,35 +417,6 @@ const units: Unit[] = [
         explanation: 'CRAFT improves family wellbeing and increases treatment entry by the loved one.',
       },
     ],
-    kfp: [
-      {
-        title: 'Pauline is stressed',
-        scenario:
-          'Pauline, 52, drinks a bottle of wine a night (about 8 standard drinks) and wants to stop. She had "the shakes" when she tried to stop last year but no seizures. She lives with her supportive husband. LFT: GGT 140, AST 60, ALT 35. MCV 102.',
-        questions: [
-          {
-            prompt: 'List the factors you must assess to decide if home withdrawal is safe.',
-            limit: 'Up to 5',
-            answers: [
-              'Past withdrawal seizures or delirium tremens',
-              'Concurrent other drug use (benzodiazepines etc.)',
-              'Significant medical illness (e.g. liver decompensation) or psychiatric illness/suicide risk',
-              'Availability of sober support person and ability to attend daily review',
-              'Severity of dependence / current withdrawal symptoms (AWS/CIWA)',
-            ],
-          },
-          {
-            prompt: 'She is suitable. Write her medication plan.',
-            limit: 'Up to 3',
-            answers: [
-              'Diazepam tapering regimen (e.g. 10 mg qid day 1 reducing over 5–7 days), limited supply, dispensed daily/by partner',
-              'Thiamine 100 mg orally three times daily',
-              'Plan relapse prevention (acamprosate or naltrexone) and counselling after withdrawal',
-            ],
-          },
-        ],
-      },
-    ],
   },
   {
     id: 'S2',
@@ -637,35 +528,6 @@ const units: Unit[] = [
         ],
         answer: 1,
         explanation: 'Flare prophylaxis supports adherence during the early months of ULT.',
-      },
-    ],
-    kfp: [
-      {
-        title: 'Brian has a red and hot knee',
-        scenario:
-          'Brian, 67, has a 2-day history of a painful, hot, swollen right knee. He has type 2 diabetes, CKD (eGFR 50) and takes hydrochlorothiazide. He had podagra twice last year. T 37.9 °C.',
-        questions: [
-          {
-            prompt: 'List the most important differential diagnoses.',
-            limit: 'Up to 3',
-            answers: ['Septic arthritis', 'Acute gout', 'Pseudogout (CPPD)'],
-          },
-          {
-            prompt: 'What is the single most important investigation and what should be requested?',
-            limit: 'Up to 2',
-            answers: ['Joint aspiration (arthrocentesis) before antibiotics', 'Synovial fluid Gram stain, culture, cell count and crystal microscopy'],
-          },
-          {
-            prompt: 'Gout is confirmed. List long-term management steps.',
-            limit: 'Up to 4',
-            answers: [
-              'Start allopurinol low (e.g. 50 mg daily given CKD) and titrate to urate <0.36 mmol/L',
-              'Flare prophylaxis (low-dose colchicine renally adjusted) for 3–6 months',
-              'Review diuretic – switch hydrochlorothiazide (e.g. to losartan) if possible',
-              'Education re adherence, lifestyle (reduce sugary drinks/beer, weight), CVD risk management',
-            ],
-          },
-        ],
       },
     ],
   },

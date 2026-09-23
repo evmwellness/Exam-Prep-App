@@ -1,6 +1,6 @@
-import type { Unit } from '../../types'
+import type { BaseUnit } from '../../types'
 
-const units: Unit[] = [
+const units: BaseUnit[] = [
   {
     id: '612',
     label: 'Unit 612',
@@ -104,30 +104,6 @@ const units: Unit[] = [
         options: ['40', '45', '50', '55', '60'],
         answer: 1,
         explanation: 'Since July 2024, people aged 45–49 can request a kit. Automatic mailing starts at 50 (per current program rules).',
-      },
-    ],
-    kfp: [
-      {
-        title: 'Tom is seeking proactive measures',
-        scenario:
-          'Tom, 42, is well. His mother was diagnosed with bowel cancer at 46 and her sister with endometrial cancer at 50. His maternal grandfather had bowel cancer in his 60s.',
-        questions: [
-          {
-            prompt: 'What is Tom\'s risk category and the most likely hereditary syndrome?',
-            limit: 'Up to 2',
-            answers: ['Category 3 – high risk', 'Lynch syndrome (hereditary non-polyposis colorectal cancer)'],
-          },
-          {
-            prompt: 'List your management.',
-            limit: 'Up to 4',
-            answers: [
-              'Refer to familial cancer centre for genetic counselling and testing (ideally test affected relative first / tumour MMR testing)',
-              'Colonoscopy now and regular colonoscopic surveillance as advised (e.g. 1–2 yearly if Lynch confirmed)',
-              'Discuss aspirin chemoprevention',
-              'Cascade testing of relatives and education about other Lynch cancers',
-            ],
-          },
-        ],
       },
     ],
   },
@@ -234,34 +210,6 @@ const units: Unit[] = [
         options: ['Annual echocardiogram', 'Bone density (DXA) at baseline and periodically', 'Monthly LFT', 'CA 15-3 every 3 months', 'Annual PET'],
         answer: 1,
         explanation: 'AIs accelerate bone loss. Check DXA and give calcium, vitamin D and antiresorptive therapy if indicated.',
-      },
-    ],
-    kfp: [
-      {
-        title: 'Marie has a lump in her breast',
-        scenario:
-          'Marie, 52, found a lump in her left breast 2 weeks ago. Her last BreastScreen was 3 years ago. Examination: 2 cm firm, irregular mass upper outer quadrant, no skin changes, a palpable left axillary node.',
-        questions: [
-          {
-            prompt: 'List the investigations you would arrange.',
-            limit: 'Up to 3',
-            answers: [
-              'Diagnostic bilateral mammogram',
-              'Breast and axillary ultrasound',
-              'Image-guided core biopsy (of mass ± node)',
-            ],
-          },
-          {
-            prompt: 'Biopsy shows invasive ductal carcinoma, ER+, HER2-. List your next steps.',
-            limit: 'Up to 4',
-            answers: [
-              'Urgent referral to breast surgeon / multidisciplinary team',
-              'Break news sensitively; provide support (breast care nurse, psychology)',
-              'Offer written information and involve support person',
-              'Assess family history for genetic referral',
-            ],
-          },
-        ],
       },
     ],
   },
@@ -376,35 +324,6 @@ const units: Unit[] = [
         explanation: 'The 2023 guideline recommends risk assessment from age 30 for Aboriginal and Torres Strait Islander people, and 45 for others.',
       },
     ],
-    kfp: [
-      {
-        title: 'Greg is seeking treatment following hospital discharge',
-        scenario:
-          'Greg, 66, was discharged 4 days ago after his first admission with heart failure. Echo: LVEF 30%. Discharge medicines: furosemide 40 mg daily, perindopril 2.5 mg daily. BP 118/72, HR 88 regular, K⁺ 4.3, eGFR 62. He is mildly breathless on exertion, with no oedema.',
-        questions: [
-          {
-            prompt: 'List the medicine changes you would make over the coming weeks.',
-            limit: 'Up to 4',
-            answers: [
-              'Start β-blocker (e.g. bisoprolol 1.25 mg daily) and titrate',
-              'Start SGLT2 inhibitor (dapagliflozin or empagliflozin 10 mg daily)',
-              'Start MRA (spironolactone 12.5–25 mg daily) with K⁺/creatinine monitoring',
-              'Uptitrate perindopril or switch to sacubitril–valsartan; reduce diuretic if euvolaemic',
-            ],
-          },
-          {
-            prompt: 'List non-pharmacological management.',
-            limit: 'Up to 4',
-            answers: [
-              'Daily weights with action plan (report >2 kg gain in 2 days)',
-              'Cardiac rehabilitation / heart failure program referral',
-              'Influenza, pneumococcal, COVID vaccination',
-              'Education: avoid NSAIDs, salt moderation, alcohol limit, smoking cessation',
-            ],
-          },
-        ],
-      },
-    ],
   },
   {
     id: '609',
@@ -511,36 +430,6 @@ const units: Unit[] = [
         explanation: 'Capacity is decision-specific. A diagnosis or score alone does not determine it.',
       },
     ],
-    kfp: [
-      {
-        title: 'Sophie is concerned about her mother',
-        scenario:
-          'Sophie brings her mother Maria, 76, who has become forgetful over 18 months: repeating questions, missing bills and getting lost driving once. Maria speaks Italian as her first language and left school at 12. She takes oxybutynin and amitriptyline.',
-        questions: [
-          {
-            prompt: 'List the key steps in your assessment.',
-            limit: 'Up to 5',
-            answers: [
-              'Collateral history from Sophie including function (IADLs/ADLs)',
-              'Culturally appropriate cognitive test (e.g. RUDAS) with professional interpreter',
-              'Screen for depression and delirium; hearing/vision check',
-              'Reversible-cause bloods (FBC, UEC, Ca, LFT, TSH, B12, folate, glucose) and brain imaging',
-              'Medication review – anticholinergic burden (oxybutynin, amitriptyline)',
-            ],
-          },
-          {
-            prompt: 'List the key safety and planning issues to address.',
-            limit: 'Up to 4',
-            answers: [
-              'Driving safety – assess fitness to drive / OT driving assessment; licensing notification',
-              'Enduring power of attorney / guardianship and advance care planning while capacity present',
-              'Financial safety and elder abuse risk',
-              'Carer support – Dementia Australia, My Aged Care assessment',
-            ],
-          },
-        ],
-      },
-    ],
   },
   {
     id: '608',
@@ -645,30 +534,6 @@ const units: Unit[] = [
         options: ['Low-fat diet', 'Pancreatic enzyme replacement therapy with meals', 'Loperamide', 'Octreotide', 'Metronidazole'],
         answer: 1,
         explanation: 'PERT treats exocrine insufficiency and improves nutrition and quality of life.',
-      },
-    ],
-    kfp: [
-      {
-        title: 'Anita has yellow eyes',
-        scenario:
-          'Anita, 71, has noticed yellow eyes and itchy skin for 10 days, with dark urine. She has lost 4 kg over 2 months and has vague epigastric discomfort. No fever. Bilirubin 180 µmol/L, ALP 520, GGT 610, ALT 140.',
-        questions: [
-          {
-            prompt: 'List the most likely diagnoses.',
-            limit: 'Up to 3',
-            answers: ['Pancreatic head adenocarcinoma', 'Cholangiocarcinoma / periampullary tumour', 'Choledocholithiasis (less likely without pain/fever)'],
-          },
-          {
-            prompt: 'List your next steps.',
-            limit: 'Up to 4',
-            answers: [
-              'Urgent pancreatic protocol CT abdomen (± ultrasound)',
-              'Urgent referral to hepatobiliary/pancreatic surgical unit (within 2 weeks)',
-              'Bloods: FBC, UEC, INR (vitamin K), glucose/HbA1c, CA19-9',
-              'Symptom management (itch) and safety-netting for cholangitis (fever, rigors)',
-            ],
-          },
-        ],
       },
     ],
   },

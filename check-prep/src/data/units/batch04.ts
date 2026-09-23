@@ -1,6 +1,6 @@
-import type { Unit } from '../../types'
+import type { BaseUnit } from '../../types'
 
-const units: Unit[] = [
+const units: BaseUnit[] = [
   {
     id: '624',
     label: 'Unit 624',
@@ -119,35 +119,6 @@ const units: Unit[] = [
         explanation: 'Threats to "out" someone are a recognised form of abuse in LGBTQA+ relationships.',
       },
     ],
-    kfp: [
-      {
-        title: 'Anushka has abdominal pains',
-        scenario:
-          'Anushka, 32, has attended 5 times in 4 months with abdominal pain and poor sleep. Investigations are normal. Today she has a bruise on her upper arm and says she "walked into a door". Her husband usually attends with her but is in the waiting room.',
-        questions: [
-          {
-            prompt: 'List how you would enquire about possible family violence.',
-            limit: 'Up to 3',
-            answers: [
-              'Ensure she is alone and it is safe; use professional interpreter if needed',
-              'Use funnelling/indirect then direct questions (e.g. "Are you afraid of anyone at home?")',
-              'Explain confidentiality and its limits; ask about coercive control',
-            ],
-          },
-          {
-            prompt: 'Anushka discloses her husband has hit her and once choked her. List your immediate management.',
-            limit: 'Up to 5',
-            answers: [
-              'LIVES response – listen, validate, it is not her fault',
-              'Risk assessment (strangulation = high risk, weapons, threats, children)',
-              'Safety planning and referral (1800RESPECT / FDV service / police if she wishes or imminent danger)',
-              'Document her words and injuries (body map/photos with consent)',
-              'Ask about children and meet reporting obligations; arrange follow-up',
-            ],
-          },
-        ],
-      },
-    ],
   },
   {
     id: 'S4',
@@ -260,35 +231,6 @@ const units: Unit[] = [
         explanation: 'Clarithromycin inhibits CYP3A4 and P-gp, raising apixaban and rivaroxaban levels. The others are inducers and lower DOAC levels.',
       },
     ],
-    kfp: [
-      {
-        title: 'Sofia is bruising easily',
-        scenario:
-          'Sofia, 84, weight 55 kg, takes rivaroxaban 20 mg daily for AF (started 2 years ago), plus sertraline and ibuprofen PRN for knee pain. She presents with multiple bruises. Creatinine today is 140 µmol/L (was 90 last year).',
-        questions: [
-          {
-            prompt: 'List the factors contributing to her bruising.',
-            limit: 'Up to 4',
-            answers: [
-              'Declining renal function (CrCl ~27 mL/min) → rivaroxaban accumulation',
-              'Inappropriate dose (should be 15 mg for CrCl 15–49)',
-              'NSAID (ibuprofen) interaction',
-              'SSRI (sertraline) increases bleeding risk',
-            ],
-          },
-          {
-            prompt: 'List your management steps.',
-            limit: 'Up to 4',
-            answers: [
-              'Check FBC, coagulation, LFT; examine for occult bleeding',
-              'Reduce rivaroxaban to 15 mg daily (or switch to apixaban at appropriate dose)',
-              'Stop ibuprofen; use paracetamol / topical NSAID alternatives',
-              'Monitor renal function every 3 months; pharmacist medication review',
-            ],
-          },
-        ],
-      },
-    ],
   },
   {
     id: '623',
@@ -393,31 +335,6 @@ const units: Unit[] = [
         options: ['Fertility preservation', 'Colonoscopy', 'Bone marrow biopsy', 'Genetic testing', 'Travel vaccinations'],
         answer: 0,
         explanation: 'Hormone therapy can impair fertility, so offer gamete storage before starting.',
-      },
-    ],
-    kfp: [
-      {
-        title: 'Shannon needs testosterone',
-        scenario:
-          'Shannon, 24, is a trans man who has socially transitioned and wants to start testosterone. He has a history of depression (currently well), smokes, and has a female partner. He has not had cervical screening.',
-        questions: [
-          {
-            prompt: 'List key discussion points for informed consent.',
-            limit: 'Up to 5',
-            answers: [
-              'Expected effects and timeframes (irreversible: voice deepening, facial hair, clitoral growth)',
-              'Risks: polycythaemia, acne, lipids, hair loss, mood changes',
-              'Fertility effects and fertility preservation options',
-              'Testosterone is not contraception – pregnancy possible if relevant',
-              'Monitoring schedule and ongoing mental health support',
-            ],
-          },
-          {
-            prompt: 'List the baseline investigations.',
-            limit: 'Up to 4',
-            answers: ['FBC (Hb/Hct)', 'LFT and lipids', 'Baseline testosterone/oestradiol', 'HbA1c/glucose, BP, weight; offer cervical screening (self-collect) and STI screen'],
-          },
-        ],
       },
     ],
   },
@@ -539,30 +456,6 @@ const units: Unit[] = [
         explanation: 'Aboriginal or Torres Strait Islander people aged ≥50, and people overdue by ≥2 years, go straight to colposcopy with any oncogenic HPV.',
       },
     ],
-    kfp: [
-      {
-        title: 'Tegan has unexplained vaginal bleeding',
-        scenario:
-          'Tegan, 31, has had 3 months of intermenstrual and postcoital bleeding. She uses the combined pill and has a new partner. Her last cervical screening test (HPV not detected) was 3 years ago.',
-        questions: [
-          {
-            prompt: 'List the investigations you would perform.',
-            limit: 'Up to 4',
-            answers: [
-              'Speculum examination (visualise cervix)',
-              'Co-test: HPV + liquid-based cytology (clinician-collected)',
-              'Chlamydia/gonorrhoea NAAT (± M. genitalium, trichomonas)',
-              'Pregnancy test',
-            ],
-          },
-          {
-            prompt: 'All tests are normal but bleeding persists. What is the next step?',
-            limit: 'Up to 1',
-            answers: ['Refer to gynaecology for colposcopic assessment regardless of normal results'],
-          },
-        ],
-      },
-    ],
   },
   {
     id: '621',
@@ -667,37 +560,6 @@ const units: Unit[] = [
         options: ['Lifeline only', 'Open Arms – Veterans & Families Counselling', 'Beyond Blue only', 'headspace', 'Medicare Mental Health Centres only'],
         answer: 1,
         explanation: 'Open Arms is the DVA-funded national counselling service for veterans and families (1800 011 046).',
-      },
-    ],
-    kfp: [
-      {
-        title: 'Scott asks for help with his short temper',
-        scenario:
-          'Scott, 29, left the navy 10 months ago. He has been "snapping" at his partner and young son, sleeps poorly, drinks 6–8 beers most nights and keeps a rifle for pig hunting. He says "I just need something to calm me down".',
-        questions: [
-          {
-            prompt: 'List the key assessments to make at this visit.',
-            limit: 'Up to 5',
-            answers: [
-              'Suicide risk assessment incl. firearm access',
-              'Screen for PTSD (PC-PTSD-5/PCL-5), depression (PHQ-9/K10)',
-              'Alcohol use (AUDIT)',
-              'Family safety – risk of violence to partner/child',
-              'Sleep, TBI history and physical health',
-            ],
-          },
-          {
-            prompt: 'List the key elements of management.',
-            limit: 'Up to 5',
-            answers: [
-              'Safety plan; arrange safe storage/removal of firearm',
-              'Refer to Open Arms and/or psychologist for trauma-focused therapy / anger management',
-              'Alcohol reduction support (brief intervention ± pharmacotherapy)',
-              'Avoid benzodiazepines; consider SSRI if PTSD/depression confirmed',
-              'Veteran Health Check, DVA White Card (Non-Liability Health Care), family support and follow-up',
-            ],
-          },
-        ],
       },
     ],
   },

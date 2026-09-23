@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react'
 import type { Specialty } from '../types'
 import { UNITS, specialtyCounts, unitMatchesSpecialty } from '../data'
 import { shuffle } from '../shuffle'
-import McqQuiz from './McqQuiz'
+import QuestionSet from './QuestionSet'
 import { go } from '../useHashRoute'
 
 const SIZES = [10, 20, 40]
@@ -29,7 +29,7 @@ export default function MixedQuiz() {
         ← All units
       </button>
       <h1 className="text-2xl font-bold">Mixed AKT quiz</h1>
-      <p className="mt-1 text-slate-600">Random single-best-answer questions drawn from across the units – good for spaced revision.</p>
+      <p className="mt-1 text-slate-600">Random AKT questions (single best answer and extended matching) drawn from across the units – good for spaced revision.</p>
 
       {!started ? (
         <div className="mt-4 space-y-4 rounded-xl border border-slate-200 bg-white p-5">
@@ -75,7 +75,7 @@ export default function MixedQuiz() {
         </div>
       ) : (
         <div className="mt-4">
-          <McqQuiz key={seed} questions={questions} />
+          <QuestionSet key={seed} questions={questions} />
           <button onClick={() => setStarted(false)} className="mt-4 text-sm font-medium text-teal-700 hover:underline">
             ← Change settings
           </button>

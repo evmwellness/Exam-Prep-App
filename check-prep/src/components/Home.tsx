@@ -29,10 +29,10 @@ export default function Home({ progress, specialty, setSpecialty }: Props) {
   return (
     <div>
       <section className="rounded-xl border border-slate-200 bg-white p-5 sm:p-6">
-        <h1 className="text-2xl font-bold sm:text-3xl">20-minute check revision</h1>
+        <h1 className="text-2xl font-bold sm:text-3xl">check revision for AKT &amp; KFP</h1>
         <p className="mt-2 max-w-2xl leading-relaxed text-slate-600">
-          The last {UNITS.length} RACGP <em>check</em> units, each boiled down to a 20-minute session: a quick summary, AKT-style MCQs and a
-          KFP-style case. Pick a unit, start the timer and go.
+          The last {UNITS.length} RACGP <em>check</em> units, each with a ~20-minute study summary, AKT questions (single best answer and
+          extended matching) and a KFP case (single best answer, choose-N and extended matching). Pick a unit, start the timer and go.
         </p>
         <div className="mt-4 flex flex-wrap gap-3 text-sm">
           <span className="rounded-lg bg-slate-100 px-3 py-1.5">
@@ -99,7 +99,7 @@ export default function Home({ progress, specialty, setSpecialty }: Props) {
                     {p.read && <span className="rounded bg-green-100 px-1.5 py-0.5 text-green-800">Read</span>}
                     {p.mcqBest !== undefined && (
                       <span className="rounded bg-teal-100 px-1.5 py-0.5 text-teal-800">
-                        AKT {p.mcqBest}/{p.mcqTotal}
+                        AKT {Math.round(p.mcqBest * 10) / 10}/{p.mcqTotal}
                       </span>
                     )}
                     {p.kfpDone && <span className="rounded bg-amber-100 px-1.5 py-0.5 text-amber-800">KFP</span>}

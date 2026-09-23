@@ -1,6 +1,6 @@
-import type { Unit } from '../../types'
+import type { BaseUnit } from '../../types'
 
-const units: Unit[] = [
+const units: BaseUnit[] = [
   {
     id: '629',
     label: 'Unit 629',
@@ -118,31 +118,6 @@ const units: Unit[] = [
         explanation: 'OSA is common in obesity. Screen with STOP-BANG or Epworth, and confirm with a sleep study.',
       },
     ],
-    kfp: [
-      {
-        title: 'Leah is due a routine health check',
-        scenario:
-          'Leah, 45, attends for a health check. BMI 36, waist 104 cm, BP 142/88. She has knee pain and is tired. She has tried many diets and says she "has no willpower". She takes no regular medicines.',
-        questions: [
-          {
-            prompt: 'List the investigations you would order.',
-            limit: 'Up to 5',
-            answers: ['HbA1c / fasting glucose', 'Fasting lipids', 'LFTs (MASLD)', 'UEC and urine ACR', 'Sleep study if OSA symptoms (or STOP-BANG screen)'],
-          },
-          {
-            prompt: 'List key components of your management plan.',
-            limit: 'Up to 5',
-            answers: [
-              'Non-stigmatising discussion; explain obesity as chronic disease; agree goals (5–10% loss, health outcomes)',
-              'Dietitian and exercise physiologist referral via Chronic Condition Management Plan',
-              'Discuss pharmacotherapy (e.g. GLP-1 RA) given BMI ≥30',
-              'Screen for binge eating disorder and depression',
-              'Manage BP / CVD risk and regular follow-up',
-            ],
-          },
-        ],
-      },
-    ],
   },
   {
     id: '628',
@@ -255,35 +230,6 @@ const units: Unit[] = [
         explanation: 'Motivational interviewing is effective for behaviour change. It respects autonomy and resolves ambivalence.',
       },
     ],
-    kfp: [
-      {
-        title: 'Melinda is feeling lonely and tired',
-        scenario:
-          'Melinda, 68, moved to a new town after her husband died a year ago. She lives alone, rarely leaves home, feels tired and "flat", and has put on 6 kg. She used to enjoy gardening and singing.',
-        questions: [
-          {
-            prompt: 'List the key issues you would assess.',
-            limit: 'Up to 4',
-            answers: [
-              'Depression (PHQ-9 / GDS) and suicide risk; complicated grief',
-              'Medical causes of fatigue (FBC, TSH, glucose, iron, B12)',
-              'Social connection / loneliness, supports and functional status',
-              'Physical activity, diet, alcohol and sleep',
-            ],
-          },
-          {
-            prompt: 'Depression screening is mild and bloods normal. List your lifestyle-based management.',
-            limit: 'Up to 4',
-            answers: [
-              'Social prescription (e.g. community choir, garden club) via link worker/community services',
-              'Specific physical activity prescription (e.g. walking group 30 min 5 days/week, strength/balance)',
-              'Nature prescription (green space, gardening)',
-              'Follow-up review; grief counselling/psychology via Mental Health Treatment Plan if needed',
-            ],
-          },
-        ],
-      },
-    ],
   },
   {
     id: '627',
@@ -388,34 +334,6 @@ const units: Unit[] = [
         options: ['Vitamin K', 'Ginkgo biloba', 'Coenzyme Q10', 'St John\'s wort', 'Calcium'],
         answer: 1,
         explanation: 'Ginkgo has antiplatelet effects and increases bleeding risk. St John\'s wort and vitamin K reduce warfarin effect.',
-      },
-    ],
-    kfp: [
-      {
-        title: 'Diego is depressed',
-        scenario:
-          'Diego, 40, has moderate depression (PHQ-9 = 15). He wants to "avoid chemicals" and has started St John\'s wort bought online. He takes no prescribed medicines but is considering starting sertraline his friend recommended.',
-        questions: [
-          {
-            prompt: 'List key safety issues to discuss about St John\'s wort.',
-            limit: 'Up to 3',
-            answers: [
-              'Serotonin syndrome risk if combined with SSRIs (must not combine)',
-              'Enzyme induction (CYP3A4/P-gp) reduces effect of other medicines (e.g. warfarin, DOACs, ciclosporin, HIV drugs) – review any future prescriptions',
-              'Variable product quality / standardisation of online products',
-            ],
-          },
-          {
-            prompt: 'List evidence-based management options you would offer.',
-            limit: 'Up to 4',
-            answers: [
-              'Psychological therapy (CBT) via Mental Health Treatment Plan',
-              'Structured exercise prescription',
-              'Antidepressant (SSRI) after stopping St John\'s wort (washout) if preferred/indicated',
-              'Sleep, alcohol reduction, social connection; suicide risk assessment and follow-up',
-            ],
-          },
-        ],
       },
     ],
   },
@@ -525,35 +443,6 @@ const units: Unit[] = [
         explanation: 'Malignant spinal cord compression is an emergency. Give steroids and get urgent MRI and radiotherapy or surgery to preserve function.',
       },
     ],
-    kfp: [
-      {
-        title: 'Clara is in increasing pain',
-        scenario:
-          'Clara, 72, has metastatic breast cancer with bone metastases. She takes paracetamol 1 g qid and oxycodone IR 5 mg PRN, using about 6 doses a day. She reports constant aching in her hip and back, worse on movement, and hasn\'t opened her bowels for 4 days. eGFR 65.',
-        questions: [
-          {
-            prompt: 'List the key elements of your pain assessment.',
-            limit: 'Up to 4',
-            answers: [
-              'Site, character, severity, radiation, timing (incl. incident pain) – PQRST',
-              'Neurological symptoms/signs (cord compression, neuropathic pain)',
-              'Examine for pathological fracture (e.g. hip) / imaging',
-              'Psychosocial / "total pain", function, sleep and opioid side effects',
-            ],
-          },
-          {
-            prompt: 'List your pharmacological management changes.',
-            limit: 'Up to 4',
-            answers: [
-              'Convert to regular sustained-release oxycodone (~30 mg/day → e.g. 15 mg bd)',
-              'Breakthrough oxycodone IR 5 mg (1/6 of daily dose) PRN',
-              'Regular laxative (e.g. senna + docusate or macrogol)',
-              'Add NSAID and/or dexamethasone for bone pain; refer for palliative radiotherapy',
-            ],
-          },
-        ],
-      },
-    ],
   },
   {
     id: '625',
@@ -653,36 +542,6 @@ const units: Unit[] = [
         options: ['At diagnosis', 'About 8 years after symptom onset', 'At age 50 only', 'Never needed', 'After 25 years'],
         answer: 1,
         explanation: 'Colitis-associated cancer risk rises with duration and extent. Surveillance starts about 8 years after onset (sooner, and yearly, with PSC).',
-      },
-    ],
-    kfp: [
-      {
-        title: 'Tania needs a management plan',
-        scenario:
-          'Tania, 29, has recently diagnosed ileocolonic Crohn disease. Her gastroenterologist plans to start adalimumab. She smokes 10 cigarettes/day, has had 2 courses of prednisolone this year and hopes to become pregnant in the next few years.',
-        questions: [
-          {
-            prompt: 'List the screening and preventive measures before starting adalimumab.',
-            limit: 'Up to 5',
-            answers: [
-              'TB screening (IGRA ± CXR)',
-              'Hepatitis B (HBsAg, anti-HBc, anti-HBs), hepatitis C and HIV serology',
-              'VZV serology (and MMR/varicella live vaccines if non-immune before starting)',
-              'Inactivated vaccines: influenza, pneumococcal, COVID-19, HPV, recombinant zoster, hep B',
-              'Cervical screening up to date',
-            ],
-          },
-          {
-            prompt: 'List other key elements of her long-term GP management.',
-            limit: 'Up to 4',
-            answers: [
-              'Smoking cessation support',
-              'Bone health (vitamin D, calcium, DXA given steroid exposure)',
-              'Preconception planning – conceive in remission; continue biologic; folic acid',
-              'Monitor iron/B12, skin checks, sun protection and mental health',
-            ],
-          },
-        ],
       },
     ],
   },

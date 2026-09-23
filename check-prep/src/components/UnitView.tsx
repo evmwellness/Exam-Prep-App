@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
 import type { Unit } from '../types'
 import type { UnitProgress } from '../useProgress'
-import McqQuiz from './McqQuiz'
-import KfpCase from './KfpCase'
+import QuestionSet from './QuestionSet'
+import { questionMax, readingMinutes } from '../data'
 import SpecialtyBadge from './SpecialtyBadge'
 import { go } from '../useHashRoute'
 
@@ -15,9 +15,15 @@ interface Props {
   onMcq: (score: number, total: number) => void
 }
 
-const SESSION_SECONDS = 20 * 60
-
 export default function UnitView({ unit, progress, onUpdate, onMcq }: Props) {
+  const readMin = readingMinutes(unit)
+  const aktPoints = unit.mcqs.reduce((n, q) => n + questionMax(q), 0)
+  const kfpPoints = unit.kfp.reduce((n, k) => n + k.questions.reduce((m, q) => m + questionMax(q), 0), 0)
+  // ~45 s per scored item
+  const aktMin = Math.max(1, Math.round(aktPoints * 0.75))
+  const kfpMin = Math.max(1, Math.round(kfpPoints * 0.75))
+  const SESSION_SECONDS = (readMin + aktMin + kfpMin) * 60
+
   const [tab, setTab] = useState<Tab>('summary')
   const [running, setRunning] = useState(false)
   const [left, setLeft] = useState(SESSION_SECONDS)
@@ -34,13 +40,14 @@ export default function UnitView({ unit, progress, onUpdate, onMcq }: Props) {
 
   const mm = String(Math.floor(left / 60)).padStart(2, '0')
   const ss = String(left % 60).padStart(2, '0')
-  // suggested pacing: ~9 min reading, ~6 min AKT, ~5 min KFP
-  const phase = left > 11 * 60 ? 'Read the summary' : left > 5 * 60 ? 'AKT questions' : left > 0 ? 'KFP case' : 'Session complete'
+  // suggested pacing follows the tab order
+  const phase =
+    left > (aktMin + kfpMin) * 60 ? 'Read the summary' : left > kfpMin * 60 ? 'AKT questions' : left > 0 ? 'KFP case' : 'Session complete'
 
   const tabs: { id: Tab; label: string; hint: string }[] = [
-    { id: 'summary', label: 'Summary', hint: '~9 min' },
-    { id: 'akt', label: `AKT MCQs (${unit.mcqs.length})`, hint: '~6 min' },
-    { id: 'kfp', label: 'KFP case', hint: '~5 min' },
+    { id: 'summary', label: 'Summary', hint: `~${readMin} min` },
+    { id: 'akt', label: `AKT (${aktPoints} Qs)`, hint: `~${aktMin} min` },
+    { id: 'kfp', label: `KFP (${kfpPoints} Qs)`, hint: `~${kfpMin} min` },
   ]
 
   return (
@@ -76,7 +83,7 @@ export default function UnitView({ unit, progress, onUpdate, onMcq }: Props) {
           <span className="font-mono text-xl font-semibold tabular-nums">
             {mm}:{ss}
           </span>
-          <span className="text-sm text-slate-600">{running || left < SESSION_SECONDS ? phase : '20-minute study session'}</span>
+          <span className="text-sm text-slate-600">{running || left < SESSION_SECONDS ? phase : `${Math.round(SESSION_SECONDS / 60)}-minute study session`}</span>
           <div className="ml-auto flex gap-2">
             <button
               onClick={() => setRunning((r) => !r)}
@@ -134,6 +141,30 @@ export default function UnitView({ unit, progress, onUpdate, onMcq }: Props) {
                 </ul>
               </section>
             ))}
+            {unit.keyNumbers && unit.keyNumbers.length > 0 && (
+              <section className="rounded-xl border border-sky-200 bg-sky-50 p-5 sm:p-6">
+                <h2 className="text-lg font-semibold text-sky-950">Numbers, doses &amp; criteria to remember</h2>
+                <ul className="mt-2 grid gap-x-6 gap-y-1.5 text-sky-950 sm:grid-cols-2">
+                  {unit.keyNumbers.map((k) => (
+                    <li key={k} className="flex gap-2">
+                      <span className="text-sky-600">▸</span>
+                      <span>{k}</span>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            )}
+            {unit.workedCase && (
+              <section className="rounded-xl border border-slate-200 bg-white p-5 sm:p-6">
+                <p className="text-xs font-semibold uppercase tracking-wide text-teal-700">Worked case</p>
+                <h2 className="mt-1 text-lg font-semibold">{unit.workedCase.title}</h2>
+                <div className="mt-2 space-y-3 text-[16px] leading-relaxed text-slate-700">
+                  {unit.workedCase.paragraphs.map((p, i) => (
+                    <p key={i}>{p}</p>
+                  ))}
+                </div>
+              </section>
+            )}
             <section className="rounded-xl border border-red-200 bg-red-50 p-5 sm:p-6">
               <h2 className="text-lg font-semibold text-red-900">Red flags – don't miss</h2>
               <ul className="mt-2 list-disc space-y-1.5 pl-5 text-red-900">
@@ -175,10 +206,10 @@ export default function UnitView({ unit, progress, onUpdate, onMcq }: Props) {
         {tab === 'akt' && (
           <div>
             <p className="mb-3 text-sm text-slate-600">
-              Single best answer, AKT style. Options are shuffled each attempt.
-              {progress.mcqBest !== undefined && ` Best so far: ${progress.mcqBest}/${progress.mcqTotal}.`}
+              AKT style: single best answer and extended matching. Answer options are shuffled each attempt.
+              {progress.mcqBest !== undefined && ` Best so far: ${Math.round(progress.mcqBest * 10) / 10}/${progress.mcqTotal}.`}
             </p>
-            <McqQuiz key={unit.id} questions={unit.mcqs} onFinish={onMcq} />
+            <QuestionSet key={unit.id} questions={unit.mcqs} onFinish={onMcq} />
             <div className="mt-4 text-right">
               <button onClick={() => setTab('kfp')} className="text-sm font-medium text-teal-700 hover:underline">
                 Continue to KFP case →
@@ -190,10 +221,16 @@ export default function UnitView({ unit, progress, onUpdate, onMcq }: Props) {
         {tab === 'kfp' && (
           <div className="space-y-4">
             <p className="text-sm text-slate-600">
-              Key feature problem: write short, specific answers (as in the exam), then reveal the model answer and self-mark.
+              Key feature problem: the case unfolds over several questions – single best answer, "choose N" and extended matching.
             </p>
+            {unit.kfp.length === 0 && <p className="text-slate-500">KFP case coming soon for this unit.</p>}
             {unit.kfp.map((k) => (
-              <KfpCase key={unit.id + k.title} kase={k} onComplete={() => onUpdate({ kfpDone: true })} />
+              <QuestionSet
+                key={unit.id + k.title}
+                questions={k.questions}
+                scenario={{ title: k.title, text: k.scenario }}
+                onFinish={() => onUpdate({ kfpDone: true })}
+              />
             ))}
           </div>
         )}

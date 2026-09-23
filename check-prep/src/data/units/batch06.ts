@@ -1,6 +1,6 @@
-import type { Unit } from '../../types'
+import type { BaseUnit } from '../../types'
 
-const units: Unit[] = [
+const units: BaseUnit[] = [
   {
     id: '616',
     label: 'Unit 616',
@@ -116,37 +116,6 @@ const units: Unit[] = [
         ],
         answer: 1,
         explanation: 'This is the international consensus definition of remission.',
-      },
-    ],
-    kfp: [
-      {
-        title: 'Kevin has a persistent leg wound',
-        scenario:
-          'Kevin, 68, has T2D for 15 years (HbA1c 71 mmol/mol) and smokes. He has a 4-week, painless ulcer under his first metatarsal head. The surrounding skin is red to 3 cm; the probe touches bone. Pedal pulses are weak.',
-        questions: [
-          {
-            prompt: 'List the investigations you would order.',
-            limit: 'Up to 5',
-            answers: [
-              'Plain X-ray foot (± MRI) for osteomyelitis',
-              'Wound swab/deep tissue culture after debridement',
-              'FBC, CRP/ESR, UEC, HbA1c',
-              'Toe pressures / TBI and arterial duplex',
-              'Blood cultures if systemically unwell',
-            ],
-          },
-          {
-            prompt: 'List the key management steps.',
-            limit: 'Up to 5',
-            answers: [
-              'Urgent referral to high-risk foot service / multidisciplinary team',
-              'Antibiotics for diabetic foot infection with suspected osteomyelitis (per Therapeutic Guidelines)',
-              'Offloading (e.g. total contact cast / removable walker)',
-              'Vascular surgery referral if ischaemia',
-              'Optimise glycaemia, smoking cessation, tetanus status',
-            ],
-          },
-        ],
       },
     ],
   },
@@ -267,35 +236,6 @@ const units: Unit[] = [
         explanation: 'Sertraline has low milk transfer and the most reassuring safety data. Fluoxetine has a long half-life and higher infant levels.',
       },
     ],
-    kfp: [
-      {
-        title: 'Doctor Dee wants out',
-        scenario:
-          'Dr Dee, 46, a GP colleague, confides she is exhausted, dreads work, has become cynical with patients and drinks 3–4 glasses of wine nightly. She has no GP of her own and says, "I just want out."',
-        questions: [
-          {
-            prompt: 'List what you would explore with her.',
-            limit: 'Up to 4',
-            answers: [
-              'Suicidal ideation and risk (clarify "want out")',
-              'Depression/anxiety symptoms and alcohol use',
-              'Workload, work stressors, supports and boundaries',
-              'Whether she has her own GP and impact on patient safety/fitness to practise',
-            ],
-          },
-          {
-            prompt: 'List appropriate supports and actions.',
-            limit: 'Up to 4',
-            answers: [
-              'Encourage her to see her own independent GP',
-              'Doctors\' Health Advisory Service / DRS4DRS',
-              'Workload changes, leave, peer support/Balint group, psychology',
-              'Recognise mandatory notification threshold is substantial risk of harm to public – usually not met if seeking help',
-            ],
-          },
-        ],
-      },
-    ],
   },
   {
     id: 'S1',
@@ -400,35 +340,6 @@ const units: Unit[] = [
         options: ['Bright red erythema', 'Violaceous, grey or dark brown discolouration', 'Silvery scale', 'Yellow crusting always', 'Blue macules'],
         answer: 1,
         explanation: 'Erythema is harder to see in darker skin. Look for violaceous, grey or brown hues, papules and lichenification.',
-      },
-    ],
-    kfp: [
-      {
-        title: 'Charlotte has a rash',
-        scenario:
-          'Charlotte, 18 months, has itchy dry red patches on her cheeks, trunk and outer arms for 3 months, worse after baths with bubble bath. Her mother is using hydrocortisone 1% "only a little, because steroids are dangerous". Charlotte is waking 4 times a night.',
-        questions: [
-          {
-            prompt: 'List the key elements of your management plan.',
-            limit: 'Up to 5',
-            answers: [
-              'Stop bubble bath/soap; soap-free wash, lukewarm short baths',
-              'Liberal emollient at least twice daily',
-              'Adequate TCS: moderate potency (e.g. methylprednisolone aceponate) to body, mild to face, daily until clear',
-              'Explain TCS safety and FTU dosing; written eczema action plan',
-              'Review in 1–2 weeks; address sleep/carer burden',
-            ],
-          },
-          {
-            prompt: 'Two weeks later she has fever and clusters of punched-out erosions on her face. List your management.',
-            limit: 'Up to 3',
-            answers: [
-              'Diagnose eczema herpeticum',
-              'Urgent systemic aciclovir (IV if unwell/infant – usually hospital)',
-              'Urgent ophthalmology review if periocular involvement',
-            ],
-          },
-        ],
       },
     ],
   },
@@ -543,35 +454,6 @@ const units: Unit[] = [
         explanation: 'School refusal is usually anxiety-related. Early graded return with support prevents entrenchment.',
       },
     ],
-    kfp: [
-      {
-        title: 'Priya attends frequently',
-        scenario:
-          'Priya, 38, has attended 14 times in 6 months with headaches, abdominal pain, fatigue and palpitations. Extensive investigations have been normal. She is anxious and worried "something is being missed". Staff find her appointments frustrating.',
-        questions: [
-          {
-            prompt: 'List the key elements of your assessment.',
-            limit: 'Up to 4',
-            answers: [
-              'Review for red flags / new features (avoid missing organic disease)',
-              'Screen for anxiety, depression, somatic symptom disorder, health anxiety',
-              'Explore trauma history, life stressors, family violence (trauma-informed)',
-              'Explore her ideas, concerns and expectations',
-            ],
-          },
-          {
-            prompt: 'List the key elements of your management approach.',
-            limit: 'Up to 4',
-            answers: [
-              'Regular scheduled appointments with one GP (continuity) rather than symptom-driven visits',
-              'Shared formulation explaining mind–body link; validate symptoms',
-              'Limit unnecessary investigations while safety-netting',
-              'Mental Health Treatment Plan – CBT; reflect on own countertransference',
-            ],
-          },
-        ],
-      },
-    ],
   },
   {
     id: '613',
@@ -676,31 +558,6 @@ const units: Unit[] = [
         options: ['Finasteride', 'Tamsulosin', 'Oxybutynin', 'Mirabegron', 'Tadalafil'],
         answer: 1,
         explanation: 'α1A blockers such as tamsulosin cause intraoperative floppy iris syndrome.',
-      },
-    ],
-    kfp: [
-      {
-        title: 'Dan wants a prostate check',
-        scenario:
-          'Dan, 52, is well with no urinary symptoms. His father was diagnosed with prostate cancer at 64. He asks for "a prostate check".',
-        questions: [
-          {
-            prompt: 'List the key points to discuss for an informed decision about PSA testing.',
-            limit: 'Up to 5',
-            answers: [
-              'Benefits – may reduce risk of dying from prostate cancer',
-              'Harms – false positives, anxiety, biopsy complications (infection, bleeding)',
-              'Overdiagnosis/overtreatment of indolent cancers and treatment side effects (ED, incontinence)',
-              'Family history increases his risk',
-              'If tested: PSA every 2 years; abnormal results lead to repeat, MRI and urology referral',
-            ],
-          },
-          {
-            prompt: 'Dan\'s PSA is 4.8 and repeat is 5.1 ng/mL. What is the next step?',
-            limit: 'Up to 1',
-            answers: ['Refer to urologist for assessment including multiparametric MRI prostate ± biopsy'],
-          },
-        ],
       },
     ],
   },

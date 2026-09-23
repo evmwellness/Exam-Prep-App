@@ -1,6 +1,6 @@
-import type { Unit } from '../../types'
+import type { BaseUnit } from '../../types'
 
-const units: Unit[] = [
+const units: BaseUnit[] = [
   {
     id: '637',
     label: 'Unit 637',
@@ -123,34 +123,6 @@ const units: Unit[] = [
         answer: 1,
         explanation:
           'Low-dose opioids (for example morphine 1–2.5 mg orally PRN or 10 mg/day SR) and airflow to the face reduce chronic breathlessness. Oxygen gives no extra benefit over air in people who are not hypoxaemic.',
-      },
-    ],
-    kfp: [
-      {
-        title: 'Terry wants to die at home',
-        scenario:
-          'Terry, 68, has metastatic lung cancer with liver metastases. He is now bed-bound, eating little and sleeping most of the day. His wife Joan is his carer. Terry has clearly stated he wants to die at home. His eGFR is 25 mL/min/1.73m².',
-        questions: [
-          {
-            prompt: 'List the most important steps to prepare for Terry\'s death at home.',
-            limit: 'Up to 5',
-            answers: [
-              'Refer to / liaise with community palliative care service',
-              'Document goals of care, not-for-resuscitation and advance care directive / substitute decision-maker',
-              'Prescribe anticipatory SC medicines with written orders and medication chart',
-              'Educate Joan on signs of dying and what to do at the time of death (no need to call 000)',
-              'Arrange equipment (hospital bed, pressure care, continence aids) and carer support / respite',
-            ],
-          },
-          {
-            prompt: 'Which opioid would you prescribe for PRN pain and breathlessness given his renal function? Give drug, dose and route.',
-            limit: 'Up to 2',
-            answers: [
-              'Hydromorphone 0.25–0.5 mg SC q1–2h PRN (or fentanyl 12.5–25 microgram SC PRN)',
-              'Avoid morphine because of active metabolite accumulation in renal impairment',
-            ],
-          },
-        ],
       },
     ],
   },
@@ -278,41 +250,6 @@ const units: Unit[] = [
         explanation: 'Pharyngeal gonorrhoea is harder to eradicate and resistance is a concern, so test of cure is recommended (NAAT about 2 weeks after treatment). Retest at 3 months for reinfection.',
       },
     ],
-    kfp: [
-      {
-        title: 'Tuân feels tired and has a new rash',
-        scenario:
-          'Tuân, 31, a man who has sex with men, presents with 2 weeks of fatigue, sore throat and a non-itchy rash on his trunk, palms and soles. He had condomless anal sex with several casual partners in the last 3 months.',
-        questions: [
-          {
-            prompt: 'List the most likely diagnoses to consider.',
-            limit: 'Up to 3',
-            answers: ['Secondary syphilis', 'Primary HIV infection (seroconversion)', 'Other viral exanthem (eg EBV, mpox)'],
-          },
-          {
-            prompt: 'List the investigations you would order today.',
-            limit: 'Up to 5',
-            answers: [
-              'Syphilis serology (treponemal + RPR)',
-              'HIV antigen/antibody (4th generation) ± HIV viral load',
-              'Chlamydia/gonorrhoea NAAT from throat, anorectal swab and urine',
-              'Hepatitis B and C serology (and hep A immunity)',
-              'Syphilis PCR of any lesion if present',
-            ],
-          },
-          {
-            prompt: 'Syphilis is confirmed. List key management steps.',
-            limit: 'Up to 4',
-            answers: [
-              'Benzathine benzylpenicillin 2.4 MU IM single dose',
-              'Warn of Jarisch–Herxheimer reaction',
-              'Notify public health and contact trace partners',
-              'Repeat RPR at 3, 6 and 12 months; offer PrEP if HIV negative',
-            ],
-          },
-        ],
-      },
-    ],
   },
   {
     id: '635',
@@ -437,37 +374,6 @@ const units: Unit[] = [
         explanation: 'Hypertriglyceridaemia and hypercalcaemia are key reversible causes of non-gallstone, non-alcohol pancreatitis.',
       },
     ],
-    kfp: [
-      {
-        title: 'Owen has persistent bloating and oily stools',
-        scenario:
-          'Owen, 58, has had 3 admissions for acute pancreatitis related to alcohol over 5 years. He now reports bulky, oily stools that are hard to flush, bloating and 7 kg weight loss. He has cut down to 10 standard drinks per week and smokes 15 cigarettes/day.',
-        questions: [
-          {
-            prompt: 'List the investigations you would order.',
-            limit: 'Up to 5',
-            answers: [
-              'Faecal elastase',
-              'HbA1c / fasting glucose',
-              'Fat-soluble vitamins (A, D, E), INR, B12, iron studies, albumin',
-              'CT or MRI pancreas (to assess chronic pancreatitis and exclude malignancy)',
-              'LFTs, lipase, coeliac serology',
-            ],
-          },
-          {
-            prompt: 'Faecal elastase is 45 µg/g. List the key elements of management.',
-            limit: 'Up to 5',
-            answers: [
-              'Pancreatic enzyme replacement therapy with every meal and snack, titrated to symptoms',
-              'Add PPI if inadequate response',
-              'Normal-fat diet with dietitian review; vitamin supplementation',
-              'Smoking and alcohol cessation support',
-              'Screen for diabetes and bone density (DXA)',
-            ],
-          },
-        ],
-      },
-    ],
   },
   {
     id: 'S6',
@@ -587,34 +493,6 @@ const units: Unit[] = [
         explanation: 'Low-dose vaginal oestrogen treats GSM with minimal systemic absorption. Progestogen protection is not required.',
       },
     ],
-    kfp: [
-      {
-        title: 'Leanne feels hot',
-        scenario:
-          'Leanne, 50, has had 8 months of hot flushes (10/day) and poor sleep. Last period was 7 months ago. She is a non-smoker, BP 128/80, BMI 27. Her mother had a hip fracture at 72. No personal or family history of breast cancer or VTE.',
-        questions: [
-          {
-            prompt: 'List the most important elements of your assessment before discussing MHT.',
-            limit: 'Up to 5',
-            answers: [
-              'Breast cancer risk (family history, prior breast disease) and up-to-date mammogram',
-              'VTE, stroke, cardiovascular and liver disease history',
-              'Bleeding pattern and any abnormal bleeding',
-              'Cervical screening status and mood/sleep assessment',
-              'Contraceptive needs and patient preferences/goals',
-            ],
-          },
-          {
-            prompt: 'Leanne chooses MHT. Write an appropriate regimen.',
-            limit: 'Up to 2',
-            answers: [
-              'Transdermal (or oral) oestradiol, low-moderate dose, e.g. oestradiol gel 1 mg daily',
-              'Plus progestogen for endometrial protection, e.g. micronised progesterone 100 mg nightly (continuous) or 200 mg for 12–14 days/month (cyclical) — or 52 mg LNG-IUD',
-            ],
-          },
-        ],
-      },
-    ],
   },
   {
     id: '634',
@@ -726,36 +604,6 @@ const units: Unit[] = [
         ],
         answer: 2,
         explanation: 'Lipoedema almost exclusively affects women, typically starting or worsening at times of hormonal change, and is resistant to dieting.',
-      },
-    ],
-    kfp: [
-      {
-        title: 'Chloe thinks she has lipoedema',
-        scenario:
-          'Chloe, 29, has "always had big legs" that are painful to touch and bruise easily despite years of dieting. Her mother has similar legs. She has read about lipoedema online and is tearful, saying previous doctors told her to "just lose weight".',
-        questions: [
-          {
-            prompt: 'List the key examination findings that would support lipoedema.',
-            limit: 'Up to 4',
-            answers: [
-              'Bilateral symmetrical disproportionate fat of legs ± arms',
-              'Sparing of feet/hands with cuff sign at ankles',
-              'Tenderness / pain on palpation and bruising',
-              'Negative Stemmer sign; non-pitting',
-            ],
-          },
-          {
-            prompt: 'List your initial management steps.',
-            limit: 'Up to 5',
-            answers: [
-              'Validate diagnosis, explain condition, avoid weight stigma',
-              'Screen for depression, anxiety and disordered eating',
-              'Prescribe/refer for fitted compression garments',
-              'Refer physiotherapist / exercise physiologist for low-impact exercise (eg aquatic)',
-              'Dietitian review; manage comorbidities; consider vascular/lymphoedema specialist referral',
-            ],
-          },
-        ],
       },
     ],
   },

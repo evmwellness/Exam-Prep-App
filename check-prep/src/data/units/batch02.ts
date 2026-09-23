@@ -1,6 +1,6 @@
-import type { Unit } from '../../types'
+import type { BaseUnit } from '../../types'
 
-const units: Unit[] = [
+const units: BaseUnit[] = [
   {
     id: '633',
     label: 'Unit 633',
@@ -104,34 +104,6 @@ const units: Unit[] = [
         options: ['Normal side effect of misoprostol', 'Post-abortal endometritis', 'Ovarian torsion', 'Urinary tract infection', 'Ongoing pregnancy'],
         answer: 1,
         explanation: 'Fever from misoprostol settles within 24 hours. Fever later with pain and offensive discharge suggests infection and retained products, needing antibiotics ± evacuation.',
-      },
-    ],
-    kfp: [
-      {
-        title: 'Sienna has ongoing cramping and bleeding',
-        scenario:
-          'Sienna, 23, took mifepristone and misoprostol for a 7-week pregnancy 10 days ago. She reports ongoing cramping, bleeding like a heavy period and still feels nauseated with breast tenderness. She is afebrile and haemodynamically stable.',
-        questions: [
-          {
-            prompt: 'List the most likely diagnoses.',
-            limit: 'Up to 3',
-            answers: ['Incomplete abortion (retained products)', 'Ongoing / continuing pregnancy', 'Ectopic pregnancy (if not previously excluded)'],
-          },
-          {
-            prompt: 'List the investigations you would arrange.',
-            limit: 'Up to 3',
-            answers: ['Quantitative serum β-hCG (compare with baseline)', 'Pelvic (transvaginal) ultrasound', 'FBC (haemoglobin) ± STI screen / group and hold'],
-          },
-          {
-            prompt: 'Ultrasound shows a continuing viable intrauterine pregnancy. Outline management.',
-            limit: 'Up to 3',
-            answers: [
-              'Explain teratogenic risk of misoprostol',
-              'Arrange surgical (aspiration) abortion or repeat regimen per specialist advice',
-              'Discuss and commence ongoing contraception; provide support/counselling',
-            ],
-          },
-        ],
       },
     ],
   },
@@ -239,36 +211,6 @@ const units: Unit[] = [
         options: ['Lamotrigine toxicity', 'Reduced lamotrigine levels and breakthrough seizures', 'Contraceptive failure', 'Hyponatraemia', 'No interaction'],
         answer: 1,
         explanation: 'Oestrogen induces lamotrigine glucuronidation and can roughly halve its levels. Monitor, and adjust the dose if needed.',
-      },
-    ],
-    kfp: [
-      {
-        title: 'Ryan wants to return to work',
-        scenario:
-          'Ryan, 24, a carpenter in a regional town, collapsed at a building site 2 days ago. A co-worker saw him go stiff then jerk all four limbs for about 1 minute; he was confused for 20 minutes afterwards and bit the side of his tongue. He had been working long hours and drinking heavily at the weekend. He drives to work and uses power tools and ladders.',
-        questions: [
-          {
-            prompt: 'List the investigations you would arrange.',
-            limit: 'Up to 5',
-            answers: [
-              'ECG',
-              'Blood glucose, electrolytes incl. calcium/magnesium, FBC, LFT',
-              'EEG (ideally early, within 24–48 h)',
-              'MRI brain (epilepsy protocol)',
-              'Urine drug screen / alcohol history',
-            ],
-          },
-          {
-            prompt: 'List the safety advice you would give Ryan today.',
-            limit: 'Up to 4',
-            answers: [
-              'Do not drive; he must notify the driver licensing authority',
-              'Avoid working at heights, ladders, power tools / dangerous machinery until cleared',
-              'Avoid swimming or bathing alone; shower instead',
-              'Avoid seizure triggers: sleep deprivation and excess alcohol',
-            ],
-          },
-        ],
       },
     ],
   },
@@ -395,33 +337,6 @@ const units: Unit[] = [
         explanation: 'Long COVID is a diagnosis of exclusion. Look for anaemia, thyroid, cardiac, respiratory and thromboembolic causes of breathlessness.',
       },
     ],
-    kfp: [
-      {
-        title: 'Elizabeth has frequent near-fainting episodes',
-        scenario:
-          'Elizabeth, 19, a university student, has 8 months of light-headedness on standing, palpitations, "brain fog" and fatigue since a viral illness. She nearly faints in the shower and in queues. Lying HR 72, BP 112/70. Examination is otherwise normal.',
-        questions: [
-          {
-            prompt: 'Which bedside test would you perform and what result would support the likely diagnosis?',
-            limit: 'Up to 2',
-            answers: [
-              'Active stand test / NASA lean test (HR and BP lying then standing for 10 minutes)',
-              'Sustained HR rise ≥40 bpm (age 12–19) within 10 min without orthostatic hypotension → POTS',
-            ],
-          },
-          {
-            prompt: 'List initial non-pharmacological management.',
-            limit: 'Up to 4',
-            answers: [
-              'Increase fluid intake to 2–3 L/day',
-              'Increase salt intake',
-              'Waist-high compression garments',
-              'Recumbent/graded reconditioning exercise within tolerance, pacing; avoid triggers (heat, prolonged standing)',
-            ],
-          },
-        ],
-      },
-    ],
   },
   {
     id: 'S5',
@@ -534,35 +449,6 @@ const units: Unit[] = [
         explanation: 'A mature minor can consent. Confidentiality is explained upfront along with its limits (risk and abuse).',
       },
     ],
-    kfp: [
-      {
-        title: 'Callum is restless',
-        scenario:
-          'Callum, 18, started escitalopram 10 mg 10 days ago for depression. His mother phones worried: he is pacing, cannot sleep, seems more irritable and wrote a dark message on social media last night. Callum attends with her today.',
-        questions: [
-          {
-            prompt: 'List the most important things to assess today.',
-            limit: 'Up to 4',
-            answers: [
-              'Suicidal ideation, intent, plan and access to means',
-              'Akathisia / agitation (motor restlessness, inner distress)',
-              'Features of hypomania/mania (reduced need for sleep, grandiosity) and family history of bipolar',
-              'Substance use and other serotonergic drugs (serotonin syndrome signs)',
-            ],
-          },
-          {
-            prompt: 'Callum has thoughts of death but no plan, and marked akathisia. List your management steps.',
-            limit: 'Up to 4',
-            answers: [
-              'Reduce dose or cease escitalopram',
-              'Develop a written safety plan with Callum and his mother; means restriction',
-              'Close follow-up (within days) and after-hours crisis contacts',
-              'Link to psychological therapy / headspace or youth mental health service; consider psychiatry input',
-            ],
-          },
-        ],
-      },
-    ],
   },
   {
     id: '630',
@@ -673,35 +559,6 @@ const units: Unit[] = [
         options: ['Leptospirosis', 'Dengue', 'Q fever', 'Barmah Forest virus', 'Rhabdomyolysis from exercise'],
         answer: 0,
         explanation: 'Leptospirosis follows exposure to animal urine or contaminated floodwater. Conjunctival suffusion, calf myalgia and renal and liver involvement are classic.',
-      },
-    ],
-    kfp: [
-      {
-        title: 'Jake has a fever',
-        scenario:
-          'Jake, 27, works in a meatworks in rural Queensland. He has 6 days of fever to 39 °C, severe headache, sweats and a dry cough. He is 3 hours from the nearest regional hospital. Examination: T 38.9 °C, HR 104, BP 118/72, SpO2 95%, mild crackles right base.',
-        questions: [
-          {
-            prompt: 'List the most likely diagnoses.',
-            limit: 'Up to 3',
-            answers: ['Q fever', 'Leptospirosis', 'Community-acquired pneumonia (other) / influenza'],
-          },
-          {
-            prompt: 'List the investigations you would arrange.',
-            limit: 'Up to 4',
-            answers: [
-              'Q fever serology (and PCR on blood if early)',
-              'Leptospira serology/PCR',
-              'FBC, UEC, LFT, CRP',
-              'Chest X-ray ± blood cultures',
-            ],
-          },
-          {
-            prompt: 'What empirical treatment would you start while awaiting results?',
-            limit: 'Up to 1',
-            answers: ['Doxycycline 100 mg orally twice daily (covers Q fever, leptospirosis and atypical pneumonia)'],
-          },
-        ],
       },
     ],
   },

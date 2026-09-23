@@ -1,6 +1,6 @@
-import type { Unit } from '../../types'
+import type { BaseUnit } from '../../types'
 
-const units: Unit[] = [
+const units: BaseUnit[] = [
   {
     id: '592',
     label: 'Unit 592',
@@ -103,36 +103,6 @@ const units: Unit[] = [
         ],
         answer: 1,
         explanation: 'Red-flag language delay needs prompt assessment. Early intervention improves outcomes.',
-      },
-    ],
-    kfp: [
-      {
-        title: 'Antonio feels he has failed again',
-        scenario:
-          'Antonio, 32, has lost his third job in 2 years because of missed deadlines and disorganisation. He says he has always been "the daydreamer", struggled at school and feels like a failure. His son was recently diagnosed with ADHD.',
-        questions: [
-          {
-            prompt: 'List the key elements of your assessment.',
-            limit: 'Up to 5',
-            answers: [
-              'Screen for adult ADHD (e.g. ASRS) and childhood history/school reports',
-              'Collateral history from partner/family',
-              'Screen for depression, anxiety, substance use (common comorbidities/mimics)',
-              'Suicide risk assessment',
-              'Cardiovascular history and BP/HR (before possible stimulant)',
-            ],
-          },
-          {
-            prompt: 'List your management plan.',
-            limit: 'Up to 4',
-            answers: [
-              'Refer to psychiatrist for diagnosis and stimulant initiation (per state rules)',
-              'Psychoeducation and ADHD coaching/CBT (organisational strategies)',
-              'Treat comorbid depression/anxiety',
-              'Workplace adjustments and follow-up/shared care of stimulant prescribing',
-            ],
-          },
-        ],
       },
     ],
   },
@@ -247,35 +217,6 @@ const units: Unit[] = [
         explanation: 'Behaviour change may reflect trauma from DV exposure. Child safety comes first.',
       },
     ],
-    kfp: [
-      {
-        title: 'Sean has a sore wrist',
-        scenario:
-          'Sean, 3, is brought by his mother\'s new partner with a swollen, painful left wrist. The partner says Sean "fell off the couch" yesterday. Examination also shows bruises on his upper arm and ear of different colours.',
-        questions: [
-          {
-            prompt: 'List the features raising concern for non-accidental injury.',
-            limit: 'Up to 4',
-            answers: [
-              'Delayed presentation',
-              'Injury mechanism inconsistent with injury/developmental stage',
-              'Bruises at multiple sites of different ages',
-              'Bruising in protected areas (ear/upper arm – TEN-4 pattern)',
-            ],
-          },
-          {
-            prompt: 'List your management steps.',
-            limit: 'Up to 4',
-            answers: [
-              'Ensure immediate safety of child; refer to ED/child protection unit for assessment incl. skeletal survey',
-              'Mandatory report to child protection',
-              'Document history (verbatim), injuries (body map/photos)',
-              'Arrange X-ray/treatment of wrist and follow-up; avoid confronting carer in a way that compromises safety',
-            ],
-          },
-        ],
-      },
-    ],
   },
   {
     id: '590',
@@ -372,36 +313,6 @@ const units: Unit[] = [
         options: ['Hydrogen breath test', 'CA-125 and pelvic ultrasound', 'Stool culture', 'Low FODMAP trial', 'H. pylori breath test'],
         answer: 1,
         explanation: 'New persistent bloating in a woman over 50 should prompt evaluation for ovarian cancer.',
-      },
-    ],
-    kfp: [
-      {
-        title: 'Aarti has abdominal pain',
-        scenario:
-          'Aarti, 29, has had 8 months of crampy lower abdominal pain relieved by defecation, alternating loose and hard stools, and bloating. No weight loss or bleeding. Her examination is normal.',
-        questions: [
-          {
-            prompt: 'List the investigations to exclude important differentials.',
-            limit: 'Up to 4',
-            answers: [
-              'FBC, CRP',
-              'Coeliac serology (tTG-IgA + total IgA)',
-              'Faecal calprotectin',
-              'Stool microscopy/PCR (e.g. Giardia) ± TSH',
-            ],
-          },
-          {
-            prompt: 'Results are normal. List your management plan.',
-            limit: 'Up to 5',
-            answers: [
-              'Positive diagnosis of IBS with explanation (gut–brain interaction)',
-              'Dietary advice – regular meals, soluble fibre (psyllium); low FODMAP with dietitian',
-              'Peppermint oil / antispasmodic for pain',
-              'Low-dose TCA or gut-directed psychological therapy if persistent',
-              'Safety-net for red flags and review',
-            ],
-          },
-        ],
       },
     ],
   },
@@ -521,26 +432,6 @@ const units: Unit[] = [
         explanation: 'A minimal-trauma fracture indicates osteoporosis and qualifies for PBS-subsidised treatment.',
       },
     ],
-    kfp: [
-      {
-        title: 'Chronic knee pain',
-        scenario:
-          'Joan, 64, has 2 years of bilateral knee pain worse with walking and stairs, morning stiffness 15 minutes, BMI 34. She takes paracetamol and asks for "a scan and a clean-out operation" like her friend had.',
-        questions: [
-          {
-            prompt: 'List the key elements of your management plan.',
-            limit: 'Up to 5',
-            answers: [
-              'Clinical diagnosis of knee OA; explain imaging and arthroscopy are not needed/beneficial',
-              'Structured exercise/strengthening program (physiotherapy, e.g. GLA:D)',
-              'Weight loss support (dietitian, consider pharmacotherapy)',
-              'Topical NSAID, then oral NSAID if appropriate (check renal/CV/GI risk); avoid opioids',
-              'Refer for joint replacement if severe pain/function loss despite conservative care',
-            ],
-          },
-        ],
-      },
-    ],
   },
   {
     id: '588',
@@ -656,36 +547,6 @@ const units: Unit[] = [
         ],
         answer: 1,
         explanation: 'Genito-pelvic pain or penetration disorder responds to a multimodal approach.',
-      },
-    ],
-    kfp: [
-      {
-        title: 'Erectile difficulties',
-        scenario:
-          'Rob, 56, reluctantly mentions 6 months of difficulty maintaining erections. He has hypertension (on hydrochlorothiazide and atenolol), smokes and has a waist of 108 cm. Morning erections are reduced.',
-        questions: [
-          {
-            prompt: 'List the investigations you would arrange.',
-            limit: 'Up to 4',
-            answers: [
-              'Fasting glucose / HbA1c',
-              'Fasting lipids and CVD risk calculation',
-              'Morning total testosterone (± LH/FSH, prolactin if low)',
-              'UEC, TSH ± ECG / cardiac assessment if exertional symptoms',
-            ],
-          },
-          {
-            prompt: 'List your management.',
-            limit: 'Up to 5',
-            answers: [
-              'PDE5 inhibitor (e.g. sildenafil or tadalafil) after checking no nitrate use',
-              'Review antihypertensives (thiazide/β-blocker) – consider switching (e.g. ACEi/ARB)',
-              'Smoking cessation, weight loss, exercise',
-              'Manage CVD risk factors',
-              'Involve partner/psychosexual counselling if needed',
-            ],
-          },
-        ],
       },
     ],
   },

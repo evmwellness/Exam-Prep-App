@@ -1,6 +1,6 @@
-import type { Unit } from '../../types'
+import type { BaseUnit } from '../../types'
 
-const units: Unit[] = [
+const units: BaseUnit[] = [
   {
     id: '597',
     label: 'Unit 597',
@@ -117,35 +117,6 @@ const units: Unit[] = [
         explanation: 'Egg allergy, including anaphylaxis, is not a contraindication to influenza vaccine per the Australian Immunisation Handbook.',
       },
     ],
-    kfp: [
-      {
-        title: 'Harry\'s mother is worried about his development',
-        scenario:
-          'Harry, 2 years 3 months, says only about 5 words and does not combine words. He lines up toys, has limited eye contact and does not point to show things. His mother is worried. He had frequent ear infections last year.',
-        questions: [
-          {
-            prompt: 'List the key assessments you would perform or arrange.',
-            limit: 'Up to 4',
-            answers: [
-              'Formal hearing assessment (audiology)',
-              'Developmental screening (PEDS/ASQ) and autism screening (e.g. SACS-R/M-CHAT)',
-              'Full developmental and physical exam, growth, head circumference',
-              'Family and social history, parental concerns, regression',
-            ],
-          },
-          {
-            prompt: 'List your management steps.',
-            limit: 'Up to 4',
-            answers: [
-              'Refer to paediatrician / multidisciplinary autism assessment',
-              'Refer to speech pathology early (do not wait for diagnosis)',
-              'Inform about NDIS early childhood approach',
-              'Support parents and arrange follow-up',
-            ],
-          },
-        ],
-      },
-    ],
   },
   {
     id: '596',
@@ -257,36 +228,6 @@ const units: Unit[] = [
         explanation: 'Climate distress is a normal response. Support coping and connection, and monitor function.',
       },
     ],
-    kfp: [
-      {
-        title: 'Kate is concerned following a heatwave',
-        scenario:
-          'Kate, 45, cares for her father Frank, 82, who lives alone. During last week\'s heatwave he became dizzy and confused. His medicines: furosemide, perindopril, empagliflozin, oxybutynin and lithium (for bipolar disorder). More heatwaves are forecast.',
-        questions: [
-          {
-            prompt: 'List the medicines that increase Frank\'s heat risk and why.',
-            limit: 'Up to 4',
-            answers: [
-              'Furosemide and empagliflozin – volume depletion/dehydration',
-              'Perindopril – hypotension and renal impairment with dehydration',
-              'Oxybutynin – anticholinergic, impairs sweating (and confusion)',
-              'Lithium – toxicity with dehydration',
-            ],
-          },
-          {
-            prompt: 'List the components of a heat-health plan for Frank.',
-            limit: 'Up to 5',
-            answers: [
-              'Check lithium level, UEC; consider deprescribing oxybutynin',
-              'Sick-day/heat rules: when to withhold diuretic/SGLT2i/ACEi in consultation with GP',
-              'Cool environment (air-conditioning/cooler places), fluids, avoid heat of day',
-              'Daily check-ins (family/neighbour/community service) during heatwaves',
-              'Recognise heat illness warning signs and when to call 000',
-            ],
-          },
-        ],
-      },
-    ],
   },
   {
     id: '595',
@@ -390,30 +331,6 @@ const units: Unit[] = [
         options: ['Add oral steroids', 'Check inhaler technique and adherence', 'Refer for biologic', 'Add theophylline', 'Order CT chest'],
         answer: 1,
         explanation: 'Poor technique and adherence are the commonest reasons for poor control.',
-      },
-    ],
-    kfp: [
-      {
-        title: 'Muhammad has a cough',
-        scenario:
-          'Muhammad, 4, has a wet-sounding cough for 8 weeks after a cold. He has had one 5-day course of amoxicillin with partial improvement. No wheeze, growing well, no clubbing. He attends childcare.',
-        questions: [
-          {
-            prompt: 'What is the most likely diagnosis and appropriate treatment?',
-            limit: 'Up to 2',
-            answers: ['Protracted bacterial bronchitis', 'Amoxicillin–clavulanate for 2 weeks (extend to 4 weeks if partial response)'],
-          },
-          {
-            prompt: 'List the indications for referral / further investigation.',
-            limit: 'Up to 4',
-            answers: [
-              'Wet cough persisting after 4 weeks of antibiotics',
-              'Recurrent PBB (>3 episodes/year)',
-              'Specific cough pointers: clubbing, failure to thrive, haemoptysis, choking episode',
-              'Aboriginal/Torres Strait Islander child or other bronchiectasis risk – lower threshold (CT chest, respiratory paediatrician)',
-            ],
-          },
-        ],
       },
     ],
   },
@@ -528,35 +445,6 @@ const units: Unit[] = [
         explanation: 'APS is a treatable cause. Test and confirm with a repeat at 12 weeks.',
       },
     ],
-    kfp: [
-      {
-        title: 'Caitlin and Mostafa are worried they can\'t conceive',
-        scenario:
-          'Caitlin, 33, and Mostafa, 36, have had regular unprotected intercourse for 14 months without pregnancy. Caitlin\'s cycles are regular (28–30 days). She had chlamydia at 19. Mostafa smokes and uses a sauna daily.',
-        questions: [
-          {
-            prompt: 'List the investigations for Caitlin.',
-            limit: 'Up to 5',
-            answers: [
-              'Mid-luteal progesterone (confirm ovulation)',
-              'TSH, prolactin, AMH',
-              'Rubella/varicella immunity; STI screen (chlamydia)',
-              'Pelvic ultrasound',
-              'Tubal patency test (HyCoSy/HSG) given prior chlamydia',
-            ],
-          },
-          {
-            prompt: 'List the investigations and advice for Mostafa.',
-            limit: 'Up to 3',
-            answers: [
-              'Semen analysis (repeat if abnormal)',
-              'Stop smoking; avoid heat exposure (sauna)',
-              'Healthy weight, limit alcohol; review medicines/steroids',
-            ],
-          },
-        ],
-      },
-    ],
   },
   {
     id: '593',
@@ -659,35 +547,6 @@ const units: Unit[] = [
         options: ['Paracetamol', 'Lithium', 'Amoxicillin', 'Metformin', 'Atorvastatin'],
         answer: 1,
         explanation: 'Lithium, β-blockers, antimalarials and withdrawal of systemic steroids can flare psoriasis.',
-      },
-    ],
-    kfp: [
-      {
-        title: 'Xanthe has concerns about her acne',
-        scenario:
-          'Xanthe, 19, has had acne for 4 years. She has tried topical adapalene–BPO and two 3-month courses of doxycycline. She now has deep nodules on her jaw and early scarring, and says she avoids going out.',
-        questions: [
-          {
-            prompt: 'List the key issues to assess.',
-            limit: 'Up to 4',
-            answers: [
-              'Severity – nodular acne with scarring',
-              'Psychological impact – depression, anxiety, suicidal ideation',
-              'Contraception and pregnancy plans',
-              'Features of hyperandrogenism/PCOS (irregular periods, hirsutism)',
-            ],
-          },
-          {
-            prompt: 'List your management plan.',
-            limit: 'Up to 4',
-            answers: [
-              'Refer to dermatologist for isotretinoin',
-              'Discuss teratogenicity – two forms of contraception / reliable contraception and pregnancy testing',
-              'Baseline bloods for isotretinoin (lipids, LFT) and mood monitoring',
-              'Consider hormonal therapy (COC/spironolactone) and psychological support meanwhile',
-            ],
-          },
-        ],
       },
     ],
   },

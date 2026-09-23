@@ -1,9 +1,9 @@
-import type { Unit } from '../../types'
+import type { BaseUnit } from '../../types'
 
 const NO_LO =
   'RACGP has not published learning outcomes for the 2021 units online. This summary covers core, high-yield topics for this unit\'s subject.'
 
-const units: Unit[] = [
+const units: BaseUnit[] = [
   {
     id: '587',
     label: 'Unit 587',
@@ -111,36 +111,6 @@ const units: Unit[] = [
         options: ['Complete rest for 3 months', 'Progressive tendon loading exercise program', 'Repeated corticosteroid injections', 'Ciprofloxacin', 'Immediate surgery'],
         answer: 1,
         explanation: 'Progressive loading (eccentric or heavy slow resistance) is first line. Steroid injections risk rupture.',
-      },
-    ],
-    kfp: [
-      {
-        title: 'A head knock on the field',
-        scenario:
-          'Mia, 15, collided heads with another netball player 30 minutes ago. She was briefly dazed, now has a headache and feels "foggy". Her mother brings her straight to your clinic. GCS 15, normal neurological exam.',
-        questions: [
-          {
-            prompt: 'List the red flags that would require immediate emergency referral.',
-            limit: 'Up to 5',
-            answers: [
-              'Deteriorating conscious state / increasing drowsiness',
-              'Repeated vomiting',
-              'Seizure',
-              'Severe or worsening headache',
-              'Neck pain, focal weakness/numbness, double vision, confusion or agitation',
-            ],
-          },
-          {
-            prompt: 'List your advice for her recovery.',
-            limit: 'Up to 4',
-            answers: [
-              'No return to sport today; relative rest 24–48 h with supervision',
-              'Gradual return to school/learning first, then graded return to sport',
-              'Symptom-free before full-contact training; no competition before 21 days post-injury',
-              'Review in GP; refer if symptoms persist >4 weeks',
-            ],
-          },
-        ],
       },
     ],
   },
@@ -253,30 +223,6 @@ const units: Unit[] = [
         explanation: 'Live vaccines are contraindicated during immunosuppressive treatment. Recombinant zoster (Shingrix) is non-live.',
       },
     ],
-    kfp: [
-      {
-        title: 'New symptoms during immunotherapy',
-        scenario:
-          'Peter, 64, has metastatic melanoma and has been on nivolumab–ipilimumab for 10 weeks. He presents with 6 watery stools a day for 3 days and abdominal cramping. He is afebrile.',
-        questions: [
-          {
-            prompt: 'What is the most likely diagnosis?',
-            limit: 'Up to 1',
-            answers: ['Immune-related colitis (checkpoint inhibitor colitis)'],
-          },
-          {
-            prompt: 'List your immediate management.',
-            limit: 'Up to 4',
-            answers: [
-              'Contact treating oncology team same day / urgent hospital review (grade ≥2)',
-              'Stool MCS and C. difficile to exclude infection',
-              'UEC, FBC, CRP, LFT, TFT',
-              'Hydration; avoid loperamide masking severity without oncology advice; corticosteroids per oncology',
-            ],
-          },
-        ],
-      },
-    ],
   },
   {
     id: '585',
@@ -379,36 +325,6 @@ const units: Unit[] = [
         options: ['Narcolepsy', 'Delayed sleep–wake phase disorder', 'Obstructive sleep apnoea', 'Depression only', 'Restless legs'],
         answer: 1,
         explanation: 'A delayed circadian rhythm is common in adolescents. Manage with a fixed wake time, morning light and evening screen reduction (± low-dose melatonin timed early evening).',
-      },
-    ],
-    kfp: [
-      {
-        title: 'A quiet 15-year-old',
-        scenario:
-          'Zoe, 15, attends with her mother for "tiredness". Her mother says Zoe spends all her time in her room and her grades have dropped. Zoe is quiet and avoids eye contact.',
-        questions: [
-          {
-            prompt: 'List how you would structure this consultation.',
-            limit: 'Up to 4',
-            answers: [
-              'Spend part of consultation with Zoe alone',
-              'Explain confidentiality and its limits',
-              'HEEADSSS psychosocial assessment',
-              'Screen mood/suicide risk and physical causes of fatigue (examination ± bloods: FBC, iron, TSH, coeliac)',
-            ],
-          },
-          {
-            prompt: 'Zoe discloses low mood, self-harm (cutting) and being bullied online. List your management.',
-            limit: 'Up to 5',
-            answers: [
-              'Suicide risk assessment and collaborative safety plan',
-              'Wound assessment and harm-minimisation discussion',
-              'Referral to headspace/psychologist (Mental Health Treatment Plan)',
-              'With consent, involve parent; address online bullying (eSafety Commissioner, school)',
-              'Close follow-up (within a week) and crisis contacts',
-            ],
-          },
-        ],
       },
     ],
   },
@@ -520,34 +436,6 @@ const units: Unit[] = [
         explanation: 'ABI <0.9 confirms peripheral arterial disease.',
       },
     ],
-    kfp: [
-      {
-        title: 'After the heart attack',
-        scenario:
-          'Tony, 55, was discharged 1 week ago after a STEMI treated with a stent. LVEF is 45%. He smokes 20/day, drives a delivery truck and is keen to return to work. Discharge medicines: aspirin, ticagrelor, atorvastatin 80 mg, metoprolol, ramipril.',
-        questions: [
-          {
-            prompt: 'List the key secondary prevention measures.',
-            limit: 'Up to 5',
-            answers: [
-              'Continue DAPT (aspirin + ticagrelor) for 12 months – emphasise adherence',
-              'High-intensity statin with LDL target <1.8 (or lower); add ezetimibe if not at target',
-              'Cardiac rehabilitation referral',
-              'Smoking cessation (pharmacotherapy + Quitline)',
-              'BP, diabetes and weight management; influenza vaccination; depression screening',
-            ],
-          },
-          {
-            prompt: 'What advice would you give about driving?',
-            limit: 'Up to 2',
-            answers: [
-              'Private and commercial licence driving restrictions apply for a period after MI per Assessing Fitness to Drive (commercial standards stricter)',
-              'He must notify the licensing authority for commercial licence; conditional licence depends on cardiologist review',
-            ],
-          },
-        ],
-      },
-    ],
   },
   {
     id: '583',
@@ -656,34 +544,6 @@ const units: Unit[] = [
         ],
         answer: 1,
         explanation: 'Tamsulosin increases passage of distal stones 5–10 mm. Arrange follow-up imaging and urology review.',
-      },
-    ],
-    kfp: [
-      {
-        title: 'A painful scrotum',
-        scenario:
-          'Liam, 24, has 3 days of gradually increasing right scrotal pain and swelling, with dysuria. T 37.9 °C. The epididymis is tender and swollen; cremasteric reflex present. He has had two new sexual partners recently.',
-        questions: [
-          {
-            prompt: 'List the investigations.',
-            limit: 'Up to 3',
-            answers: [
-              'First-pass urine NAAT for chlamydia and gonorrhoea (± M. genitalium)',
-              'Urine MCS',
-              'Scrotal ultrasound if diagnosis uncertain or to exclude abscess/torsion',
-            ],
-          },
-          {
-            prompt: 'List your management.',
-            limit: 'Up to 4',
-            answers: [
-              'Ceftriaxone 500 mg IM + doxycycline 100 mg bd for 14 days (STI-related epididymo-orchitis)',
-              'Analgesia, scrotal support',
-              'Partner notification and full STI screen (HIV, syphilis)',
-              'Review in 3 days; urgent re-review if worsening (abscess/torsion)',
-            ],
-          },
-        ],
       },
     ],
   },

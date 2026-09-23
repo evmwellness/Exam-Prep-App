@@ -33,7 +33,11 @@ export interface Section {
   points: string[]
 }
 
+/** Single best answer */
 export interface MCQ {
+  kind?: 'sba'
+  /** extra case information revealed before this question (KFP) */
+  context?: string
   stem: string
   options: string[]
   /** index into options */
@@ -41,18 +45,49 @@ export interface MCQ {
   explanation: string
 }
 
-export interface KFPQuestion {
-  prompt: string
-  /** e.g. "List up to 3" */
-  limit?: string
-  answers: string[]
-  explanation?: string
+/** "Choose N" – several correct options (KFP style) */
+export interface MultiMCQ {
+  kind: 'multi'
+  context?: string
+  stem: string
+  options: string[]
+  /** indices into options */
+  answers: number[]
+  explanation: string
 }
+
+/** Extended matching: one option list, several stems */
+export interface EMQ {
+  kind: 'emq'
+  context?: string
+  theme: string
+  lead: string
+  options: string[]
+  items: { stem: string; answer: number; explanation?: string }[]
+}
+
+export type Question = MCQ | MultiMCQ | EMQ
 
 export interface KFPCase {
   title: string
   scenario: string
-  questions: KFPQuestion[]
+  questions: Question[]
+}
+
+export interface WorkedCase {
+  title: string
+  paragraphs: string[]
+}
+
+/** Additional depth merged into a unit (see data/extra) */
+export interface UnitExtension {
+  sections: Section[]
+  keyNumbers: string[]
+  workedCase: WorkedCase
+  /** appended to the unit's AKT questions */
+  questions: Question[]
+  /** replaces the unit's KFP cases */
+  kfp: KFPCase[]
 }
 
 export interface Unit {
@@ -73,6 +108,11 @@ export interface Unit {
   sections: Section[]
   redFlags: string[]
   examTips: string[]
-  mcqs: MCQ[]
+  mcqs: Question[]
   kfp: KFPCase[]
+  keyNumbers?: string[]
+  workedCase?: WorkedCase
 }
+
+/** A unit as authored in data/units, before its extension is merged */
+export type BaseUnit = Omit<Unit, 'kfp' | 'keyNumbers' | 'workedCase'>

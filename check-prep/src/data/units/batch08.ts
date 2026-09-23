@@ -1,6 +1,6 @@
-import type { Unit } from '../../types'
+import type { BaseUnit } from '../../types'
 
-const units: Unit[] = [
+const units: BaseUnit[] = [
   {
     id: '607',
     label: 'Unit 607',
@@ -112,35 +112,6 @@ const units: Unit[] = [
         explanation: 'SWAN supports families of children with undiagnosed genetic conditions.',
       },
     ],
-    kfp: [
-      {
-        title: 'Margaret is planning a baby',
-        scenario:
-          'Margaret, 31, and her partner plan to conceive. Her nephew has cystic fibrosis. She asks about her chance of having an affected child.',
-        questions: [
-          {
-            prompt: 'List the steps you would take.',
-            limit: 'Up to 4',
-            answers: [
-              'Take a three-generation family history',
-              'Offer reproductive carrier screening (CF, SMA, fragile X – Medicare funded; ± expanded panel)',
-              'If Margaret is a carrier, test partner',
-              'Refer to genetic counselling (especially if family variant known or both carriers)',
-            ],
-          },
-          {
-            prompt: 'Both are CF carriers. List the reproductive options to discuss.',
-            limit: 'Up to 4',
-            answers: [
-              'Natural conception with no testing (25% risk)',
-              'Prenatal diagnosis (CVS or amniocentesis) with option of termination',
-              'IVF with preimplantation genetic testing (PGT-M)',
-              'Donor gametes or adoption',
-            ],
-          },
-        ],
-      },
-    ],
   },
   {
     id: '606',
@@ -247,36 +218,6 @@ const units: Unit[] = [
         explanation: 'Muscle dysmorphia is a subtype of BDD. Treat with CBT ± SSRI.',
       },
     ],
-    kfp: [
-      {
-        title: 'Nathan is worried about his progress at the gym',
-        scenario:
-          'Nathan, 26, has used injected testosterone and nandrolone for 18 months. He wants to stop because he and his partner want a baby. He has acne, mild gynaecomastia and feels flat and tired when between cycles.',
-        questions: [
-          {
-            prompt: 'List the investigations you would arrange.',
-            limit: 'Up to 5',
-            answers: [
-              'FBC (haematocrit)',
-              'Lipids, LFT, UEC, glucose',
-              'Testosterone, LH, FSH, oestradiol',
-              'Semen analysis',
-              'BBV screen (HIV, HBV, HCV); BP and ECG',
-            ],
-          },
-          {
-            prompt: 'List key management points.',
-            limit: 'Up to 4',
-            answers: [
-              'Support cessation non-judgementally; explain recovery of HPG axis may take months',
-              'Monitor for hypogonadal symptoms and depression/suicide risk after stopping',
-              'Screen for muscle dysmorphia; offer psychological support',
-              'Refer to endocrinology/fertility specialist if persistent hypogonadism or abnormal semen analysis',
-            ],
-          },
-        ],
-      },
-    ],
   },
   {
     id: '605',
@@ -381,31 +322,6 @@ const units: Unit[] = [
         options: ['Brimonidine gel', 'Clobetasol', 'Tretinoin', 'Benzoyl peroxide', 'Hydroquinone'],
         answer: 0,
         explanation: 'α-agonists (brimonidine, oxymetazoline) cause vasoconstriction and reduce erythema temporarily.',
-      },
-    ],
-    kfp: [
-      {
-        title: 'Malcolm is red-faced',
-        scenario:
-          'Malcolm, 52, has a red face that is embarrassing him at work. He flushes with wine and hot drinks, has bumps on his cheeks and nose, and his eyes feel gritty. He has been using his wife\'s hydrocortisone cream.',
-        questions: [
-          {
-            prompt: 'What is the diagnosis and what features would you document?',
-            limit: 'Up to 3',
-            answers: ['Rosacea (papulopustular with ocular involvement)', 'Absence of comedones; central facial erythema/telangiectasia', 'Ocular rosacea/blepharitis; any phymatous change'],
-          },
-          {
-            prompt: 'List your management.',
-            limit: 'Up to 5',
-            answers: [
-              'Stop topical corticosteroid',
-              'Avoid triggers (alcohol, heat, hot drinks, sun) and daily sunscreen',
-              'Topical ivermectin or metronidazole/azelaic acid',
-              'Oral doxycycline (low dose) for papules/ocular disease; lid hygiene',
-              'Consider brimonidine for erythema and vascular laser referral; screen mood',
-            ],
-          },
-        ],
       },
     ],
   },
@@ -520,34 +436,6 @@ const units: Unit[] = [
         explanation: 'The EAGLES trial supported the safety of varenicline in people with psychiatric illness.',
       },
     ],
-    kfp: [
-      {
-        title: 'Georgina is becoming unwell again',
-        scenario:
-          'Georgina, 44, has schizophrenia and has been stable for years on clozapine 400 mg daily. She quit smoking (30/day) 10 days ago with NRT patches. Her support worker reports she is very sleepy, drooling and unsteady.',
-        questions: [
-          {
-            prompt: 'List the most likely cause and investigations.',
-            limit: 'Up to 3',
-            answers: [
-              'Clozapine toxicity due to loss of CYP1A2 induction after smoking cessation',
-              'Urgent clozapine (and norclozapine) level',
-              'FBC (neutrophils), ECG, BGL, troponin/CRP (myocarditis)',
-            ],
-          },
-          {
-            prompt: 'List your management steps.',
-            limit: 'Up to 4',
-            answers: [
-              'Assess urgently / hospital if severe (seizures, reduced consciousness)',
-              'Reduce clozapine dose (≈30–50%) in consultation with psychiatrist; recheck levels',
-              'Continue supporting smoking abstinence (NRT is fine – nicotine does not induce CYP1A2)',
-              'Educate patient/carers and mental health team about interaction if she resumes smoking',
-            ],
-          },
-        ],
-      },
-    ],
   },
   {
     id: '603',
@@ -652,31 +540,6 @@ const units: Unit[] = [
         options: ['Ibuprofen', 'Aspirin', 'Paracetamol', 'Diclofenac', 'Naproxen'],
         answer: 2,
         explanation: 'Suspected dengue: avoid NSAIDs and aspirin because of bleeding risk.',
-      },
-    ],
-    kfp: [
-      {
-        title: 'Sam has a fever following a holiday abroad',
-        scenario:
-          'Sam, 34, returned 8 days ago from 3 weeks backpacking in rural India and Nepal. He has 3 days of fever to 39.5 °C, headache and malaise. He did not take malaria prophylaxis and had no pre-travel vaccines.',
-        questions: [
-          {
-            prompt: 'List the most likely diagnoses.',
-            limit: 'Up to 4',
-            answers: ['Malaria (vivax or falciparum)', 'Enteric fever (typhoid/paratyphoid)', 'Dengue', 'Rickettsial infection (scrub typhus) / leptospirosis / hepatitis A'],
-          },
-          {
-            prompt: 'List the investigations you would order today.',
-            limit: 'Up to 5',
-            answers: [
-              'Malaria thick and thin films / RDT (repeat ×3 if negative)',
-              'Blood cultures (typhoid)',
-              'Dengue NS1 antigen and serology',
-              'FBC, UEC, LFT, CRP',
-              'Urinalysis ± stool culture, CXR if respiratory symptoms',
-            ],
-          },
-        ],
       },
     ],
   },
