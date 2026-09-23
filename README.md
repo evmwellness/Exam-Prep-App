@@ -1,55 +1,57 @@
-# MathQuest 🐧🐨
+# GP Exam Prep — AKT & KFP
 
-A bright, playful math practice app for junior school kids, built with
-React, TypeScript, Tailwind CSS and Vite.
-
-Percy the Penguin and Kiki the Koala guide kids through a curriculum of
-addition, subtraction, multiplication and division practice matched to
-their school stage, with instant feedback, hints, stars, and a progress
-dashboard that tracks quiz history over time (saved locally in the
-browser).
+An offline-first installable web app (PWA) for practicing RACGP AKT and KFP
+exam-style multiple choice questions. Everything runs and stores data
+locally on-device (IndexedDB) — no login, no server, works without a
+connection once installed.
 
 ## Features
 
-- **Curriculum stages** — Prep (addition/subtraction to 20), Year 1
-  (building on this, still to 20) and Year 2 (addition/subtraction to
-  100, plus multiplication and division)
-- **Individual times-table levels** — Year 2 multiplication and division
-  are broken into their own 2× through 12× levels, practiced one at a time
-- **Road/path progression** — each stage+operation is a winding road of
-  level stops; Percy and Kiki stand on the current stop, finishing a level
-  unlocks the next one, and stars show mastery
-- **Short practice blocks** — 5 to 10 multiple-choice questions per round,
-  with instant right/wrong feedback
-- **Quick Memory Check** — a mixed 5-10 question recap drawing on every
-  level practiced that session, to reinforce retention
-- **Hints** from the mascots that explain the underlying concept
-- **Stars and celebrations** (confetti!) for strong scores
-- **Progress dashboard** — best/average/last score per level, plus a full
-  quiz history — all stored in `localStorage`
-- **Parent-controlled screen time** — a parent sets an overall 5 or 10
-  minute session limit from the PIN-free "Parent Zone" (gated behind a
-  quick math challenge so kids can't change it themselves). A warning
-  banner appears with 1 minute 30 seconds left, and the app locks with a
-  "Screen Time's Up!" screen when the session ends, until a parent
-  unlocks more time.
-- **Parent performance report** — a second Parent Zone tab breaks down
-  every level's attempts, average/best score and trend, and highlights
-  strengths vs. areas to improve
-- **Bright, shape-filled, kid-friendly UI**
+- **Original question bank**: 120 AKT single-best-answer questions; for KFP,
+  100 single-best-answer MCQs and 10 Extended Matching Question (EMQ) themes
+  (50 items) matching RACGP's current KFP format (MCQ + EMQ, per recent
+  candidate reports), plus a bonus legacy bank of 14 sequential clinical
+  cases (70 items) for extra reasoning practice. Spans all major curriculum
+  specialties. Content is AI-generated study material mapped to RACGP
+  curriculum domains and current Australian general practice guidelines —
+  not a reproduction of real past exam papers (RACGP does not publish
+  those). See the in-app Settings page for the full content disclaimer.
+  Exam formats can change — verify against the current RACGP candidate
+  handbook before your sitting.
+- **Practice modes**: full exam simulation (timed to match question count),
+  20–25 minute short interval learning blocks, and fully custom sessions
+  (question count, specialty filters, weak-area weighting).
+- **Countdown timer**, question flagging, and a jump-to-question grid —
+  mirrors real exam navigation.
+- **End-of-session breakdown**: every wrong or skipped answer is expandable
+  to show why each option is right or wrong.
+- **Weak-area analytics**: per-specialty accuracy tracking with a weighted
+  "focus on weak areas" practice mode.
+- **History**: full session log, accuracy trend chart, and specialty
+  breakdowns.
+- **Streaks & badges**: daily practice streak with a calendar heatmap, plus
+  records for streak length, accuracy, and pace.
+- **Daily reminder notifications** (best-effort, in-app/foreground-based —
+  see Settings for platform limitations).
+- **Backup**: export/import your progress as JSON; everything stays local.
 
-## Getting started
+## Development
 
 ```bash
 npm install
-npm run dev
+npm run dev      # start dev server
+npm run build    # typecheck + production build
+npm run lint      # oxlint
 ```
 
-Then open the printed local URL in your browser.
+## Tech stack
 
-## Scripts
+Vite, React, TypeScript, Tailwind CSS v4, Dexie (IndexedDB), React Router
+(hash-based, for static/offline hosting), Recharts, `vite-plugin-pwa`.
 
-- `npm run dev` — start the development server
-- `npm run build` — type-check and build for production
-- `npm run preview` — preview the production build
-- `npm run lint` — run oxlint
+## Expanding the question bank
+
+Question data lives in `src/data/akt/group*.ts` (AKT MCQs), `src/data/kfpMcq/group*.ts`
+(KFP MCQs), `src/data/kfpEmq/group*.ts` (KFP EMQ themes), and `src/data/kfp/group*.ts`
+(legacy KFP case bank), typed against `src/types.ts`. Add new files following
+the same schema and wire them into the matching `index.ts` aggregator.
