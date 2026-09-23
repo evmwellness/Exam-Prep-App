@@ -1,4 +1,4 @@
-import type { BaseUnit, Question, Specialty, Unit, UnitExtension } from '../types'
+import type { BaseUnit, Question, Section, Specialty, Unit, UnitExtension } from '../types'
 
 /** Newest first. Supplements sort alongside the regular unit released in the same month. */
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
@@ -11,13 +11,19 @@ function dateKey(u: BaseUnit): number {
 const modules = import.meta.glob<{ default: BaseUnit[] }>('./units/*.ts', { eager: true })
 const extraModules = import.meta.glob<{ default: Record<string, UnitExtension> }>('./extra/*.ts', { eager: true })
 const EXTRA: Record<string, UnitExtension> = Object.assign({}, ...Object.values(extraModules).map((m) => m.default))
+/** Extra study sections that bring each unit's reading up to about 20 minutes */
+const topupModules = import.meta.glob<{ default: Record<string, Section[]> }>('./topup/*.ts', { eager: true })
+const TOPUP: Record<string, Section[]> = {}
+for (const m of Object.values(topupModules)) {
+  for (const [id, secs] of Object.entries(m.default)) TOPUP[id] = [...(TOPUP[id] ?? []), ...secs]
+}
 
 function merge(u: BaseUnit): Unit {
   const x = EXTRA[u.id]
   if (!x) return { ...u, kfp: [] }
   return {
     ...u,
-    sections: [...u.sections, ...x.sections],
+    sections: [...u.sections, ...x.sections, ...(TOPUP[u.id] ?? [])],
     mcqs: [...u.mcqs, ...x.questions],
     kfp: x.kfp,
     keyNumbers: x.keyNumbers,
