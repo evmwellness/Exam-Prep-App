@@ -31,8 +31,9 @@ export default function Home({ progress, specialty, setSpecialty }: Props) {
       <section className="rounded-xl border border-slate-200 bg-white p-5 sm:p-6">
         <h1 className="text-2xl font-bold sm:text-3xl">check revision for AKT &amp; KFP</h1>
         <p className="mt-2 max-w-2xl leading-relaxed text-slate-600">
-          The last {UNITS.length} RACGP <em>check</em> units, each with a ~20-minute study summary, AKT questions (single best answer and
-          extended matching) and a KFP case (single best answer, choose-N and extended matching). Pick a unit, start the timer and go.
+          The last {UNITS.length} RACGP <em>check</em> units, each with 20 minutes of reading and learning, followed by AKT questions (single best
+          answer and extended matching) and a KFP case in the current MCQ format (single best answer, choose-N and extended matching, no
+          short answers). Pick a unit, start the 20-minute reading timer, then test yourself.
         </p>
         <div className="mt-4 flex flex-wrap gap-3 text-sm">
           <span className="rounded-lg bg-slate-100 px-3 py-1.5">

@@ -2,11 +2,13 @@ import { useEffect, useState } from 'react'
 import type { Unit } from '../types'
 import type { UnitProgress } from '../useProgress'
 import QuestionSet from './QuestionSet'
-import { questionMax, readingMinutes } from '../data'
+import { questionMax } from '../data'
 import SpecialtyBadge from './SpecialtyBadge'
 import { go } from '../useHashRoute'
 
 type Tab = 'summary' | 'akt' | 'kfp'
+
+const READING_MINUTES = 20
 
 interface Props {
   unit: Unit
@@ -16,17 +18,14 @@ interface Props {
 }
 
 export default function UnitView({ unit, progress, onUpdate, onMcq }: Props) {
-  const readMin = readingMinutes(unit)
   const aktPoints = unit.mcqs.reduce((n, q) => n + questionMax(q), 0)
   const kfpPoints = unit.kfp.reduce((n, k) => n + k.questions.reduce((m, q) => m + questionMax(q), 0), 0)
-  // ~45 s per scored item
-  const aktMin = Math.max(1, Math.round(aktPoints * 0.75))
-  const kfpMin = Math.max(1, Math.round(kfpPoints * 0.75))
-  const SESSION_SECONDS = (readMin + aktMin + kfpMin) * 60
+  // The timer covers the reading only; questions come afterwards, untimed
+  const READING_SECONDS = READING_MINUTES * 60
 
   const [tab, setTab] = useState<Tab>('summary')
   const [running, setRunning] = useState(false)
-  const [left, setLeft] = useState(SESSION_SECONDS)
+  const [left, setLeft] = useState(READING_SECONDS)
 
   useEffect(() => {
     if (!running) return
@@ -40,14 +39,11 @@ export default function UnitView({ unit, progress, onUpdate, onMcq }: Props) {
 
   const mm = String(Math.floor(left / 60)).padStart(2, '0')
   const ss = String(left % 60).padStart(2, '0')
-  // suggested pacing follows the tab order
-  const phase =
-    left > (aktMin + kfpMin) * 60 ? 'Read the summary' : left > kfpMin * 60 ? 'AKT questions' : left > 0 ? 'KFP case' : 'Session complete'
 
   const tabs: { id: Tab; label: string; hint: string }[] = [
-    { id: 'summary', label: 'Summary', hint: `~${readMin} min` },
-    { id: 'akt', label: `AKT (${aktPoints} Qs)`, hint: `~${aktMin} min` },
-    { id: 'kfp', label: `KFP (${kfpPoints} Qs)`, hint: `~${kfpMin} min` },
+    { id: 'summary', label: 'Summary', hint: `${READING_MINUTES} min` },
+    { id: 'akt', label: 'AKT', hint: `${aktPoints} Qs` },
+    { id: 'kfp', label: 'KFP', hint: `${kfpPoints} Qs` },
   ]
 
   return (
@@ -83,20 +79,34 @@ export default function UnitView({ unit, progress, onUpdate, onMcq }: Props) {
           <span className="font-mono text-xl font-semibold tabular-nums">
             {mm}:{ss}
           </span>
-          <span className="text-sm text-slate-600">{running || left < SESSION_SECONDS ? phase : `${Math.round(SESSION_SECONDS / 60)}-minute study session`}</span>
+          <span className="text-sm text-slate-600">
+            {left === 0
+              ? 'Reading done. Now try the questions.'
+              : running || left < READING_SECONDS
+                ? 'Read and learn the summary'
+                : `${READING_MINUTES}-minute reading block (questions afterwards)`}
+          </span>
           <div className="ml-auto flex gap-2">
             <button
               onClick={() => setRunning((r) => !r)}
               disabled={left === 0}
               className="rounded-lg bg-teal-700 px-3 py-1.5 text-sm font-medium text-white hover:bg-teal-800 disabled:opacity-50"
             >
-              {running ? 'Pause' : left < SESSION_SECONDS ? 'Resume' : 'Start timer'}
+              {running ? 'Pause' : left < READING_SECONDS ? 'Resume' : 'Start reading'}
             </button>
-            {left < SESSION_SECONDS && (
+            {left === 0 && (
+              <button
+                onClick={() => setTab('akt')}
+                className="rounded-lg bg-teal-700 px-3 py-1.5 text-sm font-medium text-white hover:bg-teal-800"
+              >
+                Go to AKT →
+              </button>
+            )}
+            {left < READING_SECONDS && (
               <button
                 onClick={() => {
                   setRunning(false)
-                  setLeft(SESSION_SECONDS)
+                  setLeft(READING_SECONDS)
                 }}
                 className="rounded-lg border border-slate-300 px-3 py-1.5 text-sm hover:bg-white"
               >
@@ -128,8 +138,8 @@ export default function UnitView({ unit, progress, onUpdate, onMcq }: Props) {
               <h2 className="text-lg font-semibold">Overview</h2>
               <p className="mt-2 text-[16px] leading-relaxed text-slate-700">{unit.overview}</p>
             </section>
-            {unit.sections.map((s) => (
-              <section key={s.heading} className="rounded-xl border border-slate-200 bg-white p-5 sm:p-6">
+            {unit.sections.map((s, i) => (
+              <section key={i} className="rounded-xl border border-slate-200 bg-white p-5 sm:p-6">
                 <h2 className="text-lg font-semibold">{s.heading}</h2>
                 <ul className="mt-2 space-y-2">
                   {s.points.map((p, i) => (
