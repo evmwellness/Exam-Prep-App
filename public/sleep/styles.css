@@ -355,3 +355,190 @@ summary:focus-visible {
   font-size: 12px;
   color: #333;
 }
+
+/* ---- Tabs ---- */
+
+.tabs,
+.seg {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+  padding: 4px;
+  background: var(--panel);
+  border: 1.5px solid var(--line);
+  border-radius: 14px;
+}
+
+.seg {
+  margin-bottom: 16px;
+}
+
+.tabs button,
+.seg button {
+  border: 0;
+  background: transparent;
+  border-radius: 10px;
+  padding: 10px 8px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.tabs [aria-selected='true'],
+.seg [aria-selected='true'] {
+  background: var(--panel-2);
+  color: var(--text);
+  box-shadow: 0 0 0 1px var(--accent) inset;
+}
+
+#view-guides {
+  margin-top: 18px;
+}
+
+/* ---- Guides ---- */
+
+.guide .note {
+  color: var(--muted);
+  font-size: 14px;
+  margin: 0 0 14px;
+}
+
+.guide details {
+  background: var(--panel);
+  border: 1.5px solid var(--line);
+  border-radius: 16px;
+  padding: 0 16px;
+  margin-bottom: 10px;
+}
+
+.guide summary {
+  cursor: pointer;
+  font-weight: 700;
+  padding: 14px 0;
+  list-style-position: outside;
+}
+
+.guide details[open] summary {
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 10px;
+}
+
+.guide details p,
+.guide details li {
+  font-size: 15px;
+}
+
+.guide ul {
+  padding-left: 20px;
+  margin: 8px 0;
+}
+
+.guide li {
+  margin: 6px 0;
+}
+
+.guide strong {
+  color: #fff;
+}
+
+.guide .refs {
+  font-size: 12px !important;
+  color: var(--muted);
+  border-top: 1px dashed var(--line);
+  padding-top: 8px;
+  margin: 12px 0 14px;
+}
+
+.sleep-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15px;
+  margin: 4px 0 8px;
+}
+
+.sleep-table th,
+.sleep-table td {
+  text-align: left;
+  padding: 8px 6px;
+  border-bottom: 1px solid var(--line);
+}
+
+.sleep-table th {
+  color: var(--muted);
+  font-weight: 600;
+  font-size: 13px;
+}
+
+/* ---- Reading speed check ---- */
+
+.reading-test {
+  background: var(--panel);
+  border: 1.5px solid var(--accent);
+  border-radius: 16px;
+  padding: 16px;
+  margin-top: 16px;
+}
+
+.reading-test h3 {
+  margin: 0 0 4px;
+}
+
+.muted {
+  color: var(--muted);
+  font-size: 14px;
+  margin: 0 0 12px;
+}
+
+.passage {
+  font-size: 17px;
+  line-height: 1.6;
+  margin: 8px 0 16px;
+}
+
+.passage p {
+  margin: 0 0 12px;
+}
+
+#rt-quiz fieldset {
+  border: 0;
+  padding: 0;
+  margin: 0 0 14px;
+}
+
+#rt-quiz legend {
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+#rt-quiz label {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  padding: 6px 0;
+  cursor: pointer;
+}
+
+#rt-quiz input {
+  accent-color: var(--accent);
+  width: 18px;
+  height: 18px;
+  margin: 2px 0 0;
+  flex: none;
+}
+
+.rt-result {
+  margin-top: 12px;
+  font-size: 15px;
+}
+
+.rt-result .wpm {
+  font-size: 34px;
+  font-weight: 700;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
+
+.reading-test .secondary {
+  margin-top: 12px;
+}

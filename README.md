@@ -69,5 +69,10 @@ A separate, dependency-free PWA served at `/sleep/` alongside the exam app
   no timer, or a custom length. The last 30 s fade out where the browser allows it.
 - Black screen mode while playing (dim countdown fades to pure black; tap to
   show). Optional "keep screen on".
+- Guides tab: evidence-based baby sleep information (safe sleep, white noise
+  safety, normal sleep needs, bedtime routines, sleep training methods and
+  outcomes, when to get help) and study guidance (retrieval practice, spacing,
+  interleaving, sleep, background music, realistic speed reading), each with
+  cited sources, plus a reading-speed check with comprehension questions.
 - Keeps playing when the phone is locked or you switch to other apps. It plays
   through an `<audio>` element with Media Session lock-screen controls.

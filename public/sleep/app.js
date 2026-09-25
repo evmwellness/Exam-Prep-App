@@ -532,3 +532,155 @@ soundUrl(settings.sound).catch(() => {})
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}))
 }
+
+// ---------- sections: Sounds & timer / Guides ----------
+
+function tabGroup(buttons, onSelect) {
+  const select = (btn, focus) => {
+    for (const b of buttons) {
+      const on = b === btn
+      b.setAttribute('aria-selected', String(on))
+      b.tabIndex = on ? 0 : -1
+      $(b.getAttribute('aria-controls')).hidden = !on
+    }
+    if (focus) btn.focus()
+    onSelect(btn)
+  }
+  buttons.forEach((b, i) => {
+    b.addEventListener('click', () => select(b))
+    b.addEventListener('keydown', (e) => {
+      const d = { ArrowRight: 1, ArrowLeft: -1 }[e.key]
+      if (!d) return
+      e.preventDefault()
+      select(buttons[(i + d + buttons.length) % buttons.length], true)
+    })
+  })
+  return select
+}
+
+const selectView = tabGroup([$('tab-sounds'), $('tab-guides')], (b) => store.set('view', b.id))
+const selectGuide = tabGroup([$('seg-baby'), $('seg-study')], (b) => store.set('guide', b.id))
+if (store.get('view', 'tab-sounds') === 'tab-guides') selectView($('tab-guides'))
+if (store.get('guide', 'seg-baby') === 'seg-study') selectGuide($('seg-study'))
+
+// ---------- reading speed check ----------
+
+const PASSAGE = [
+  'Most of us assume that reading something again is the best way to learn it. It feels productive: the words look familiar, the ideas seem clear, and we finish with a sense that the material has sunk in. Psychologists call this feeling fluency, and it turns out to be a poor guide to what we will actually remember next week.',
+  'In a series of classroom experiments, students read short science passages and then either read them again or closed the book and wrote down everything they could recall. Straight afterwards, the re-readers did slightly better. But when the same students were tested several days later, the pattern reversed. Those who had practised recalling the passage remembered far more, even though they had spent less time looking at the text.',
+  'The effort of retrieval seems to be the key. Each time we pull a fact out of memory, we strengthen the pathways that lead back to it and notice the gaps we still need to fill. Spreading that practice across several days multiplies the benefit, because a little forgetting between sessions makes the next act of recall more powerful.',
+  'Sleep plays its part too. During deep sleep the brain replays recent experiences and links them with older knowledge, which is why a good night after studying often beats a late night spent cramming. The practical lesson is simple: read once with care, then test yourself, leave a gap, and test yourself again.',
+]
+const QUIZ = [
+  {
+    q: 'Straight after studying, which group did slightly better?',
+    options: ['Students who re-read the passage', 'Students who practised recalling it', 'Both groups scored the same'],
+    answer: 0,
+  },
+  {
+    q: 'What happened when students were tested days later?',
+    options: ['Re-readers remembered more', 'Students who practised recall remembered far more', 'Neither group remembered much'],
+    answer: 1,
+  },
+  {
+    q: 'According to the passage, why does spacing practice help?',
+    options: [
+      'It lets you avoid forgetting entirely',
+      'A little forgetting makes the next recall more powerful',
+      'It gives you more time to re-read',
+    ],
+    answer: 1,
+  },
+]
+const PASSAGE_WORDS = PASSAGE.join(' ').split(/\s+/).length
+
+let rtStart = 0
+let rtWpm = 0
+
+$('rt-start').addEventListener('click', () => {
+  $('rt-passage').replaceChildren(
+    ...PASSAGE.map((text) => {
+      const p = document.createElement('p')
+      p.textContent = text
+      return p
+    }),
+  )
+  $('rt-start').hidden = true
+  $('rt-result').hidden = true
+  $('rt-quiz').hidden = true
+  $('rt-passage').hidden = false
+  $('rt-done').hidden = false
+  $('rt-passage').scrollIntoView({ behavior: 'smooth', block: 'start' })
+  rtStart = performance.now()
+})
+
+$('rt-done').addEventListener('click', () => {
+  const minutes = (performance.now() - rtStart) / 60000
+  rtWpm = Math.round(PASSAGE_WORDS / Math.max(minutes, 0.05))
+  $('rt-passage').hidden = true
+  $('rt-done').hidden = true
+  const form = $('rt-quiz')
+  form.replaceChildren(
+    ...QUIZ.map((item, i) => {
+      const fs = document.createElement('fieldset')
+      const lg = document.createElement('legend')
+      lg.textContent = `${i + 1}. ${item.q}`
+      fs.append(lg)
+      item.options.forEach((opt, j) => {
+        const label = document.createElement('label')
+        const input = document.createElement('input')
+        input.type = 'radio'
+        input.name = `q${i}`
+        input.value = String(j)
+        input.required = true
+        label.append(input, document.createTextNode(opt))
+        fs.append(label)
+      })
+      return fs
+    }),
+  )
+  const submit = document.createElement('button')
+  submit.className = 'primary'
+  submit.type = 'submit'
+  submit.textContent = 'See my result'
+  form.append(submit)
+  form.hidden = false
+  form.scrollIntoView({ behavior: 'smooth', block: 'start' })
+})
+
+$('rt-quiz').addEventListener('submit', (e) => {
+  e.preventDefault()
+  const data = new FormData(e.target)
+  const correct = QUIZ.filter((item, i) => Number(data.get(`q${i}`)) === item.answer).length
+  let advice
+  if (rtWpm > 900) {
+    advice =
+      'That’s faster than anyone can read with full understanding (research puts the limit well under 900 words/min), so you probably skimmed or tapped early. Try again at your normal pace.'
+  } else if (correct < 2) {
+    advice =
+      'Comprehension was low, so this speed is costing you understanding. Try slowing down a little and previewing the text first.'
+  } else if (rtWpm > 450) {
+    advice =
+      'That’s fast. For material you need to learn, check you can still recall the key points without looking back.'
+  } else if (rtWpm < 180) {
+    advice =
+      'That’s on the steady side, which is fine for study. Previewing headings first and reading with a clear purpose can help you move faster through the easier parts.'
+  } else {
+    advice = 'That’s a typical adult reading speed with good understanding, which is right where you want to be for study.'
+  }
+  const result = $('rt-result')
+  result.innerHTML = `<div class="wpm">${rtWpm} words/min</div>
+    <div>${correct} of ${QUIZ.length} questions right · typical adult: about 240 words/min</div>
+    <p>${advice}</p>`
+  const again = document.createElement('button')
+  again.className = 'secondary'
+  again.textContent = 'Try again'
+  again.addEventListener('click', () => {
+    result.hidden = true
+    e.target.hidden = true
+    $('rt-start').hidden = false
+  })
+  result.append(again)
+  result.hidden = false
+  e.target.hidden = true
+})
