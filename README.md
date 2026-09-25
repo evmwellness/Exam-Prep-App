@@ -55,3 +55,14 @@ Question data lives in `src/data/akt/group*.ts` (AKT MCQs), `src/data/kfpMcq/gro
 (KFP MCQs), `src/data/kfpEmq/group*.ts` (KFP EMQ themes), and `src/data/kfp/group*.ts`
 (legacy KFP case bank), typed against `src/types.ts`. Add new files following
 the same schema and wire them into the matching `index.ts` aggregator.
+
+## Seven Minute Sunrise (kids' morning routine)
+
+A separate, standalone page at `public/seven-minute-sunrise/index.html`
+(served at `/seven-minute-sunrise/`). It is a 7-minute morning brain warm-up
+for children aged 3, 5 and 7: breathe (1 min), cross-body moves (2 min), a
+listening/brain game (2½ min) and a calm-down (1½ min). It includes a
+year-long calendar with a different plan every day, voice narration (the
+device's built-in speech), a timer, "do it alone / with a partner / whole
+family" labels, tips for each age, and a star chart. All data stays in the
+browser's local storage.
