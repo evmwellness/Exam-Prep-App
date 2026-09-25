@@ -4,6 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#FFC530">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Sunrise">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" type="image/png" href="icon-192.png">
 <title>Seven Minute Sunrise</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -668,6 +675,8 @@ function confetti(){
     if(t-t0<3500)requestAnimationFrame(fr);else{ctx.clearRect(0,0,cv.width,cv.height);cv.hidden=true;}})(t0);
 }
 
+// Offline support: reuse the site's service worker, which precaches this page.
+if("serviceWorker" in navigator&&location.protocol==="https:"){navigator.serviceWorker.register("../sw.js",{scope:"../"}).catch(()=>{});}
 renderKidsBar();setView(location.hash==="#calendar"?"cal":location.hash==="#grownups"?"grown":"today");
 </script>
 </body>
