@@ -32,6 +32,8 @@ export default defineConfig({
       workbox: {
         globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2}'],
         navigateFallback: `${base}index.html`,
+        // Seven Minute Sunrise is a separate standalone page under public/.
+        navigateFallbackDenylist: [/\/seven-minute-sunrise\//],
       },
       devOptions: {
         enabled: false,
