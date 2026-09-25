@@ -1,0 +1,16 @@
+{
+  "name": "Seven Minute Sunrise",
+  "short_name": "Sunrise",
+  "description": "A 7-minute morning brain warm-up for kids",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "theme_color": "#FFC530",
+  "background_color": "#EAF5FF",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

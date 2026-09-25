@@ -1,0 +1,683 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#FFC530">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Sunrise">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" type="image/png" href="icon-192.png">
+<title>Seven Minute Sunrise</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@500;700;800&display=swap">
+<style>
+:root{
+  --sun:#FFC530; --tang:#FF7A3D; --berry:#FF4F93; --grape:#7A5CFF; --mint:#1FCB94; --sky:#29B6F6;
+  --ink:#2A2150; --bg:#EAF5FF; --surface:#FFFFFF; --surface2:#F4F0FF; --text:#2A2150; --muted:#5E5790; --line:#D9D2F5;
+  --shadow:0 3px 0 rgba(42,33,80,.12);
+  --display:"Fredoka","Baloo 2","Comic Sans MS","Trebuchet MS",system-ui,sans-serif;
+  --body:"Nunito","Segoe UI",system-ui,-apple-system,sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#16123A; --surface:#231D55; --surface2:#2C2566; --text:#F6F3FF; --muted:#BDB5EE; --line:#3F3685;
+    --shadow:0 3px 0 rgba(0,0,0,.35); color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#16123A; --surface:#231D55; --surface2:#2C2566; --text:#F6F3FF; --muted:#BDB5EE; --line:#3F3685;
+  --shadow:0 3px 0 rgba(0,0,0,.35); color-scheme:dark;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--text);font-family:var(--body);font-size:16px;line-height:1.5;margin:0}
+h1,h2,h3{font-family:var(--display);font-weight:700;line-height:1.15;text-wrap:balance;margin:0}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{outline:3px solid var(--sky);outline-offset:2px}
+.wrap{max-width:780px;margin:0 auto;padding-inline:16px;padding-block:12px 48px}
+
+/* header */
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding-block:6px 12px}
+.brand{display:flex;align-items:center;gap:10px}
+.brand h1{font-size:1.45rem;letter-spacing:.2px}
+.brand small{display:block;font-family:var(--body);font-weight:700;font-size:.78rem;color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
+.kids{display:flex;gap:6px;flex-wrap:wrap}
+.kidchip{display:flex;align-items:center;gap:6px;padding:4px 10px 4px 4px;border-radius:999px;background:var(--surface);border:2px solid var(--line);font-weight:800;font-size:.85rem}
+.kidchip .av{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;font-size:1rem;background:var(--kc)}
+.kidchip b{font-variant-numeric:tabular-nums}
+
+/* tabs */
+.tabs{display:flex;gap:6px;background:var(--surface);border:2px solid var(--line);border-radius:18px;padding:5px;margin-block:4px 16px}
+.tabs button{flex:1;border:0;background:transparent;padding:10px 6px;border-radius:13px;font-family:var(--display);font-weight:600;font-size:1rem;color:var(--muted)}
+.tabs button[aria-selected="true"]{background:var(--grape);color:#fff;box-shadow:var(--shadow)}
+
+/* hero */
+.hero{border-radius:26px;padding:20px;color:var(--ink);background:var(--tc,var(--sun));position:relative;overflow:hidden;box-shadow:var(--shadow)}
+.hero::after{content:"";position:absolute;right:-60px;top:-60px;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,.28)}
+.hero .eyebrow{font-weight:800;font-size:.8rem;text-transform:uppercase;letter-spacing:.08em;position:relative;z-index:1}
+.hero h2{font-size:clamp(1.6rem,5.5vw,2.3rem);margin-block:4px 10px;position:relative;z-index:1;padding-right:64px}
+.hero .eyebrow{padding-right:64px}
+.hero .themeEmoji{position:absolute;right:18px;top:14px;font-size:3.2rem;z-index:1}
+.pills{display:flex;flex-wrap:wrap;gap:8px;position:relative;z-index:1}
+.pill{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.75);color:var(--ink);border-radius:999px;padding:5px 12px;font-weight:800;font-size:.88rem}
+.hero p{position:relative;z-index:1;margin:10px 0 0;font-weight:700;max-width:52ch}
+.startBtn{position:relative;z-index:1;margin-top:16px;display:flex;align-items:center;justify-content:center;gap:10px;width:100%;border:0;border-radius:20px;background:var(--ink);color:#fff;font-family:var(--display);font-weight:700;font-size:1.35rem;padding:16px;box-shadow:0 5px 0 rgba(0,0,0,.25);transition:transform .1s}
+.startBtn:active{transform:translateY(3px);box-shadow:0 2px 0 rgba(0,0,0,.25)}
+.viewing{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px;font-weight:800;color:var(--muted);flex-wrap:wrap}
+.linkBtn{border:0;background:none;color:var(--grape);font-weight:800;text-decoration:underline;padding:4px}
+:root[data-theme="dark"] .linkBtn{color:#B7A6FF}
+
+/* step cards */
+.sectionHead{display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin-block:22px 10px}
+.sectionHead h3{font-size:1.25rem}
+.sectionHead span{color:var(--muted);font-weight:700;font-size:.9rem}
+.steps{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+.step{display:grid;grid-template-columns:78px 1fr;background:var(--surface);border:2px solid var(--line);border-radius:22px;overflow:hidden}
+.step .side{background:var(--sc);color:var(--sf,var(--ink));display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:4px;padding:12px 4px}
+.step .side .num{font-family:var(--display);font-weight:700;font-size:.8rem;text-transform:uppercase;letter-spacing:.06em}
+.step .side .em{font-size:2rem;line-height:1}
+.step .side .dur{font-family:var(--display);font-weight:700;font-variant-numeric:tabular-nums;background:rgba(255,255,255,.7);color:var(--ink);border-radius:999px;padding:1px 8px;font-size:.85rem}
+.step .body{padding:12px 14px 14px;min-width:0}
+.step .kind{font-weight:800;font-size:.75rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.step h4{font-family:var(--display);font-size:1.2rem;margin:2px 0 6px;font-weight:700}
+.step ol{margin:0 0 8px;padding-left:20px}
+.step ol li{margin-bottom:2px}
+.tag{display:inline-block;font-size:.75rem;font-weight:800;border-radius:999px;padding:2px 9px;background:var(--surface2);color:var(--text);margin-left:6px;vertical-align:middle}
+.ages{display:grid;gap:6px;margin-top:6px}
+.age{display:grid;grid-template-columns:auto 1fr;gap:8px;align-items:start;font-size:.9rem;background:var(--surface2);border-radius:12px;padding:6px 10px}
+.age .who{font-weight:800;white-space:nowrap;display:flex;align-items:center;gap:5px}
+.age .dot{width:10px;height:10px;border-radius:50%;background:var(--kc);display:inline-block}
+
+.doneRow{display:flex;flex-wrap:wrap;gap:8px}
+.starBtn{display:flex;align-items:center;gap:8px;border:2px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 14px 6px 6px;font-weight:800}
+.starBtn .av{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;background:var(--kc);font-size:1.1rem}
+.starBtn[aria-pressed="true"]{border-color:var(--kc);background:color-mix(in srgb,var(--kc) 22%,var(--surface))}
+.starBtn .s{font-size:1.1rem;filter:grayscale(1);opacity:.4}
+.starBtn[aria-pressed="true"] .s{filter:none;opacity:1}
+
+.note{background:var(--surface);border:2px dashed var(--line);border-radius:18px;padding:14px 16px;margin-top:16px}
+.note h3{font-size:1.05rem;margin-bottom:4px}
+.note p{margin:0}
+
+/* calendar */
+.calHead{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px}
+.calHead h2{font-size:1.5rem}
+.navBtn{width:44px;height:44px;border-radius:14px;border:2px solid var(--line);background:var(--surface);font-size:1.2rem;font-weight:800}
+.legend{display:flex;flex-wrap:wrap;gap:8px 14px;font-size:.85rem;font-weight:700;color:var(--muted);margin-bottom:10px}
+.grid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}
+.dow{text-align:center;font-weight:800;font-size:.75rem;color:var(--muted);text-transform:uppercase;padding-bottom:2px}
+.cell{aspect-ratio:1/1.12;max-width:100%;border:2px solid var(--line);background:var(--surface);border-radius:14px;padding:4px;display:flex;flex-direction:column;align-items:center;justify-content:space-between;min-width:0}
+.cell .dn{font-family:var(--display);font-weight:700;font-size:1rem;font-variant-numeric:tabular-nums;align-self:flex-start;line-height:1}
+.cell .mi{font-size:1.05rem;line-height:1}
+.cell .dots{display:flex;gap:2px;min-height:8px}
+.cell .dots i{width:7px;height:7px;border-radius:50%;background:var(--kc)}
+.cell.today{background:var(--sun);color:var(--ink);border-color:var(--tang)}
+.cell.sel{outline:3px solid var(--grape);outline-offset:1px}
+.cell.blank{visibility:hidden}
+.weekList{margin-top:16px;display:grid;gap:8px}
+.weekItem{display:flex;gap:10px;align-items:center;background:var(--surface);border:2px solid var(--line);border-radius:16px;padding:8px 12px;font-weight:700}
+.weekItem .e{font-size:1.5rem}
+.weekItem small{display:block;color:var(--muted);font-weight:700}
+
+/* grown-ups */
+.card{background:var(--surface);border:2px solid var(--line);border-radius:22px;padding:16px;margin-bottom:14px}
+.card h3{font-size:1.2rem;margin-bottom:8px}
+.card p{margin:0 0 8px;max-width:65ch}
+.field{display:grid;gap:4px;margin-bottom:10px}
+.field label{font-weight:800;font-size:.9rem}
+.field input,.field select{font:inherit;padding:10px 12px;border-radius:12px;border:2px solid var(--line);background:var(--surface2);color:var(--text);width:100%}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.btn{border:0;border-radius:14px;padding:10px 16px;font-family:var(--display);font-weight:600;font-size:1rem;background:var(--grape);color:#fff;box-shadow:var(--shadow)}
+.btn.alt{background:var(--surface2);color:var(--text);border:2px solid var(--line);box-shadow:none}
+details.tip{border-top:2px solid var(--line);padding-block:8px}
+details.tip summary{font-weight:800;cursor:pointer}
+details.tip p{margin:6px 0 0}
+.tipNow{background:var(--surface2);border-radius:14px;padding:12px 14px;margin-bottom:10px}
+.tipNow b{font-family:var(--display);font-size:1.05rem}
+.muted{color:var(--muted)}
+
+/* player */
+.player{position:fixed;inset:0;z-index:50;background:var(--pc);color:var(--pf);display:flex;flex-direction:column;overflow-y:auto;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);transition:background .5s}
+.pInner{max-width:640px;width:100%;margin:0 auto;padding-inline:16px;padding-block:10px 20px;display:flex;flex-direction:column;gap:12px;flex:1}
+.pTop{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.pTop button{border:0;background:rgba(255,255,255,.8);color:var(--ink);border-radius:14px;height:44px;min-width:44px;padding:0 12px;font-weight:800}
+.pTotal{font-family:var(--display);font-weight:700;font-variant-numeric:tabular-nums;background:rgba(255,255,255,.8);color:var(--ink);border-radius:14px;padding:8px 14px}
+.segBar{display:grid;grid-template-columns:60fr 120fr 150fr 90fr;gap:4px}
+.segBar div{height:10px;border-radius:99px;background:rgba(255,255,255,.45);overflow:hidden}
+.segBar div i{display:block;height:100%;background:var(--ink);width:0}
+.ringWrap{position:relative;width:min(62vw,250px);aspect-ratio:1;max-width:100%;margin:4px auto 0}
+.ringWrap svg{width:100%;height:100%;transform:rotate(-90deg)}
+.ringWrap .center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
+.ringWrap .bigEm{font-size:3.4rem;line-height:1}
+.ringWrap .segTime{font-family:var(--display);font-weight:700;font-size:2.4rem;font-variant-numeric:tabular-nums;line-height:1}
+.ringWrap .bubble{position:absolute;inset:14%;border-radius:50%;background:rgba(255,255,255,.35);transform:scale(.7);transition:transform 4s ease-in-out}
+.ringWrap .bubble.in{transform:scale(1)}
+.breathWord{text-align:center;font-family:var(--display);font-weight:700;font-size:1.2rem;min-height:1.6em}
+.pTitle{text-align:center}
+.pTitle .k{font-weight:800;text-transform:uppercase;letter-spacing:.1em;font-size:.8rem}
+.pTitle h2{font-size:clamp(1.6rem,6vw,2.2rem)}
+.pCard{background:rgba(255,255,255,.88);color:var(--ink);border-radius:20px;padding:14px 16px}
+.pCard ol{margin:0;padding-left:22px;font-weight:700;font-size:1.05rem}
+.pCard ol li{margin-bottom:4px}
+.pCard .ages .age{background:rgba(42,33,80,.07);color:var(--ink)}
+.pCtrls{display:flex;gap:12px;justify-content:center;margin-top:auto;padding-top:6px}
+.pCtrls button{border:0;border-radius:20px;background:var(--ink);color:#fff;font-family:var(--display);font-weight:700;font-size:1.15rem;padding:14px 22px;min-width:120px;box-shadow:0 4px 0 rgba(0,0,0,.25)}
+.pCtrls button.ghost{background:rgba(255,255,255,.85);color:var(--ink)}
+.finish{text-align:center;display:flex;flex-direction:column;gap:14px;align-items:center;padding-top:20px}
+.finish .trophy{font-size:5rem;line-height:1}
+.finish h2{font-size:2.2rem}
+.finish p{margin:0;font-weight:700;max-width:40ch}
+.finish .doneRow{justify-content:center}
+.finish .starBtn{background:rgba(255,255,255,.9);color:var(--ink)}
+#confetti{position:fixed;inset:0;pointer-events:none;z-index:60}
+
+@media (max-width:460px){
+  .step{grid-template-columns:62px 1fr}
+  .step .side .em{font-size:1.6rem}
+  .cell{border-radius:10px;padding:3px}
+  .cell .mi{font-size:.9rem}
+  .grid{gap:3px}
+  .kidchip span.nm{display:none}
+  .age{grid-template-columns:1fr;gap:2px}
+}
+@media (prefers-reduced-motion: reduce){
+  .ringWrap .bubble{transition:none}
+  .startBtn,.player{transition:none}
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="top">
+    <div class="brand">
+      <svg width="44" height="44" viewBox="0 0 44 44" aria-hidden="true">
+        <circle cx="22" cy="26" r="11" fill="#FFC530"/>
+        <g stroke="#FF7A3D" stroke-width="3.5" stroke-linecap="round">
+          <line x1="22" y1="4" x2="22" y2="9"/><line x1="6" y1="12" x2="9.5" y2="15.5"/><line x1="38" y1="12" x2="34.5" y2="15.5"/>
+          <line x1="1" y1="27" x2="6" y2="27"/><line x1="38" y1="27" x2="43" y2="27"/>
+        </g>
+        <rect x="0" y="34" width="44" height="10" fill="#1FCB94" rx="3"/>
+        <text x="22" y="31" text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="700" font-size="12" fill="#2A2150">7</text>
+      </svg>
+      <div><h1>Seven Minute Sunrise</h1><small>Morning brain warm-ups</small></div>
+    </div>
+    <div class="kids" id="kidsBar"></div>
+  </header>
+
+  <nav class="tabs" role="tablist" aria-label="Sections">
+    <button role="tab" id="tab-today" aria-selected="true" data-v="today">☀️ Today</button>
+    <button role="tab" id="tab-cal" aria-selected="false" data-v="cal">📅 Calendar</button>
+    <button role="tab" id="tab-grown" aria-selected="false" data-v="grown">🧑 Grown-ups</button>
+  </nav>
+
+  <main id="view"></main>
+</div>
+
+<div class="player" id="player" hidden></div>
+<canvas id="confetti" hidden></canvas>
+
+<script>
+/* ---------- Activity library ---------- */
+function A(e,n,say,steps,a3,a5,a7,cues,m){return {e,n,say,steps,a3,a5,a7,cues:cues||[],m:m||"any"};}
+
+const BREATHE=[
+A("🎈","Balloon Belly","Put your hands on your tummy. Breathe in through your nose and blow your belly up like a giant balloon. Now let the air out slowly. Psssssss!",["Hands on your tummy","Breathe in through your nose, tummy puffs out","Breathe out through your mouth, tummy goes flat","Do it 6 slow times"],"Put their hands on your tummy first, then on their own. Puff up together.","Count 3 in and 3 out.","Count 4 in, hold for 2, then 6 out.",["Bigger balloon... and psssss.","Slow and gentle. Your balloon is the best one yet!","One more giant balloon!"]),
+A("🌸","Flower and Candle","Hold up a pretend flower in one hand and a pretend candle in the other. Smell the flower, mmmm. Now blow out the candle, whoooo.",["Hold a pretend flower and a pretend candle","Sniff the flower slowly through your nose","Blow the candle out slowly through your mouth","Swap hands halfway"],"Use a real flower or a toy if you have one. Big sniff, big blow.","Blow so gently the candle only flickers.","Blow out 5 birthday candles one at a time in one long breath.",["Smell the flower... blow the candle.","Swap hands! Flower in the other hand now.","So calm. Last flower!"]),
+A("🐰","Bunny Breaths","Let's be bunnies! Three quick sniffs through your nose, sniff sniff sniff, then one long breath out. Wiggle your bunny nose!",["Sit like a bunny with paws up","Three quick sniffs in through your nose","One long, slow breath out","Repeat 6 times"],"Two sniffs is fine. Wiggle noses together first.","Three sniffs, then breathe out for 4.","Three sniffs, then out for 6, making no sound at all.",["Sniff, sniff, sniff... and out.","Wiggly bunny noses!","Last bunny breath. Lovely!"]),
+A("🐍","Snake Hiss","Sit up tall. Breathe in through your nose, then let it out as a long, slow snake hiss. Sssssssss. How long can your snake be?",["Sit up tall like a snake ready to slither","Breathe in through your nose","Hiss out slowly: ssssss","Try to make each hiss longer"],"Make the hiss together and see whose snake is sillier.","Count how long your hiss lasts.","Beat your own record each time, nice and quiet.",["Long, long snake. Sssss.","Can your snake be even longer?","Last big hiss!"]),
+A("☕","Hot Chocolate","Hold a pretend mug of hot chocolate with both hands. Smell it, mmm, chocolatey! Now blow on it gently to cool it down.",["Hold a pretend mug with two hands","Smell the hot chocolate slowly","Blow gently to cool it down","Don't spill! Slow and steady"],"Hold a real cup together. Take it slow.","Pretend to add marshmallows between breaths.","Blow so softly the pretend steam just wiggles.",["Smell... and cool it down.","Add a marshmallow! Now another breath.","Yum. Last sip breath."]),
+A("⭐","Star Breathing","Hold up one hand like a star. With your other finger, trace the star. Breathe in going up, breathe out going down.",["Spread one hand like a star","Trace up a finger: breathe in","Trace down: breathe out","Go around the whole star twice"],"Trace their fingers for them, slowly.","Trace the whole star once, then swap hands.","Close your eyes and trace without looking.",["Up... and down.","Swap hands! Trace the other star.","Nearly finished. Nice and slow."]),
+A("🌈","Rainbow Arms","Stand tall. Sweep your arms up high in a big rainbow as you breathe in. Float them down as you breathe out.",["Stand tall with arms by your sides","Sweep arms up in a rainbow, breathe in","Float arms down, breathe out","Make each rainbow slower"],"Hold hands and make the rainbow together.","Name a rainbow colour on each breath.","Say all seven rainbow colours in order, one per breath.",["Up goes the rainbow... and down.","Red, orange, yellow...","Green, blue, purple. Beautiful!"]),
+A("🐝","Bumblebee Hum","Breathe in through your nose. Now close your lips and hum like a buzzy bumblebee. Mmmmmmm. Feel the tickle!",["Sit comfortably","Breathe in through your nose","Close your lips and hum out: mmmm","Put a hand on your chest and feel the buzz"],"Hum a tune together. Touch cheeks to feel the buzz.","Hum as long as you can.","Cover your ears gently and hum. It sounds like a bee inside your head!",["Buzz, buzz, hummm.","Feel the buzzy tickle?","Last big hum!"]),
+A("🐉","Friendly Dragon","You are a friendly dragon. Take a big breath in, then breathe out warm dragon fire. Haaaaa! Not too scary. A kind dragon!",["Take a big dragon breath in","Breathe out with a big haaaa","Stretch your arms like wings","Be a kind, calm dragon"],"Make gentle dragon faces at each other.","Breathe fire slowly so it lasts ages.","Every breath, make the fire quieter until it is a whisper.",["Haaaa... kind dragon fire.","Flap your wings once. Now breathe.","Quietest dragon breath ever!"]),
+A("🟦","Square Breathing","Draw a square in the air with your finger. Breathe in along the top, hold down the side, breathe out along the bottom, and hold up the other side.",["Draw a square in the air","Top side: breathe in for 4","Right side: hold for 4","Bottom: breathe out for 4. Left side: hold for 4"],"Just draw the square and breathe in and out. No holding needed.","Count to 3 on each side.","Count to 4 and draw the square as slowly as a snail.",["In, 2, 3, 4. Hold, 2, 3, 4.","Out, 2, 3, 4. Hold, 2, 3, 4.","Last square. You're a square breathing expert!"]),
+A("🧸","Teddy Ride","Lie on your back and put a teddy on your tummy. Breathe in and lift teddy up. Breathe out and bring teddy down. Give teddy a gentle ride!",["Lie on your back","Put a soft toy on your tummy","Breathe in: teddy goes up","Breathe out: teddy goes down"],"Lie next to them with your own teddy and copy.","Make teddy rise slowly so he doesn't fall.","Close your eyes and count 10 teddy rides.",["Up goes teddy... and down.","Is your teddy asleep yet?","Last ride for teddy."]),
+A("🪶","Feather Float","Hold out your hand with a pretend feather on it. Blow very gently to keep it floating in the air. Too hard and it flies away!",["Hold out a flat hand","Imagine a feather on it","Blow slowly and gently","Keep the feather floating"],"Use a real tissue scrap and blow it along the floor.","Blow so gently it just wobbles.","Blow the feather in a slow circle around the room with your breath.",["Gentle, gentle blow.","Keep it floating...","Catch your feather. Well done!"]),
+A("🌊","Ocean Waves","Breathe in and your wave rolls up. Breathe out and the wave crashes on the sand. Shhhhhh.",["Sit or lie down","Breathe in: the wave rolls in","Breathe out: shhhh, the wave goes out","Move your arms like waves"],"Make shhh sounds together, rocking side to side.","Make big waves then tiny waves.","Make the waves slower and slower until the sea is calm.",["Wave in... and shhhhh.","Tiny, calm waves now.","The ocean is still. Beautiful."]),
+A("✋","Five Finger Breath","Spread one hand. Trace up your thumb and breathe in. Trace down and breathe out. Go all the way around your fingers.",["Spread your hand wide","Trace up a finger: breathe in","Trace down: breathe out","Do all five fingers, then swap hands"],"Trace their hand for them and count fingers together.","Say a colour on each finger.","Say something you're grateful for on each finger.",["Up and in... down and out.","Swap hands now.","Last finger. Great breathing!"]),
+A("🫧","Giant Bubble","Pretend you have a bubble wand. Breathe in, then blow out super slowly to make the biggest bubble in the whole world!",["Hold a pretend bubble wand","Breathe in slowly","Blow out very slowly","Watch your giant bubble float away"],"Blow real bubbles if you have them!","Blow a tiny bubble, then a giant one.","Make your bubble as big as the house with one long breath.",["Slow blow... it's getting bigger!","Pop! Make another one.","Biggest bubble ever!"]),
+A("🌀","Pinwheel","Hold a pretend pinwheel. Blow fast to spin it fast. Now blow slowly to spin it slowly. Let's finish slow and calm.",["Hold a pretend pinwheel","Three quick blows: fast spin!","Three long slow blows: slow spin","Finish with slow blows"],"Spin your finger in the air as they blow.","Feel the difference between fast and slow breaths.","Notice: which one makes your body feel calmer?",["Fast spin! Now slow...","Slow spin. Nice and calm.","Slowest pinwheel ever."]),
+A("🌳","Tall Tree","Stand tall like a tree. Breathe in and grow your branches up high. Breathe out and let them sway in the breeze.",["Stand with feet planted like roots","Breathe in: arms grow up high","Breathe out: sway gently","Stay strong in your roots"],"Hold their hands and sway together.","Stand on tiptoes when you breathe in.","Try it standing on one foot.",["Grow tall... and sway.","Strong roots, soft branches.","Last big tree breath."]),
+A("🐘","Elephant Trunk","Clasp your hands together to make a trunk. Swing it down and breathe in. Lift it high and spray the water out. Pffffff!",["Clasp hands into a trunk","Bend and swing down: breathe in","Lift your trunk up high","Spray the water out: pfff!"],"Make elephant noises together.","Spray water to the left, then the right.","Slow motion elephant: 4 counts down, 4 counts up.",["Scoop the water... spray!","Spray the other way!","Last spray. Splash!"]),
+A("🦉","Owl Eyes","Sit still like an owl. Turn your head to one side and breathe in. Come back to the middle and breathe out. Hoooo. Now the other side.",["Sit very still","Turn head to the side: breathe in","Back to the middle: breathe out, hooo","Now the other side"],"Make big owl eyes with hands around your eyes.","Blink slowly like a sleepy owl.","Only move your head. Keep everything else statue still.",["Turn... and hoooo.","Other side... hoooo.","Wise owl. Well done."]),
+A("🐱","Sleepy Cat","Get on your hands and knees like a cat. Breathe in and look up. Breathe out, round your back and tuck your head. Meow!",["Hands and knees like a cat","Breathe in: tummy down, look up","Breathe out: round your back like a cross cat","Go slowly"],"Meow and purr together.","Stretch one leg back after each breath.","Stretch the opposite arm and leg out at the same time.",["Look up... round like a cat.","Purrrr. Nice and slow.","Big cat stretch. Meow!"])
+];
+
+const MOVES=[
+A("🥁","Cross Crawl March","March on the spot. Touch your right hand to your left knee, then your left hand to your right knee. Criss cross, criss cross!",["March on the spot","Right hand taps left knee","Left hand taps right knee","Keep crossing over the middle"],"Hold their hands and guide them across. Any crossing counts!","March to a beat: 1, 2, 1, 2.","Try it in slow motion, then super fast, then with eyes closed.",["Right hand, left knee! Left hand, right knee!","Faster! Faster!","Now super slow motion...","Freeze! And go again!","Elbows to knees now. Criss cross!"],"solo"),
+A("♾️","Lazy Eight","Put your thumb up in front of your nose. Draw a giant sideways number eight in the air and follow your thumb with your eyes!",["Thumb up in front of your nose","Draw a big sideways 8 in the air","Follow your thumb with your eyes only","Swap hands, then use both hands together"],"Draw big circles with their hand in yours.","Make the 8 as big as you can.","Draw the 8 with your elbow, then your foot!",["Follow your thumb with your eyes.","Swap hands!","Both hands together now.","Now draw it with your nose!"],"solo"),
+A("🤚","Pat and Rub","Pat your head with one hand and rub your tummy in circles with the other. Tricky! Now swap!",["Pat the top of your head","Rub your tummy in circles","Do both together","Swap hands"],"Just pat head, then pat tummy. Take turns.","Pat and rub at the same time.","Swap every time the voice says swap, without stopping!",["Pat and rub!","Swap!","Swap again!","Can you go faster?"],"solo"),
+A("🦶","Opposite Toe Touch","Stand with feet apart. Reach your right hand down to your left toes. Stand up. Now left hand to right toes!",["Feet wide apart","Right hand reaches to left toes","Stand up tall","Left hand reaches to right toes"],"Touch knees instead of toes. That's great!","Touch toes 10 times each side.","Keep your other arm reaching to the sky.",["Right hand, left toes!","Left hand, right toes!","Keep going, superstar!","Nearly there!"],"solo"),
+A("🌬️","Windmill","Feet wide, arms out like a windmill. Spin down so one hand touches the opposite foot while the other reaches the sky!",["Feet wide, arms straight out","Twist and touch the opposite foot","Other arm points to the sky","Swap sides like a windmill"],"Spin arms in big circles, whooosh!","Say whoosh each time you swap.","Go slow and keep your arms straight like real windmill blades.",["Whoosh! Swap!","Big windmill arms!","Speedy windmill!","Slow windmill now."],"solo"),
+A("🦵","Heel Taps Behind","Kick one foot up behind you and tap it with the opposite hand. Now the other foot. Like a dance!",["Stand tall","Kick your foot up behind you","Tap it with your opposite hand","Swap sides and find a rhythm"],"Tap your own leg in front instead. Behind is tricky!","Do 10 taps each side.","Add a hop between each tap.",["Kick and tap!","Other side!","Find your rhythm!","Last few taps!"],"solo"),
+A("⭐","Star and Cross Jumps","Jump out into a big star! Now jump back and cross your arms and legs. Star! Cross! Star! Cross!",["Jump out into a star shape","Jump back with arms and legs crossed","Keep switching","Land softly like a cat"],"Star jumps with no crossing. Big arms!","Cross your arms each time you land.","Swap which leg is in front each cross jump.",["Star! Cross! Star! Cross!","Soft landings!","Switch front legs!","Last five!"],"solo"),
+A("👃","Nose and Ear Swap","Hold your nose with your right hand and your left ear with your left hand. Now clap and swap! Silly and tricky!",["Right hand holds your nose","Left hand holds your right ear, crossing over","Clap your hands","Swap: left hand on nose, right hand on left ear"],"Touch nose, then touch ears. Giggles guaranteed.","Try 5 swaps in a row.","Speed it up and keep going without mixing up!",["Clap and swap!","Swap again!","Faster!","Giggle break, then swap!"],"solo"),
+A("🐻","Bear Crawl","Get down on your hands and feet. Walk like a big bear, moving the opposite hand and foot together. Grrr!",["Hands and feet on the floor, bottom up","Right hand and left foot move together","Then left hand and right foot","Crawl around the room like a bear"],"Crawl on hands and knees. Roar!","Crawl forward, then backward.","Crawl in slow motion without your knees touching the floor.",["Grrr! Big bear steps!","Go backwards now!","Sleepy bear, slow motion.","Last bear lap!"],"solo"),
+A("🥷","Ninja Moves","Ninja time! Slowly lift one knee up and balance. Punch slowly forward with the opposite arm. Hi-yah! Now the other side.",["Stand in a strong ninja stance","Lift one knee up and balance","Punch slowly with the opposite arm","Swap sides, silent as a ninja"],"Lift a knee and say hi-yah! Hold their hand to balance.","Hold each balance for 3 seconds.","Hold each balance for 5 seconds without a wobble.",["Hi-yah! Other side.","Silent ninja!","Hold the balance...","Last ninja move!"],"solo"),
+A("🦩","Flamingo Balance","Stand on one leg like a flamingo. Stretch your arms out wide. Count to ten. Now the other leg!",["Stand on one leg","Arms out wide","Count to 10","Swap legs"],"Hold onto a chair or your hand. Any balance counts!","Count to 10 on each leg.","Try it with your eyes closed!",["Balance... 1, 2, 3...","Swap legs!","Wobbly is okay. Try again!","Eyes closed if you're brave!"],"solo"),
+A("🤖","Robot March","You are a robot! March with stiff legs. Swing your opposite arm forward with each step. Beep boop!",["Stiff robot legs","Right leg steps, left arm swings","Left leg steps, right arm swings","Beep boop!"],"Stomp and beep together. Arms can just swing.","March forwards, then backwards.","Change speed when the voice says: turbo mode, battery low!",["Beep boop! Criss cross robot!","Turbo mode! Faster!","Battery low... sloooow...","Recharged! Beep boop!"],"solo"),
+A("🏊","Swimming Strokes","March on the spot and swim with your arms. Freestyle! Now backstroke! Now a big breaststroke!",["March on the spot","Freestyle arms: one arm, then the other","Backstroke arms: reach back","Breaststroke: push out and around"],"Doggy paddle with little hands!","Change stroke when you hear the voice.","Touch each hand to the opposite knee between strokes.",["Freestyle!","Backstroke!","Breaststroke!","Butterfly! Big and strong!"],"solo"),
+A("👏","Knee Clap Pattern","Clap your hands. Pat your knees. Now cross your arms and pat the opposite knees! Clap, pat, cross!",["Clap your hands","Pat both knees","Cross arms and pat opposite knees","Repeat: clap, pat, cross"],"Clap and pat knees. Crossing is a bonus!","Keep the pattern going 10 times.","Speed up without mixing up, then add a click!",["Clap, pat, cross!","Keep the beat!","Faster!","Back to slow."],"solo"),
+A("🥁","Drum Solo","Sit down and drum on your knees. Now cross your hands over and drum on the opposite knees. Rock star!",["Sit down","Drum on your knees","Cross hands over and drum opposite knees","Uncross and repeat"],"Drum any way you like! Loud and quiet.","Drum loud, then soft.","Copy patterns: 2 taps normal, 2 taps crossed.",["Rock star drumming!","Cross over!","Super quiet drums...","Big finish!"],"solo"),
+A("🚀","Rocket Launch","Squat down low. Count down: 5, 4, 3, 2, 1... blast off! Jump high, then land and touch opposite hand to knee.",["Crouch down low","Count down 5 to 1","Blast off! Jump up high","Land and cross touch: hand to opposite knee"],"Jump together holding hands.","Count down out loud yourself.","Count down backwards from 10 in a whisper.",["5, 4, 3, 2, 1, blast off!","Land softly!","Again! 5, 4, 3, 2, 1!","Final launch!"],"solo"),
+A("⛸️","Ice Skater","Slide one foot out to the side and swing the opposite arm across. Swish! Now the other side. Glide like a skater!",["Step or slide to one side","Swing the opposite arm across your body","Swish to the other side","Glide smoothly"],"Step side to side holding hands.","Make big smooth swishes.","Jump from side to side and balance on one foot each time.",["Swish! Swish!","Glide smoothly!","Speed skater!","Slow and graceful."],"solo"),
+A("🕰️","Tick Tock Clock","Hands on your head. Tick: lean to one side and lift the opposite knee. Tock: other side!",["Hands on your head","Tick: lean left, lift right knee","Tock: lean right, lift left knee","Keep the clock ticking"],"Just sway side to side saying tick tock.","Touch elbow to opposite knee each tick.","Tick tock faster, then like a slow grandfather clock.",["Tick! Tock!","Speedy clock!","Grandfather clock... slow...","Alarm clock! Ring ring!"],"solo"),
+A("🪞","Mirror Me","Face your partner. One of you is the leader and moves very slowly. The other is the mirror and copies. Then swap!",["Stand facing your partner","Leader moves slowly: arms, legs, faces","Mirror copies exactly","Swap leader halfway"],"The grown-up leads first with big, slow moves.","Try crossing arms over your body.","Leader crosses the middle a lot. Can the mirror keep up?",["Slow, slow moves...","Cross an arm over your body!","Swap leaders!","Silly face mirror!"],"partner"),
+A("🤲","Cross Clap Pat-a-Cake","Sit facing your partner. Clap your hands, clap right hands together, clap your hands, clap left hands together!",["Sit or stand facing each other","Clap your own hands","Clap right hand to partner's right hand","Clap your own, then left to left"],"Clap both hands together with your partner. Sing pat-a-cake.","Say a rhyme while you clap.","Add a knee pat and go faster.",["Clap, right, clap, left!","Keep the rhythm!","Faster!","Slow motion clapping."],"partner"),
+A("🚣","Row Your Boat","Sit facing your partner and hold hands. Rock back and forth, rowing your boat. Row, row, row your boat!",["Sit facing each other, feet touching","Hold hands","Rock back and forth together","Sing row, row, row your boat"],"Perfect for a grown-up and little one.","Row faster when the voice says stormy seas!","Hold opposite hands, right to right, and row.",["Row, row, row your boat...","Stormy seas! Faster!","Calm water now.","Gently down the stream..."],"partner"),
+A("🙌","Criss Cross High Fives","Face your partner. High five right hand to right hand, crossing over. Then left hand to left hand. Now low fives!",["Stand facing each other","Right hand high five, crossing over","Left hand high five, crossing over","Now try low fives, and elbows!"],"Big high fives with both hands!","Do 10 without missing.","Add a spin between each set.",["Right! Left!","Low fives!","Elbow bumps!","Big finish!"],"partner"),
+A("🧘","Back to Back Stand","Sit back to back with your partner. Link your arms. Now push against each other and try to stand up together!",["Sit back to back on the floor","Link your arms together","Push back against each other","Stand up together, then sit back down"],"Grown-up partner. Lean back and giggle.","Try to stand up 3 times.","Try to stand up without linking arms.",["Push together!","Teamwork! Try again!","Slow sitting down...","You did it together!"],"partner"),
+A("⚖️","See-Saw Squats","Hold hands with your partner. When one squats down, the other stands up. Like a see-saw!",["Face each other and hold hands","One person squats, one stands","Swap: up and down like a see-saw","Keep holding hands"],"Grown-up does little bends. Say up and down!","Go slow and steady.","Go faster, then hold at the bottom for 3.",["Up and down!","See-saw!","Faster!","Slow see-saw now."],"partner"),
+A("👥","Shadow Walk","One partner walks around and does moves. The other is their shadow and follows behind, copying everything. Swap!",["Leader walks and moves","Shadow follows behind","Shadow copies everything","Swap halfway"],"Hold hands and walk in a line together.","Try hopping, tiptoeing and giant steps.","Leader crosses arms over, touches opposite knees and shoulders.",["Follow your leader!","Tiptoes!","Swap leaders!","Giant steps!"],"partner"),
+A("🦢","Partner Balance","Hold hands with your partner. Both stand on one leg. Can you balance together? Now the other leg!",["Hold hands, facing each other","Both lift one leg","Balance together","Swap legs"],"Grown-up holds both hands. Count to 5.","Count to 10 together.","Balance holding only one hand, the opposite one.",["Balance! 1, 2, 3...","Other leg!","Wobble and laugh, then try again!","Longest balance yet!"],"partner"),
+A("🏀","Twist and Pass","Stand back to back. Pass a ball or teddy around, twisting to one side, then the other. Don't drop it!",["Stand back to back","Twist and pass the ball to one side","Partner twists and takes it","Pass all the way around. Change direction"],"Sit down and pass a teddy side to side.","Count your passes out loud.","Pass over your head and between your legs too.",["Twist and pass!","Change direction!","Over the head!","Keep going!"],"partner"),
+A("🐸","Frog Leap","Squat down like a frog. Take turns leaping over a pillow, then crossing hands to opposite knees when you land. Ribbit!",["Squat like a frog","Leap forward (or over a pillow)","Land and cross touch opposite knees","Partner takes a turn"],"Little frog jumps. Hold hands.","Leap as far as you can.","Leap sideways and backwards too.",["Ribbit! Leap!","Your partner's turn!","Sideways leap!","Big frog leap!"],"partner")
+];
+
+const GAMES=[
+/* solo */
+A("🙋","Simon Says","I'm Simon! Only do what I say if I say Simon says first. Listen carefully... Ready?",["Listen to every word","Only move if you hear Simon says","If you move by mistake, laugh and keep going","Stand still for tricks"],"A grown-up can do it with them. Laughing at mistakes is part of it.","Watch out for trick commands!","Stand totally still on tricks. Can you catch every one?",["Simon says touch your nose.","Simon says jump three times.","Clap your hands! Oops, did you? Simon didn't say!","Simon says touch your left ear with your right hand.","Simon says hop on one foot.","Sit down! Ha ha, Simon didn't say!","Simon says stand on tiptoes.","Simon says take a big, calm breath."],"solo"),
+A("🗿","Freeze Statue","Dance and wiggle when I say dance! When I say freeze, stay as still as a statue. Listen for my voice!",["Dance and wiggle","Freeze when you hear freeze","Stay still until you hear dance","Try a new silly pose every time"],"Grown-up freezes too! Big funny statue poses.","Hold statues longer each time.","Freeze in a balancing pose, on one foot.",["Dance!","Freeze!","Dance! Wiggle wiggle!","Freeze like a tree!","Dance!","Freeze like a superhero!","Dance!","Freeze! Best statue ever."],"solo"),
+A("🙃","Opposite Land","Welcome to Opposite Land! Whatever I say, do the opposite! If I say stand up, you sit down. Tricky!",["Listen to what I say","Do the opposite","Think before you move","Laugh if you get it wrong, and try the next one"],"Have them copy you instead. Opposite is hard at 3!","Do the opposite of: up, down, fast, slow.","Try more tricky ones: left and right, happy and sad face.",["Stand up!","Hands down!","Move super fast!","Make a happy face!","Be loud! Shhhh, opposite!","Go to sleep!","Look up!"],"solo"),
+A("🍌","Magic Word Story","Listen to my story. Every time you hear the word banana, jump! Listen really carefully...",["Stand ready","Listen to the story","Jump when you hear banana","Stay still for other words"],"Jump together. Big jumps!","Only jump for banana. Not for other fruit!","Jump for banana and clap for monkey.",["Once there was a monkey who loved bananas.","One morning she found an apple. Then a banana!","She shared her banana with a friend.","They found a bus, a bee, and a big bunch of bananas!","Banana! Banana! Banana!","The end. Great listening!"],"solo"),
+A("🧺","Remember My List","I will tell you a list of things to find. Listen, remember, then go and get them! Here's your list...",["Listen to the list","Say the list back out loud","Go and find each thing","Bring them back in the same order"],"Find just 1 or 2 things.","Find 3 things.","Find 4 or 5 things, in order.",["Find something soft, a spoon, and something red. Go!","Put them back, then listen for list two.","Find a sock, a book, and something round. Go!","Put them back. Last list...","Find something yellow and something that makes a sound. Go!"],"solo"),
+A("🐢","Slow Motion Hero","You're a slow motion superhero! Do everything as slowly as you possibly can. Ready? Sloooow!",["Move as slowly as you can","Slow walk to the door","Slow pick up a toy","Slow smile!"],"Copy the grown-up doing it slowly.","Try it super slow, then normal speed.","Do it in slow motion without wobbling.",["Slow motion walk to the door.","Slowly pick something up.","Slow motion jump!","Slow motion wave to someone.","Slowest smile ever."],"solo"),
+A("🚦","Traffic Lights","When I say green, run on the spot. Yellow, walk slowly. Red, freeze! Purple, spin around!",["Green: run on the spot","Yellow: slow walk","Red: freeze","Purple: spin around once"],"Only use green and red.","Use all four colours.","Add blue: touch opposite toes!",["Green!","Yellow...","Red!","Green!","Purple!","Red!","Green! Yellow! Red!"],"solo"),
+A("🥢","Echo Rhythms","I'll say a rhythm, then you tap it back on your knees. Tap, tap... tap. Listen carefully!",["Listen to the rhythm","Wait until it finishes","Tap it back on your knees","Try harder rhythms"],"Clap along with a grown-up.","Copy 3 or 4 taps.","Copy longer rhythms with a crossed tap.",["Tap, tap, tap.","Tap... tap, tap.","Tap tap tap, tap tap.","Tap, pause, tap tap tap.","Big one! Tap tap, tap, tap tap tap."],"solo"),
+A("🦘","Animal Moves","When I call an animal, move like it! Listen carefully, the animals change fast!",["Listen for the animal","Move like that animal","Change when you hear a new one","Freeze when you hear statue"],"Hop and roar with them. Keep it silly.","Make the sounds too.","Change without stopping in between.",["Kangaroo! Hop hop!","Snake! Slither!","Elephant! Stomp!","Statue! Freeze!","Penguin! Waddle!","Bird! Flap!","Tiny mouse... tiptoe."],"solo"),
+A("🎨","Colour Hunt","Colour hunt! Look around and touch something that is the colour I say. Quick as you can!",["Listen for the colour","Find and touch something that colour","Come back to the middle","Wait for the next colour"],"Point to the colour together.","Find two things the same colour.","Remember every colour you touched in order at the end.",["Red!","Blue!","Green!","Yellow!","White!","Something with two colours!","Tell a grown-up all the colours you found."],"solo"),
+A("✏️","Air Drawing","Draw in the air! Use your finger to draw what I say. Big, big drawings!",["Stand with space around you","Draw with your finger in the air","Make it huge","Swap hands"],"Draw circles and lines. Hold their hand.","Draw shapes and letters.","Draw with your other hand, then your elbow, then your foot!",["Draw a circle!","Draw a star!","Draw the first letter of your name.","Other hand! Draw a house.","Draw with your elbow!","Draw a smiley face."],"solo"),
+A("👂","Sound Detective","Close your eyes and be a sound detective. Listen hard. How many sounds can you hear? Count them on your fingers.",["Sit very still","Close your eyes","Listen for sounds near and far","Count them on your fingers"],"Sit on a lap and whisper the sounds you hear.","Count 3 sounds.","Find a near sound, a far sound, and your own breathing.",["Listen...","What's the quietest sound?","What's the furthest sound?","Keep counting...","Open your eyes. How many did you find?"],"solo"),
+A("🏃","Body Part Race","Touch the body part I say, as fast as you can, with the opposite hand! Ready?",["Listen for the body part","Touch it with the opposite hand","Cross over the middle of your body","Stay calm if you mix up"],"Any hand is fine! Touch nose, toes, tummy.","Use the opposite hand where you can.","Always use the opposite hand. No mistakes!",["Knee!","Shoulder!","Ear!","Elbow!","Ankle!","Tummy!","Knee! Shoulder! Ear!"],"solo"),
+A("🎈","Balloon Tap","Keep a balloon or scrunched sock in the air by tapping it. Swap hands every tap! Don't let it touch the floor.",["Get a balloon or soft ball","Tap it up into the air","Swap hands each tap","Count your taps"],"Catch and throw a balloon with a grown-up.","Count to 10 taps.","Only use alternate hands and try to beat your record.",["Tap, tap, swap!","Count your taps!","Use your elbow once!","Try your knee!","Beat your record!"],"solo"),
+/* partner */
+A("✊","Good Sport Rock Paper Scissors","Rock, paper, scissors! Play with your partner. The winner says good game. The other says good game, rematch? Practise being a great sport!",["Play rock, paper, scissors","Winner says: good game!","Other player says: good game, rematch?","Shake hands after every round"],"Grown-up plays with them and makes a big show of losing kindly.","Practise the words every round.","Keep score, and still say good game every time, win or lose.",["Rock, paper, scissors, shoot!","Good game! Rematch?","Rock, paper, scissors, shoot!","Remember: win or learn!","Last round. Shake hands!"],"partner"),
+A("🗣️","Tell Me Back","One partner gives an instruction. The other says it back, then does it! Like: touch the door, then jump twice.",["Partner gives an instruction","Say it back out loud first","Then do it","Swap turns"],"One-step instructions: touch the chair.","Two-step instructions.","Three-step instructions in order.",["Say it back, then do it!","Swap turns!","Make it a two-step instruction.","Three steps if you can!","Brilliant listening!"],"partner"),
+A("😜","Feelings Faces","One partner makes a feeling face: happy, sad, cross, scared, surprised. The other guesses the feeling and copies it!",["Make a feeling face","Partner guesses the feeling","Partner copies the face","Swap turns"],"Happy, sad and cross are enough.","Add scared and surprised.","Add a time you felt that way.",["What's that feeling?","Swap turns!","Try frustrated!","Try proud!","Now a calm face."],"partner"),
+A("✍️","Back Writing","Draw a shape on your partner's back with your finger. Can they guess it? Take turns!",["One partner turns around","Draw a shape on their back with a finger","They guess the shape","Swap"],"Draw circles and lines. Or a gentle back scratch!","Draw shapes: circle, square, triangle.","Draw letters or numbers.",["Draw slowly...","Swap turns!","Try a letter!","Try a smiley face!"],"partner"),
+A("👏","Copy My Clap","One partner claps a pattern. The other copies it exactly. Make the patterns longer and longer!",["One partner claps a pattern","The other listens and copies","Make it longer each time","Swap"],"Clap along with the grown-up. Short patterns.","3 or 4 claps.","Add knee pats and crossed claps.",["Listen, then copy!","Swap turns!","Make it longer!","Add a knee pat!"],"partner"),
+A("🤖","Robot Controller","One partner is the robot. The other gives robot instructions: two steps forward, turn around, wave. The robot does exactly what it hears!",["Choose who is the robot","Controller gives clear instructions","Robot does exactly what it hears","Swap"],"Grown-up is the robot first. Very silly.","Give 1 or 2 instructions at a time.","Give 3 instructions in a row and see if the robot remembers.",["Beep boop, awaiting instructions!","Swap! New robot!","Robot, walk backwards!","Robot power down."],"partner"),
+A("🎈","Team Balloon","Keep a balloon up in the air together. Count how many taps as a team. We win together!",["Stand near your partner","Tap the balloon to each other","Count your team taps","Don't let it touch the floor"],"Throw and catch a soft ball instead.","Count your taps out loud.","Only use your non-writing hand.",["Team taps!","Count out loud!","Beat your team record!","High five, team!"],"partner"),
+A("🧱","Turn Taking Tower","Take turns putting one block on a tower. If it falls, say: oops! Let's build again! Falling down is part of the fun.",["Take turns adding one block","Wait for your partner's turn","If it falls, say: oops! Let's build again!","Count the blocks"],"Stack 3 or 4 big blocks together.","Build as tall as you can.","Build with your other hand only.",["Your turn... now your partner's.","Wait for your turn.","If it falls: oops, build again!","How tall is it?"],"partner"),
+A("🔥","Hot and Cold","One partner hides a toy. The other searches while the hider says hot when they're close and cold when they're far!",["One partner hides a toy","Seeker searches","Hider says hot or cold","Swap when it's found"],"Hide it in easy spots, half showing.","Use warm and freezing too.","Use only whispers for clues.",["Hotter... colder...","Found it? Swap!","Freezing!","Boiling hot!"],"partner"),
+A("🐾","Guess My Animal","One partner acts out an animal with no sounds. The other guesses! Take turns.",["Think of an animal","Act it out without sounds","Partner guesses","Swap"],"Sounds are allowed!","No sounds, just moves.","Pick tricky animals like a snail or a jellyfish.",["What animal is it?","Swap!","Try something tricky!","Good guessing!"],"partner"),
+A("📖","One Line Story","Make up a story together! Take turns adding one sentence. Listen to your partner so your part makes sense!",["Partner starts: Once upon a time...","Take turns adding one sentence","Listen so the story makes sense","End with: The end!"],"Grown-up tells the story. Child adds one word.","Add one sentence each.","Remember the character's name and use it.",["Once upon a time...","Your turn!","Something surprising happens!","Now wrap it up..."],"partner"),
+A("🤝","Squeeze Message","Hold hands with your partner. Send a squeeze message: squeeze, squeeze... squeeze. Can they squeeze it back the same?",["Hold hands","Send a squeeze pattern","Partner squeezes it back","Swap"],"Two squeezes and a giggle.","3 or 4 squeezes.","Longer patterns with long and short squeezes.",["Send your message.","Squeeze it back!","Swap!","Make it trickier!"],"partner"),
+A("💬","What Would You Do","Partner asks: what would you do if you lost a game? Or if someone grabbed your toy? Talk about a calm idea, then act it out!",["Partner describes a tricky moment","Say how you might feel","Say a calm thing to do","Act it out together"],"Grown-up gives the answer and child copies.","Name the feeling and one calm idea.","Name two ideas and pick the best one.",["What if you lost a game?","What if you had to stop playing?","What if someone was bossy?","Great calm ideas!"],"partner"),
+A("⚾","Kind Words Catch","Throw a soft toy to your partner. When you catch it, say one nice thing about the person who threw it!",["Throw a soft toy gently","Catch it","Say something kind about the thrower","Throw it back"],"Roll the ball on the floor.","Throw and catch from a few steps apart.","Take a step back after every catch.",["Throw and say something kind!","Step back!","Catch with the other hand!","Kind words everywhere!"],"partner"),
+/* family */
+A("🚥","Red Light Green Light","A grown-up is the traffic light. Green light, walk towards them. Red light, freeze! Everyone wins when they reach the light!",["Grown-up stands at one end","Green light: everyone moves","Red light: freeze!","First one there becomes the traffic light"],"Hold their hand. They love the freeze!","No wobbles on red.","Add yellow: slow motion!",["Green light!","Red light!","Green light!","Yellow light... slow...","Red light!","Swap traffic lights!"],"family"),
+A("⚓","Captain's Orders","I'm the captain! Listen for my orders. Scrub the deck, climb the rigging, captain's coming! Salute and freeze!",["Scrub the deck: scrub the floor","Climb the rigging: climb on the spot","Captain's coming: salute and freeze","Man overboard: lie down"],"Scrub and salute with a grown-up.","Learn all four orders.","The captain adds a new order: hoist the sails, arms up!",["Scrub the deck!","Climb the rigging!","Captain's coming!","Man overboard!","Hoist the sails!","Captain's coming!"],"family"),
+A("📞","Whisper Telephone","Sit in a line. The first person whispers a message to the next. Pass it along. Does it come out the same at the end?",["Sit in a line","First person whispers a short message","Pass it along in a whisper","Last person says it out loud"],"Sit with a grown-up and whisper back.","Use a short, silly sentence.","Use a longer sentence with a number in it.",["Start whispering!","What did you hear?","New message, new person starts!","Did it change? Ha ha!"],"family"),
+A("🔢","Count to Ten Together","Stand in a circle. Count to ten, one person at a time, but no taking turns in order! If two people speak at once, start again.",["Stand in a circle","Anyone can say the next number","Only one voice at a time","If two talk together, start again from 1"],"Little one counts with a grown-up.","Watch everyone's faces and wait.","Try with eyes closed!",["Start counting...","Oops! Start again!","Look at each other.","Eyes closed now!"],"family"),
+A("🏁","Win or Learn Race","Silly race! Crab walk across the room. Winner says good game. Everyone else says I'll get you next time! Then all high five.",["Line up","Crab walk, bunny hop or bear crawl to the finish","Winner says: good game!","Others say: I'll get you next time! High fives"],"Grown-up races with them and pretends to lose... and gets it right, calmly.","Practise the good sport words.","Try a race where you have to go slow. The slowest wins!",["Ready, set, go!","Say good game!","Next race: bunny hops!","Slowest wins this time!","High fives everyone!"],"family"),
+A("👑","Follow the Leader","One person is the leader. Everyone follows in a line and copies. Change leaders when the voice says swap!",["Line up behind the leader","Copy what the leader does","Swap leaders when you hear swap","Everyone gets a turn"],"Put them at the front with a grown-up.","Leader does 3 different moves.","Leader crosses the middle: arm across, opposite knee!",["Follow the leader!","Swap leaders!","Swap leaders!","Last leader!"],"family"),
+A("🐭","Sleeping Giant","A grown-up is the sleeping giant. Everyone tiptoes past as quietly as mice. If the giant hears you, freeze!",["Grown-up lies down as the giant","Everyone tiptoes past","If the giant hears you, freeze!","Swap giants"],"Hold their hand and tiptoe together.","Tiptoe from one end to the other.","Try to reach the giant and touch their shoe without being heard.",["Shhh... tiptoe...","Freeze!","The giant is snoring...","Swap giants!"],"family"),
+A("🎵","Musical Statues","Everyone dances! When I say freeze, be a statue. Freeze in the pose I call!",["Dance around","Freeze when you hear freeze","Try to match the pose","No one is out: everyone keeps playing"],"Dance together. Everyone giggles.","Freeze and hold the pose for 3.","Freeze on one leg.",["Dance!","Freeze like a starfish!","Dance!","Freeze like a rocket!","Dance!","Freeze like a sleeping cat!"],"family"),
+A("🪑","What's Missing","A grown-up puts 5 things on the floor. Everyone looks, then closes their eyes. Take one thing away. What's missing?",["Put some objects on the floor","Everyone looks for 10 seconds","Close eyes. Someone takes one away","Guess what's missing"],"Use 3 things.","Use 5 things.","Use 7 things, or move two!",["Look carefully...","Close your eyes!","What's missing?","Take turns hiding one."],"family"),
+A("🎭","Feelings Freeze Dance","Everyone dances. When I call a feeling, freeze and show that feeling on your face and body!",["Dance around","Freeze when a feeling is called","Show the feeling with your face and body","Dance again"],"Happy, sad and grumpy faces together.","Name the feeling out loud.","Show how you calm that feeling down.",["Dance!","Happy!","Dance!","Frustrated! Now take a breath.","Dance!","Proud!","Calm."],"family"),
+A("🐒","Animal Parade","Everyone picks a favourite animal. Take turns: the leader shows their animal and everyone copies!",["Everyone chooses an animal","Leader shows their animal move","Everyone copies","Next person leads"],"Help them pick and copy.","Add the animal sound.","Cross-body animals: bear crawl, crab walk.",["Parade time!","Next leader!","Next leader!","Last animal!"],"family"),
+A("👋","Pass the Clap","Stand in a circle. Pass a clap around the circle. Then pass it faster. Then send it back the other way!",["Stand in a circle","Turn and clap to the next person","They pass it on","Change direction on reverse!"],"Clap together with a grown-up.","Pass it fast!","Pass two claps at once in different directions.",["Pass the clap!","Faster!","Reverse!","Two claps at once!"],"family"),
+A("🙋‍♀️","Kids Say","Like Simon says, but the kids take turns being Simon! Grown-ups have to listen carefully too.",["Choose a kid to be the leader","Leader says: Kids say... and a move","Only move if you hear Kids say","Swap leaders"],"Whisper ideas in their ear. They love bossing grown-ups!","Give 3 commands each.","Try sneaky trick commands.",["Who is leader?","Swap leaders!","Swap leaders!","Last leader!"],"family"),
+A("🧭","Treasure Map","A grown-up gives directions to hidden treasure: three steps forward, turn left, look under the cushion! Listen and follow.",["Grown-up hides a small treasure","Give step-by-step directions","Everyone listens and follows together","Find the treasure!"],"Hold hands and follow together.","Follow 2 directions at a time.","Remember 3 directions before moving.",["Listen to the directions...","Next direction!","Getting close!","Treasure found!"],"family")
+];
+
+const CALM=[
+A("🦋","Butterfly Hug","Cross your arms over your chest like butterfly wings. Tap one shoulder, then the other, slowly. Tap, tap, tap. Breathe slowly.",["Cross arms over your chest","Hands on shoulders like wings","Tap left, tap right, slowly","Breathe slowly while you tap"],"Give them a butterfly hug and tap together.","Tap slowly 20 times.","Close your eyes and think of your happy place.",["Tap, tap, slowly.","Breathe in... and out.","Your butterfly is calm."]),
+A("🔗","Pretzel Hook-Up","Cross your ankles. Stretch out your arms, cross your wrists and hold hands. Fold them into your chest. Like a pretzel! Breathe slowly.",["Cross your ankles","Arms out, cross wrists, hold hands","Fold your hands into your chest","Tongue on the roof of your mouth. Breathe slowly"],"Just cross arms and give yourself a hug.","Hold the pretzel for 5 breaths.","Hold for 10 breaths, then uncross and touch fingertips together.",["Twisty pretzel... slow breaths.","Uncross, touch fingertips together.","Calm and ready."]),
+A("🤏","Finger Taps","Tap your thumb to each finger as you say: I - am - calm - and - ready. Use both hands!",["Thumb taps pointer: I","Thumb taps middle: am","Thumb taps ring: calm","Thumb taps little: and ready!"],"Tap their fingers for them as you say it.","Say it with both hands together.","Do one hand forwards and one backwards!",["I am calm and ready.","Whisper it now.","Say it in your head."]),
+A("🦸","Superhero Pose","Stand like a superhero! Hands on your hips, chest up tall. Say: I can listen. I can wait. I can try again!",["Feet apart, hands on hips","Stand tall and proud","Take 3 big breaths","Say: I can listen. I can wait. I can try again"],"Pose together and say one line.","Say all three lines.","Add your own superpower line.",["I can listen.","I can wait.","I can try again!"]),
+A("🍝","Spaghetti Body","Make your body stiff like uncooked spaghetti. Stiff, stiff, stiff! Now you're cooked. Go floppy and wobbly!",["Squeeze every muscle: stiff spaghetti","Hold for 5","Now floppy cooked spaghetti!","Repeat 3 times"],"Wiggle their floppy arms gently.","Squeeze tight, then go totally floppy.","Squeeze one body part at a time: feet, legs, tummy, arms, face.",["Stiff spaghetti!","Floppy spaghetti...","Stiff... and floppy."]),
+A("🐢","Turtle Shell","Curl up into a turtle shell. Take three slow breaths inside your shell. When you're ready, slowly peek out, calm and ready!",["Curl up into a ball","Three slow breaths inside your shell","Think: I am safe, I am calm","Slowly come out"],"Cover them with a blanket shell.","Count your breaths.","Say what you'll do when you feel cross today: turtle time!",["Safe inside your shell.","Breathe...","Slowly peek out."]),
+A("❤️","Heart Listen","Put your hand on your heart. Can you feel it beating? Breathe slowly and feel it slowing down.",["Hand on your heart","Feel it beating","Breathe slowly","Notice it slowing"],"Let them feel your heartbeat, then theirs.","Count 10 heartbeats.","Is it faster or slower than at the start?",["Feel your heartbeat.","Slow breaths...","Your heart is calm."]),
+A("💌","Kind Wish","Close your eyes. Think of someone you love. Send them a kind wish: I hope you have a happy day!",["Close your eyes","Think of someone","Send them a kind wish","Send one to yourself too"],"Say a kind wish together for a pet or a teddy.","Wish for two people.","Send a kind wish to someone you find tricky.",["Who will you send a wish to?","Now one for yourself.","Kind hearts ready."]),
+A("🏆","Win or Learn","Say after me: Sometimes I win. Sometimes I learn. Both are okay! Now tap opposite knees as you say it.",["Say: Sometimes I win","Say: Sometimes I learn","Say: Both are okay!","Tap opposite knees while you say it"],"Say it together with a hug.","Say it three times.","Tell someone about something you learned when you didn't win.",["Sometimes I win.","Sometimes I learn.","Both are okay!"]),
+A("👂","Listening Ears On","Gently rub your ears from the top all the way down. Turn on your listening ears! Say: my ears are on. I'm ready to listen.",["Gently rub the edge of your ears","Top to bottom, 3 times","Say: my ears are on","Say: I'm ready to listen"],"Rub their ears gently, very giggly.","Rub your ears 3 times.","Tell a grown-up one thing you'll listen for today.",["Turn your ears on.","My ears are on.","I'm ready to listen."]),
+A("🍋","Lemon Squeeze","Pretend you have a lemon in each hand. Squeeze, squeeze, squeeze! Now drop them and let your hands go soft.",["Hold pretend lemons","Squeeze hard!","Drop them and relax","Repeat 3 times"],"Squeeze your hands together.","Squeeze for 5 seconds.","Squeeze one hand, then the other, then both.",["Squeeze!","Drop and relax.","Soft, floppy hands."]),
+A("☁️","Cloud Watching","Lie down on your back. Imagine fluffy clouds floating in the sky. What shapes do you see? Breathe slowly.",["Lie on your back","Close your eyes","Imagine clouds floating by","Name a shape you see"],"Lie down together and point at the ceiling clouds.","Name three shapes.","Put a worry on a cloud and watch it float away.",["Fluffy clouds...","What shapes can you see?","Let them float away."]),
+A("🗓️","Plan My Day","Tell a grown-up: one thing you'll do today, one thing you're excited about, and one tricky thing, plus what you'll do if it's tricky.",["Say one thing you'll do today","Say one thing you're excited about","Say one tricky thing","Say what you'll do if it gets tricky"],"Just the exciting thing.","Exciting thing and one plan.","All four, and a calm plan for the tricky bit.",["What's happening today?","What are you excited about?","What's your calm plan?"]),
+A("🌡️","Feelings Check","How is your engine running? Show me on your fingers. One is sleepy, three is just right, five is super fast. Breathe to get to three!",["Show 1 to 5 fingers","1 is slow and sleepy","3 is just right","5 is too fast. Breathe to get to 3"],"Use a happy or sad face instead.","Show fingers and say one word.","Say what helps your engine get to just right.",["Show me your engine.","Breathe to just right.","Just right and ready!"]),
+A("🙏","Three Thank Yous","Think of three things you're thankful for. Say them out loud or in your head. Hold up a finger for each one!",["Think of three good things","Hold up a finger for each","Say them out loud","Smile!"],"Say one thing they love.","Say three things.","Say three things and one person you're thankful for.",["One thing you're thankful for...","Two...","Three! Great thinking."]),
+A("⭐","Starfish Rest","Lie down in a big starfish shape. Squeeze your whole body, then let it go soft. Floating starfish.",["Lie down like a starfish","Squeeze your whole body tight","Let it all go soft","Breathe slowly"],"Lie down together and wiggle, then flop.","Squeeze and relax 3 times.","Relax one arm at a time, then your legs.",["Squeeze!","Let go...","Floating starfish."]),
+A("🤗","Big Hug Breath","Give yourself a big hug, or hug someone you love. Take three slow breaths together. Squeeze, breathe, and let go.",["Give a big hug","Three slow breaths","Squeeze gently","Let go and smile"],"A big family hug!","Hug and count three breaths.","Hug and breathe so you both breathe together.",["Big hug...","Breathe together...","Let go and smile."]),
+A("🌟","Brave Words","Put your hand on your heart and say: I am brave. I am kind. I can do hard things. Tap your opposite shoulders as you say it.",["Hand on your heart","Say: I am brave","Say: I am kind","Say: I can do hard things"],"Say one line together.","Say all three.","Add your own brave words.",["I am brave.","I am kind.","I can do hard things."]),
+A("🕯️","Candle Stare","Pretend there's a candle in front of you. Look at the flame and stay very still. Breathe so gently the flame doesn't move.",["Sit still","Look at a pretend candle","Breathe very gently","Stay still like a statue"],"Look at a real object and count to 5.","Stay still for 10 counts.","Stay still for a whole minute.",["Stay still...","Gentle breaths...","Blow it out gently. Done!"]),
+A("🌻","Growing Sunflower","Curl up small like a seed. Slowly grow and stretch up, up, up to the sun. Open your arms like a big sunflower!",["Curl up like a seed","Slowly grow up","Stretch to the sun","Open your arms wide and smile"],"Grow together holding hands.","Grow as slowly as you can.","Grow in 10 slow counts.",["A tiny seed...","Growing, growing...","Big, happy sunflower!"])
+];
+
+const THEMES=[
+["New Year Sparklers","🎆"],["Kangaroo Crew","🦘"],["Beach Explorers","🏖️"],["Ocean Divers","🐠"],["Space Rangers","🚀"],["Dinosaur Stompers","🦖"],["Jungle Explorers","🌴"],["Heart Helpers","💖"],["Superhero Squad","🦸"],["Bug Detectives","🐞"],["Rainbow Makers","🌈"],["Pirate Crew","🏴‍☠️"],["Farmyard Friends","🐄"],["Busy Bees","🐝"],["Easter Bunnies","🐰"],["Koala Cuddlers","🐨"],["Robot Builders","🤖"],["Circus Stars","🎪"],["Racing Drivers","🏎️"],["Dragon Riders","🐉"],["Treasure Hunters","💎"],["Music Makers","🎵"],["Arctic Penguins","🐧"],["Snowy Mountain Climbers","🏔️"],["Train Drivers","🚂"],["Knights and Castles","🏰"],["Owl Night Watch","🦉"],["Rainforest Frogs","🐸"],["Deep Sea Whales","🐋"],["Weather Wizards","⛅"],["Construction Crew","🚧"],["Safari Rangers","🦁"],["Butterfly Garden","🦋"],["Moon Bouncers","🌙"],["Sports Champions","⚽"],["Volcano Island","🌋"],["Garden Growers","🌻"],["Mermaid Lagoon","🧜"],["Firefighter Team","🚒"],["Magic Makers","🎩"],["Tiny Ants","🐜"],["Camping Crew","⛺"],["Planet Hoppers","🪐"],["Puppy Pals","🐶"],["Crazy Cats","🐱"],["Bubble Blasters","🫧"],["Ice Cream Makers","🍦"],["Balloon Adventurers","🎈"],["Unicorn Dreamers","🦄"],["Reindeer Runners","🦌"],["Festive Elves","🎄"],["Holiday Heroes","🎁"],["Sunny Starters","☀️"]
+];
+
+const TIPS=[
+["Eye level, one instruction","Get down to their eye level, say their name, wait for eye contact, then give one short instruction. Instructions shouted from another room are the easiest to tune out."],
+["Ask them to say it back","After an instruction, ask: What did I just ask you to do? Saying it back makes children process it, and you know it has landed."],
+["Use When... then...","Try: When your shoes are on, then we can go to the park. It is calmer than a threat and makes the order clear."],
+["Name the feeling first","Before fixing anything, name what they feel: You're really cross that you lost. Children calm faster when they feel understood. It does not mean giving in."],
+["Consequences: short and calm","State the consequence once before the activity. If it happens, follow through calmly with few words and no lecture. Talk it over later when everyone is calm."],
+["Model losing out loud","When you lose a game, narrate it: Oh, I lost. That's disappointing. Good game! Children learn to lose from watching grown-ups do it."],
+["Praise the effort","Say what they did: You kept trying even when it was hard. Specific effort praise helps children cope with setbacks better than you're so clever."],
+["Warn before transitions","Give a 2 minute warning before stopping an activity, and use a visual timer. Sudden stops are a common meltdown trigger."],
+["Why they hold it together at school","Many children use a lot of self-control at school and let it go at home, where they feel safest. It is common, and it shows they trust you. After-school snacks and downtime help."],
+["Connect before you correct","Even 5 to 10 minutes of one-on-one play a day, where the child leads, makes them more likely to cooperate at other times."],
+["Fewer words","Keep instructions under about 10 words. Long explanations during a tense moment get lost. Save the explanation for later."],
+["Repair after a meltdown","When everyone is calm, talk about what happened, what they felt, and what to try next time. Ending with a hug shows the relationship is safe."],
+["Make a calm corner","Set up a cosy spot with a cushion, a soft toy and a picture of these breathing exercises. Practise going there when calm, so it's familiar when upset."],
+["Check the basics","Hungry, tired or overstimulated children melt down more easily. Check sleep, snacks and screen time before assuming defiance."],
+["Offer two choices","Do you want to brush teeth before or after pyjamas? Choices give children some control and reduce power struggles."],
+["Don't argue about blame","If they blame you, reflect it without debating: You wish the rule was different. The rule is still the rule. Then stop talking."],
+["Rehearse the game rules","Before a game, ask: What do we do if we lose? Let them say the plan out loud, like: say good game and take a breath."],
+["Catch them listening","When they listen the first time, notice it straight away: You came as soon as I called. Thank you! What gets noticed gets repeated."],
+["Get attention playfully","Try whispering, a silly voice, or a secret signal like a double clap. Children often tune in faster to something unexpected."],
+["Breathe out loud yourself","When you feel frustrated, say: I'm feeling cross, so I'm going to take three breaths. It teaches them the skill in real life."],
+["Same order every morning","A predictable routine lowers stress. Use this 7 minute routine at the same point every day, like after breakfast or before shoes."],
+["Share leader turns fairly","With siblings, keep a visible roster of who leads the game each day. It reduces fairness arguments before they begin."],
+["Screen-free start","Try keeping screens off until after the morning routine. The 7 minutes goes better before a screen, and transitions away from screens are hard."],
+["Sleep matters","Children aged 3 to 5 generally need 10 to 13 hours of sleep including naps. Children 6 to 12 need 9 to 12 hours. Tired brains find self-control harder."],
+["Say what to do, not what to stop","Swap stop yelling for use your quiet voice. Children follow a clear action more easily than a no."],
+["When to get support","If meltdowns are very frequent, intense, or getting worse, or you're worried, it is worth talking to your GP or child health nurse. Asking for help is a strength."]
+];
+
+const SEG={
+  breathe:{label:"Breathe",color:"#1FCB94",fg:"#2A2150",dur:60,intro:"Step one. Breathing time!"},
+  move:{label:"Move",color:"#FF7A3D",fg:"#2A2150",dur:120,intro:"Step two. Let's get moving!"},
+  game:{label:"Brain game",color:"#7A5CFF",fg:"#FFFFFF",dur:150,intro:"Step three. Brain game time!"},
+  calm:{label:"Calm and ready",color:"#FF4F93",fg:"#2A2150",dur:90,intro:"Step four. Calm and ready."}
+};
+const ORDER=["breathe","move","game","calm"];
+const MODES={
+  solo:{label:"Do it alone",icon:"🧍",hint:"Each child does it on their own. Your 3 year old will still want a grown-up nearby."},
+  partner:{label:"With a partner",icon:"🤝",hint:"Pair up with a brother, sister or grown-up. The 3 year old goes best with a grown-up."},
+  family:{label:"Whole family",icon:"🏠",hint:"Everyone plays together, grown-ups too!"}
+};
+const WEEK_MODE=["family","solo","partner","solo","partner","family","partner"]; // Sun..Sat
+const KID_COLORS=["#7A5CFF","#FF7A3D","#1FCB94"];
+const TEN=["Ten more seconds!","Nearly there, ten seconds!","Ten seconds left, keep going!"];
+const END="Woohoo! You did all seven minutes! Your brain is switched on and ready for a brilliant day. Give yourself a big high five!";
+
+/* ---------- Storage ---------- */
+const store={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+let kids=store.get("sms.kids",[{name:"Big Kid",age:7,emoji:"🦊"},{name:"Middle Kid",age:5,emoji:"🐯"},{name:"Little Kid",age:3,emoji:"🐣"}]);
+let done=store.get("sms.done",{});
+let prefs=store.get("sms.prefs",{voice:"",rate:0.95,muted:false});
+
+/* ---------- Plan generation ---------- */
+const gcd=(a,b)=>b?gcd(b,a%b):a;
+function rot(arr,i,salt){const L=arr.length;const s=[7,5,11,13,3,1].find(x=>gcd(x,L)===1);return arr[(i*s+salt)%L];}
+function doy(dt){return Math.round((Date.UTC(dt.getFullYear(),dt.getMonth(),dt.getDate())-Date.UTC(dt.getFullYear(),0,1))/864e5);}
+function keyOf(dt){return dt.getFullYear()+"-"+String(dt.getMonth()+1).padStart(2,"0")+"-"+String(dt.getDate()).padStart(2,"0");}
+function planFor(dt){
+  const y=dt.getFullYear(),d=doy(dt),mode=WEEK_MODE[dt.getDay()];
+  let n=0;for(let i=0;i<d;i++){if(WEEK_MODE[new Date(y,0,1+i).getDay()]===mode)n++;}
+  const games=GAMES.filter(g=>g.m===mode);
+  const moves=MOVES.filter(m=>m.m===(mode==="partner"?"partner":"solo"));
+  const week=Math.floor(d/7);
+  const acts={breathe:rot(BREATHE,d,y%5),move:rot(moves,n,mode==="family"?4:0),game:rot(games,n,y%3),calm:rot(CALM,d,3+y%4)};
+  return {date:dt,d,mode,week,theme:THEMES[Math.min(week,THEMES.length-1)],tip:TIPS[week%TIPS.length],
+    segs:ORDER.map(k=>({k,dur:SEG[k].dur,a:acts[k]}))};
+}
+
+/* ---------- Helpers ---------- */
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const fmt=s=>{s=Math.max(0,Math.ceil(s));return Math.floor(s/60)+":"+String(s%60).padStart(2,"0");};
+const DOW=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+const MON=["January","February","March","April","May","June","July","August","September","October","November","December"];
+const niceDate=dt=>DOW[dt.getDay()]+" "+dt.getDate()+" "+MON[dt.getMonth()];
+const sameDay=(a,b)=>keyOf(a)===keyOf(b);
+const THEME_COLORS=["#FFC530","#29B6F6","#1FCB94","#FF7A3D","#FF4F93","#B79CFF"];
+function kidByAge(age){const i=kids.findIndex(k=>+k.age===age);return i<0?null:{...kids[i],i};}
+function monthStars(i){const now=new Date();const p=keyOf(now).slice(0,7);return Object.entries(done).filter(([k,v])=>k.startsWith(p)&&v[i]).length;}
+
+let view="today",selDate=new Date(),calMonth=new Date(selDate.getFullYear(),selDate.getMonth(),1);
+
+function agesHTML(a){
+  return [[3,a.a3],[5,a.a5],[7,a.a7]].map(([age,t])=>{const k=kidByAge(age);const c=k?KID_COLORS[k.i]:"#999";
+    return `<div class="age" style="--kc:${c}"><span class="who"><span class="dot"></span>${k?esc(k.emoji)+" "+esc(k.name):"Age"} · ${age}</span><span>${esc(t)}</span></div>`;}).join("");
+}
+function modeTag(a,pm){if(a.m==="any")return "";const m=MODES[pm==="family"?"family":a.m];return `<span class="tag">${m.icon} ${m.label}</span>`;}
+
+function renderKidsBar(){
+  $("#kidsBar").innerHTML=kids.map((k,i)=>`<div class="kidchip" style="--kc:${KID_COLORS[i]}" title="${esc(k.name)}: stars this month"><span class="av">${esc(k.emoji)}</span><span class="nm">${esc(k.name)}</span><b>⭐ ${monthStars(i)}</b></div>`).join("");
+}
+function doneButtons(dt){
+  const v=done[keyOf(dt)]||[];
+  return `<div class="doneRow">${kids.map((k,i)=>`<button class="starBtn" data-star="${i}" aria-pressed="${!!v[i]}" style="--kc:${KID_COLORS[i]}"><span class="av">${esc(k.emoji)}</span>${esc(k.name)} <span class="s">⭐</span></button>`).join("")}</div>`;
+}
+function toggleStar(dt,i,force){
+  const k=keyOf(dt);const v=done[k]||[false,false,false];v[i]=force===undefined?!v[i]:force;done[k]=v;store.set("sms.done",done);renderKidsBar();
+}
+
+function renderToday(){
+  const p=planFor(selDate),isToday=sameDay(selDate,new Date()),m=MODES[p.mode];
+  const tc=THEME_COLORS[p.week%THEME_COLORS.length];
+  $("#view").innerHTML=`
+    ${isToday?"":`<div class="viewing"><span>Viewing ${niceDate(selDate)}</span><button class="linkBtn" id="backToday">Back to today</button></div>`}
+    <section class="hero" style="--tc:${tc}">
+      <div class="themeEmoji" aria-hidden="true">${p.theme[1]}</div>
+      <div class="eyebrow">Day ${p.d+1} of the year · Week ${p.week+1}: ${esc(p.theme[0])}</div>
+      <h2>${niceDate(selDate)}</h2>
+      <div class="pills"><span class="pill">${m.icon} ${m.label}</span><span class="pill">⏱ 7 minutes</span><span class="pill">🧒 Ages 3, 5 and 7</span></div>
+      <p>${m.hint}</p>
+      <button class="startBtn" id="startBtn">▶ Start 7 minutes</button>
+    </section>
+    <div class="sectionHead"><h3>Today's four steps</h3><span>1 + 2 + 2½ + 1½ = 7 min</span></div>
+    <ol class="steps">
+      ${p.segs.map((s,i)=>{const S=SEG[s.k];return `<li class="step" style="--sc:${S.color};--sf:${S.fg}">
+        <div class="side"><span class="num">Step ${i+1}</span><span class="em">${s.a.e}</span><span class="dur">${fmt(s.dur)}</span></div>
+        <div class="body"><div class="kind">${S.label}</div><h4>${esc(s.a.n)}${modeTag(s.a,p.mode)}</h4>
+          <ol>${s.a.steps.map(t=>`<li>${esc(t)}</li>`).join("")}</ol>
+          <div class="ages">${agesHTML(s.a)}</div></div></li>`}).join("")}
+    </ol>
+    <div class="sectionHead"><h3>Who did it ${isToday?"today":"this day"}?</h3><span>Tap to give a star</span></div>
+    ${doneButtons(selDate)}
+    <div class="note"><h3>💡 Grown-up tip of the week: ${esc(p.tip[0])}</h3><p>${esc(p.tip[1])}</p></div>`;
+  $("#startBtn").onclick=()=>startSession(p);
+  const bt=$("#backToday");if(bt)bt.onclick=()=>{selDate=new Date();renderToday();};
+  document.querySelectorAll("#view [data-star]").forEach(b=>b.onclick=()=>{toggleStar(selDate,+b.dataset.star);b.setAttribute("aria-pressed",String(!!done[keyOf(selDate)][+b.dataset.star]));});
+}
+
+function renderCal(){
+  const y=calMonth.getFullYear(),mo=calMonth.getMonth(),first=new Date(y,mo,1).getDay(),days=new Date(y,mo+1,0).getDate(),today=new Date();
+  let cells="";for(let i=0;i<first;i++)cells+=`<div class="cell blank" aria-hidden="true"></div>`;
+  for(let d=1;d<=days;d++){const dt=new Date(y,mo,d),mode=WEEK_MODE[dt.getDay()],v=done[keyOf(dt)]||[];const p=planFor(dt);
+    cells+=`<button class="cell${sameDay(dt,today)?" today":""}${sameDay(dt,selDate)?" sel":""}" data-day="${d}" aria-label="${niceDate(dt)}: ${esc(p.segs[2].a.n)}, ${MODES[mode].label}">
+      <span class="dn">${d}</span><span class="mi">${MODES[mode].icon}</span><span class="dots">${v.map((x,i)=>x?`<i style="--kc:${KID_COLORS[i]}"></i>`:"").join("")}</span></button>`;}
+  const weeks=[];for(let d=1;d<=days;d++){const p=planFor(new Date(y,mo,d));if(!weeks.find(w=>w[0]===p.theme[0]))weeks.push(p.theme);}
+  $("#view").innerHTML=`
+    <div class="calHead"><button class="navBtn" id="prevM" aria-label="Previous month">‹</button><h2>${MON[mo]} ${y}</h2><button class="navBtn" id="nextM" aria-label="Next month">›</button></div>
+    <div class="legend"><span>🧍 Do it alone</span><span>🤝 With a partner</span><span>🏠 Whole family</span><span>● Stars earned</span></div>
+    <div class="grid">${["S","M","T","W","T","F","S"].map(x=>`<div class="dow">${x}</div>`).join("")}${cells}</div>
+    <div class="sectionHead"><h3>Themes this month</h3><span>Tap a day to see its plan</span></div>
+    <div class="weekList">${weeks.map(t=>`<div class="weekItem"><span class="e">${t[1]}</span><div>${esc(t[0])}<small>Weekly adventure theme</small></div></div>`).join("")}</div>`;
+  $("#prevM").onclick=()=>{calMonth=new Date(y,mo-1,1);renderCal();};
+  $("#nextM").onclick=()=>{calMonth=new Date(y,mo+1,1);renderCal();};
+  document.querySelectorAll("[data-day]").forEach(b=>b.onclick=()=>{selDate=new Date(y,mo,+b.dataset.day);setView("today");});
+}
+
+function renderGrown(){
+  const p=planFor(new Date());
+  $("#view").innerHTML=`
+    <div class="card"><h3>Your children</h3><p class="muted">Names and emoji show on the star chart and the age tips.</p>
+      ${kids.map((k,i)=>`<div class="row" style="margin-bottom:8px"><div class="field" style="flex:0 0 72px;margin:0"><label for="ke${i}">Emoji</label><input id="ke${i}" value="${esc(k.emoji)}" maxlength="4"></div><div class="field" style="flex:1;min-width:140px;margin:0"><label for="kn${i}">Name (age ${k.age})</label><input id="kn${i}" value="${esc(k.name)}" maxlength="20"></div></div>`).join("")}
+      <button class="btn" id="saveKids">Save names</button> <span id="savedMsg" class="muted" role="status"></span></div>
+    <div class="card"><h3>Narrator voice</h3>
+      <div class="field"><label for="voiceSel">Voice</label><select id="voiceSel"></select></div>
+      <div class="field"><label for="rateSel">Speed</label><select id="rateSel">${[[0.8,"Slow"],[0.95,"Normal"],[1.1,"Quick"]].map(([v,l])=>`<option value="${v}"${+prefs.rate===v?" selected":""}>${l}</option>`).join("")}</select></div>
+      <div class="row"><button class="btn" id="testVoice">🔊 Test voice</button><label class="row" style="gap:6px;font-weight:800"><input type="checkbox" id="muteChk"${prefs.muted?" checked":""}> Mute narrator</label></div>
+      <p class="muted" style="margin-top:8px">The voice comes from your phone or computer. Turn the ringer or silent switch off if you can't hear it.</p></div>
+    <div class="card"><h3>How the 7 minutes works</h3>
+      <p>Every day has the same four steps, so children know what's coming: <b>Breathe</b> (1 min), <b>Move</b> (2 min), <b>Brain game</b> (2½ min) and <b>Calm and ready</b> (1½ min).</p>
+      <p>The moves cross the middle of the body (right hand to left knee), which uses both sides of the body together. The games practise listening, waiting, remembering instructions and losing kindly. These are the skills behind following instructions and handling not winning. The breathing and calm steps practise settling down while everyone is already calm, so it's easier to use when they're upset.</p>
+      <p class="muted">Keep it light and playful. Short daily practice matters more than doing it perfectly. It's a helpful routine, not a treatment, and it won't replace connection, sleep and consistent boundaries.</p></div>
+    <div class="card"><h3>Grown-up tips</h3>
+      <div class="tipNow"><b>This week: ${esc(p.tip[0])}</b><p style="margin:4px 0 0">${esc(p.tip[1])}</p></div>
+      ${TIPS.map(t=>`<details class="tip"><summary>${esc(t[0])}</summary><p>${esc(t[1])}</p></details>`).join("")}</div>
+    <div class="card"><h3>Weekly rhythm</h3><p>Mon and Wed: 🧍 do it alone · Tue, Thu and Sat: 🤝 with a partner · Fri and Sun: 🏠 whole family.</p>
+      <p class="muted">${BREATHE.length} breathing exercises, ${MOVES.length} moves, ${GAMES.length} brain games and ${CALM.length} calm-downs combine into a different plan for every day of the year, with 53 weekly themes.</p></div>`;
+  $("#saveKids").onclick=()=>{kids=kids.map((k,i)=>({...k,name:$("#kn"+i).value.trim()||k.name,emoji:$("#ke"+i).value.trim()||k.emoji}));store.set("sms.kids",kids);renderKidsBar();$("#savedMsg").textContent="Saved!";};
+  fillVoices();
+  $("#voiceSel").onchange=e=>{prefs.voice=e.target.value;store.set("sms.prefs",prefs);};
+  $("#rateSel").onchange=e=>{prefs.rate=+e.target.value;store.set("sms.prefs",prefs);};
+  $("#muteChk").onchange=e=>{prefs.muted=e.target.checked;store.set("sms.prefs",prefs);};
+  $("#testVoice").onclick=()=>{const m=prefs.muted;prefs.muted=false;say("Good morning, superstars! Are your brains ready to wake up? Let's go!",true);prefs.muted=m;};
+}
+
+function setView(v){
+  view=v;document.querySelectorAll(".tabs button").forEach(b=>b.setAttribute("aria-selected",String(b.dataset.v===v)));
+  if(v==="today")renderToday();else if(v==="cal"){calMonth=new Date(selDate.getFullYear(),selDate.getMonth(),1);renderCal();}else renderGrown();
+  window.scrollTo(0,0);
+}
+document.querySelectorAll(".tabs button").forEach(b=>b.onclick=()=>setView(b.dataset.v));
+
+/* ---------- Voice ---------- */
+const synth=window.speechSynthesis;
+function voices(){try{return synth?synth.getVoices().filter(v=>/^en/i.test(v.lang)):[]}catch(e){return []}}
+function pickVoice(){
+  const vs=voices();if(!vs.length)return null;
+  if(prefs.voice){const v=vs.find(x=>x.name===prefs.voice);if(v)return v;}
+  const pref=[/karen/i,/catherine/i,/samantha/i,/google uk english female/i,/natural/i];
+  for(const r of pref){const v=vs.find(x=>r.test(x.name));if(v)return v;}
+  return vs.find(v=>/en-AU/i.test(v.lang))||vs.find(v=>/en-GB/i.test(v.lang))||vs[0];
+}
+function fillVoices(){
+  const sel=$("#voiceSel");if(!sel)return;const vs=voices(),cur=pickVoice();
+  sel.innerHTML=vs.length?vs.map(v=>`<option value="${esc(v.name)}"${cur&&v.name===cur.name?" selected":""}>${esc(v.name)} (${esc(v.lang)})</option>`).join(""):`<option>No voices found on this device</option>`;
+}
+if(synth&&"onvoiceschanged" in synth)synth.onvoiceschanged=fillVoices;
+function say(text,interrupt){
+  if(!synth||prefs.muted)return;
+  try{
+    if(interrupt)synth.cancel();
+    const v=pickVoice();
+    text.split(/(?<=[.!?])\s+/).forEach(part=>{if(!part.trim())return;const u=new SpeechSynthesisUtterance(part);if(v){u.voice=v;u.lang=v.lang;}u.rate=+prefs.rate||0.95;u.pitch=1.15;synth.speak(u);});
+  }catch(e){}
+}
+
+/* ---------- Sounds ---------- */
+let actx=null;
+function unlockAudio(){try{actx=actx||new (window.AudioContext||window.webkitAudioContext)();if(actx.state==="suspended")actx.resume();}catch(e){}}
+function chime(big){
+  if(!actx)return;const notes=big?[523,659,784,1047]:[659,880];
+  notes.forEach((f,i)=>{const o=actx.createOscillator(),g=actx.createGain(),t=actx.currentTime+i*0.13;o.type="sine";o.frequency.value=f;g.gain.setValueAtTime(0.0001,t);g.gain.exponentialRampToValueAtTime(0.25,t+0.02);g.gain.exponentialRampToValueAtTime(0.0001,t+0.5);o.connect(g).connect(actx.destination);o.start(t);o.stop(t+0.55);});
+}
+
+/* ---------- Player ---------- */
+let P=null,wake=null;
+const C=2*Math.PI*90;
+function cueTimes(s){
+  const cues=s.a.cues||[],k=cues.length,out=[];
+  cues.forEach((c,i)=>out.push({t:14+(i+0.5)*(s.dur-28)/Math.max(k,1),text:c}));
+  if(s.k==="move"||s.k==="game")out.push({t:s.dur-10,text:TEN[Math.floor(Math.random()*TEN.length)]});
+  return out;
+}
+async function requestWake(){try{if(navigator.wakeLock)wake=await navigator.wakeLock.request("screen");}catch(e){}}
+function releaseWake(){try{wake&&wake.release();}catch(e){}wake=null;}
+
+function startSession(plan){
+  unlockAudio();
+  P={plan,seg:0,t:0,running:true,last:Date.now(),cues:cueTimes(plan.segs[0]),fired:new Set(),finished:false};
+  $("#player").hidden=false;document.body.style.overflow="hidden";
+  buildPlayer();
+  const hello=`Good morning, ${plan.theme[0]}! It's ${DOW[plan.date.getDay()]}. Seven minutes of brain sparks, starting now! `;
+  say(hello+SEG.breathe.intro+" "+plan.segs[0].a.n+". "+plan.segs[0].a.say,true);
+  chime(false);
+  P.timer=setInterval(tick,200);requestWake();
+}
+function buildPlayer(){
+  const s=P.plan.segs[P.seg],S=SEG[s.k],el=$("#player");
+  el.style.setProperty("--pc",S.color);el.style.setProperty("--pf",S.fg);
+  const breathy=s.k==="breathe"||s.k==="calm";
+  el.innerHTML=`<div class="pInner">
+    <div class="pTop"><button id="pStop" aria-label="Stop and close">✕ Stop</button><span class="pTotal" id="pTotal"></span><button id="pMute" aria-label="Narrator on or off">${prefs.muted?"🔇":"🔊"}</button></div>
+    <div class="segBar">${ORDER.map((k,i)=>`<div><i id="sb${i}"></i></div>`).join("")}</div>
+    <div class="ringWrap">${breathy?`<div class="bubble" id="bubble"></div>`:""}
+      <svg viewBox="0 0 200 200" aria-hidden="true"><circle cx="100" cy="100" r="90" fill="none" stroke="rgba(255,255,255,.4)" stroke-width="14"/><circle id="ring" cx="100" cy="100" r="90" fill="none" stroke="${S.fg==="#FFFFFF"?"#FFFFFF":"#2A2150"}" stroke-width="14" stroke-linecap="round" stroke-dasharray="${C}" stroke-dashoffset="0"/></svg>
+      <div class="center"><span class="bigEm">${s.a.e}</span><span class="segTime" id="segTime">${fmt(s.dur)}</span></div></div>
+    <div class="breathWord" id="breathWord" aria-live="polite"></div>
+    <div class="pTitle"><div class="k">Step ${P.seg+1} of 4 · ${S.label}</div><h2>${esc(s.a.n)}</h2>${s.a.m!=="any"?`<div style="margin-top:6px">${modeTag(s.a,P.plan.mode)}</div>`:""}</div>
+    <div class="pCard"><ol>${s.a.steps.map(t=>`<li>${esc(t)}</li>`).join("")}</ol></div>
+    <div class="pCard"><div class="ages" style="margin:0">${agesHTML(s.a)}</div></div>
+    <div class="pCtrls"><button id="pPause">${P.running?"⏸ Pause":"▶ Play"}</button><button class="ghost" id="pSkip">Next ⏭</button></div>
+  </div>`;
+  $("#pStop").onclick=stopSession;
+  $("#pSkip").onclick=()=>nextSeg();
+  $("#pPause").onclick=togglePause;
+  $("#pMute").onclick=()=>{prefs.muted=!prefs.muted;store.set("sms.prefs",prefs);if(prefs.muted&&synth)synth.cancel();$("#pMute").textContent=prefs.muted?"🔇":"🔊";};
+  updatePlayer();
+}
+function togglePause(){
+  P.running=!P.running;P.last=Date.now();
+  try{if(synth){P.running?synth.resume():synth.pause();}}catch(e){}
+  $("#pPause").textContent=P.running?"⏸ Pause":"▶ Play";
+}
+function tick(){
+  if(!P||!P.running||P.finished)return;
+  const now=Date.now();P.t+=(now-P.last)/1000;P.last=now;
+  const s=P.plan.segs[P.seg];
+  P.cues.forEach((c,i)=>{if(P.t>=c.t&&!P.fired.has(i)){P.fired.add(i);say(c.text);}});
+  if(P.t>=s.dur){nextSeg();return;}
+  updatePlayer();
+}
+function updatePlayer(){
+  const s=P.plan.segs[P.seg];
+  const rem=s.dur-P.t;$("#segTime").textContent=fmt(rem);
+  $("#ring").setAttribute("stroke-dashoffset",String(C*(1-Math.max(0,rem)/s.dur)));
+  let before=0;for(let i=0;i<P.seg;i++)before+=P.plan.segs[i].dur;
+  $("#pTotal").textContent=fmt(420-before-P.t)+" left";
+  ORDER.forEach((k,i)=>{const w=i<P.seg?100:i>P.seg?0:Math.min(100,P.t/s.dur*100);$("#sb"+i).style.width=w+"%";});
+  const b=$("#bubble"),bw=$("#breathWord");
+  if(b){const inhale=(P.t%8)<4;b.classList.toggle("in",inhale);bw.textContent=inhale?"Breathe in…":"Breathe out…";}else bw.textContent="";
+}
+function nextSeg(){
+  if(!P)return;
+  P.seg++;
+  if(P.seg>=4){finish();return;}
+  const s=P.plan.segs[P.seg];P.t=0;P.last=Date.now();P.fired=new Set();P.cues=cueTimes(s);
+  chime(false);
+  if(!P.running){P.running=true;try{synth&&synth.resume();}catch(e){}}
+  say(SEG[s.k].intro+" "+s.a.n+". "+s.a.say,true);
+  buildPlayer();
+}
+function finish(){
+  P.finished=true;clearInterval(P.timer);chime(true);say(END,true);
+  const el=$("#player");el.style.setProperty("--pc","#FFC530");el.style.setProperty("--pf","#2A2150");
+  el.innerHTML=`<div class="pInner"><div class="finish">
+    <div class="trophy">🏆</div><h2>7 minutes done!</h2>
+    <p>Brains switched on and ready for a brilliant day. Who joined in? Tap to give a star.</p>
+    ${doneButtons(P.plan.date)}
+    <button class="startBtn" id="pDone" style="max-width:320px">Finished</button></div></div>`;
+  el.querySelectorAll("[data-star]").forEach(b=>b.onclick=()=>{toggleStar(P.plan.date,+b.dataset.star);b.setAttribute("aria-pressed",String(!!done[keyOf(P.plan.date)][+b.dataset.star]));});
+  $("#pDone").onclick=stopSession;
+  confetti();
+}
+function stopSession(){
+  if(P){clearInterval(P.timer);}P=null;try{synth&&synth.cancel();}catch(e){}
+  releaseWake();$("#player").hidden=true;document.body.style.overflow="";
+  if(view==="today")renderToday();else if(view==="cal")renderCal();
+}
+document.addEventListener("visibilitychange",()=>{if(P&&!P.finished&&document.visibilityState==="visible"){requestWake();}});
+
+/* ---------- Confetti ---------- */
+function confetti(){
+  if(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches)return;
+  const cv=$("#confetti"),ctx=cv.getContext("2d");cv.hidden=false;cv.width=innerWidth;cv.height=innerHeight;
+  const cols=["#7A5CFF","#FF7A3D","#1FCB94","#FF4F93","#29B6F6","#FFFFFF"];
+  const ps=Array.from({length:140},()=>({x:Math.random()*cv.width,y:-20-Math.random()*cv.height*.5,vx:(Math.random()-.5)*3,vy:2+Math.random()*3,r:4+Math.random()*6,c:cols[Math.floor(Math.random()*cols.length)],a:Math.random()*6}));
+  const t0=performance.now();
+  (function fr(t){ctx.clearRect(0,0,cv.width,cv.height);ps.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.a+=.1;ctx.fillStyle=p.c;ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.a);ctx.fillRect(-p.r/2,-p.r/4,p.r,p.r/2);ctx.restore();});
+    if(t-t0<3500)requestAnimationFrame(fr);else{ctx.clearRect(0,0,cv.width,cv.height);cv.hidden=true;}})(t0);
+}
+
+// Offline support: reuse the site's service worker, which precaches this page.
+if("serviceWorker" in navigator&&location.protocol==="https:"){navigator.serviceWorker.register("../sw.js",{scope:"../"}).catch(()=>{});}
+renderKidsBar();setView(location.hash==="#calendar"?"cal":location.hash==="#grownups"?"grown":"today");
+</script>
+</body>
+</html>

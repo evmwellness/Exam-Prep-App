@@ -30,11 +30,12 @@ export default defineConfig({
         ],
       },
       workbox: {
-        globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2}'],
+        globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2,webmanifest}'],
         navigateFallback: `${base}index.html`,
-        // The Hush sleep timer in public/sleep/ is a separate app with its own service worker.
+        // Hush (public/sleep/) and Seven Minute Sunrise are separate standalone apps
+        // under public/; Hush has its own service worker, so it is not precached here.
         globIgnores: ['sleep/**'],
-        navigateFallbackDenylist: [/\/sleep\//],
+        navigateFallbackDenylist: [/\/sleep\//, /\/seven-minute-sunrise\//],
       },
       devOptions: {
         enabled: false,

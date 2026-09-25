@@ -76,3 +76,14 @@ A separate, dependency-free PWA served at `/sleep/` alongside the exam app
   cited sources, plus a reading-speed check with comprehension questions.
 - Keeps playing when the phone is locked or you switch to other apps. It plays
   through an `<audio>` element with Media Session lock-screen controls.
+
+## Seven Minute Sunrise (kids' morning routine)
+
+A separate, standalone page at `public/seven-minute-sunrise/index.html`
+(served at `/seven-minute-sunrise/`). It is a 7-minute morning brain warm-up
+for children aged 3, 5 and 7: breathe (1 min), cross-body moves (2 min), a
+listening/brain game (2½ min) and a calm-down (1½ min). It includes a
+year-long calendar with a different plan every day, voice narration (the
+device's built-in speech), a timer, "do it alone / with a partner / whole
+family" labels, tips for each age, and a star chart. All data stays in the
+browser's local storage.
