@@ -1,6 +1,6 @@
 // Offline support: cache the app shell. Sounds are generated on the device,
 // so there is nothing large to download or cache.
-const CACHE = 'hush-v2'
+const CACHE = 'hush-v3'
 const FILES = [
   './',
   'index.html',

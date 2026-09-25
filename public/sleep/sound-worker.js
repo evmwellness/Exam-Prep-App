@@ -175,54 +175,174 @@ const generators = {
     return out
   },
 
+  // Rain in a forest is mostly *separate* drops hitting leaves, plus life around
+  // it. A steady broadband hiss on its own reads as a waterfall, so the hiss is
+  // kept quiet and band-limited and the texture comes from individual events.
   rainforest(rand) {
     const n = (LOOP_SECONDS + XFADE_SECONDS) * SR
-    const out = new Float32Array(n)
+    const layer = () => new Float32Array(n)
+    const rms = (b) => {
+      let s = 0
+      for (let i = 0; i < n; i++) s += b[i] * b[i]
+      return Math.sqrt(s / n) || 1
+    }
+
+    // 1. Distant rain bed: band-limited (≈500 Hz–3 kHz), soft, slowly swelling.
+    const bed = layer()
     const pink = pinkSource(rand)
-    const brown = brownSource(rand)
-    const swell = drift(rand, 11, 17, 29)
-    const aRain = lpCoef(700)
-    const aSoft = lpCoef(6000)
-    const aBed = lpCoef(300)
-    let rl = 0, soft = 0, bed = 0
+    const swell = drift(rand, 13, 23, 37)
+    const aHp = lpCoef(500)
+    const aLp = lpCoef(3000)
+    let hp = 0, lp = 0
     for (let i = 0; i < n; i++) {
       const p = pink()
-      rl += aRain * (p - rl)
-      soft += aSoft * (p - rl - soft)
-      bed += aBed * (brown() - bed)
-      out[i] = soft * (0.55 + 0.25 * swell(i)) + bed * 0.2
+      hp += aHp * (p - hp)
+      lp += aLp * (p - hp - lp)
+      bed[i] = lp * (0.6 + 0.4 * swell(i))
     }
-    // Individual drops on leaves.
+
+    // 2. Patter: many tiny drops on leaves, each a short resonant tick at its own
+    //    pitch. Rate drifts so showers come and go.
+    const patter = layer()
+    const density = drift(rand, 17, 29)
+    const bp = new Bandpass()
     let t = 0
     while (t < n) {
-      t += Math.floor(-Math.log(1 - rand()) * SR / 25)
-      const f = 1800 + rand() * 3500
-      const len = Math.floor(SR * (0.006 + rand() * 0.02))
-      const amp = 0.02 + Math.pow(rand(), 3) * 0.12
-      for (let k = 0; k < len && t + k < n; k++) {
-        out[t + k] += Math.sin((2 * Math.PI * f * k) / SR) * Math.exp((-6 * k) / len) * amp
+      const rate = 35 + 55 * density(t)
+      t += Math.max(1, Math.floor((-Math.log(1 - rand()) * SR) / rate))
+      const len = Math.floor(SR * (0.003 + rand() * 0.006))
+      const amp = 0.35 + Math.pow(rand(), 2) * 0.45 // mostly quiet, a few louder
+      const q = 4 + rand() * 4
+      bp.x1 = bp.x2 = bp.y1 = bp.y2 = 0
+      bp.set(1400 + rand() * 4200, q)
+      for (let k = 0; k < len + 200 && t + k < n; k++) {
+        const x = k < len ? (rand() * 2 - 1) * Math.exp((-4 * k) / len) : 0
+        patter[t + k] += bp.run(x) * amp
       }
     }
-    // Distant birds: short soft phrases every several seconds.
-    t = Math.floor(SR * 2)
+
+    // 3. Canopy drips: occasional bigger drops falling from leaves — a short
+    //    "plip" whose pitch rises, like a real water droplet.
+    const drips = layer()
+    t = Math.floor(SR * 0.5)
     while (t < n) {
-      const notes = 2 + Math.floor(rand() * 4)
-      const base = 2200 + rand() * 1800
-      const up = rand() < 0.5
+      t += Math.floor(-Math.log(1 - rand()) * SR * 0.7)
+      const f0 = 700 + rand() * 900
+      const len = Math.floor(SR * (0.03 + rand() * 0.04))
+      const amp = 0.45 + rand() * 0.4
+      let ph = 0
+      for (let k = 0; k < len && t + k < n; k++) {
+        const x = k / len
+        ph += (2 * Math.PI * f0 * (1 + 0.6 * x)) / SR
+        drips[t + k] += Math.sin(ph) * Math.exp(-5 * x) * Math.min(1, k / 20) * amp
+      }
+    }
+
+    // 4. Crickets: two soft chirping insects at different pitches and rhythms.
+    const insects = layer()
+    for (const c of [
+      { f: 4300, pulse: 0.018, gap: 0.03, pulses: 3, every: 0.62 },
+      { f: 5100, pulse: 0.014, gap: 0.022, pulses: 4, every: 0.95 },
+    ]) {
+      const presence = drift(rand, 19, 31)
+      for (let start = Math.floor(rand() * SR); start < n; start += Math.floor(c.every * SR * (0.9 + rand() * 0.2))) {
+        const level = Math.max(0, presence(start) - 0.35) // fades in and out
+        if (!level) continue
+        for (let j = 0; j < c.pulses; j++) {
+          const s0 = start + Math.floor(j * (c.pulse + c.gap) * SR)
+          const len = Math.floor(c.pulse * SR)
+          for (let k = 0; k < len && s0 + k < n; k++) {
+            insects[s0 + k] += Math.sin((2 * Math.PI * c.f * k) / SR) * Math.sin((Math.PI * k) / len) * level
+          }
+        }
+      }
+    }
+
+    // 5. Birds: a few different distant calls — whistles, trills and warbles.
+    const birds = layer()
+    const note = (s, len, f0, f1, vib, amp) => {
+      let ph = 0
+      for (let k = 0; k < len && s + k < n; k++) {
+        const x = k / len
+        const f = f0 + (f1 - f0) * x + Math.sin((2 * Math.PI * 7 * k) / SR) * vib
+        ph += (2 * Math.PI * f) / SR
+        birds[s + k] += Math.sin(ph) * Math.pow(Math.sin(Math.PI * x), 1.5) * amp
+      }
+    }
+    t = Math.floor(SR * 1.5)
+    while (t < n) {
+      const kind = rand()
+      const amp = 0.4 + rand() * 0.6
       let s = t
-      for (let j = 0; j < notes; j++) {
-        const len = Math.floor(SR * (0.07 + rand() * 0.09))
-        const f0 = base * (1 + (rand() - 0.5) * 0.15)
-        const f1 = f0 * (up ? 1.25 : 0.8)
-        let ph = 0
+      if (kind < 0.35) {
+        // two- or three-note falling whistle
+        const f = 1800 + rand() * 900
+        const notes = 2 + Math.floor(rand() * 2)
+        for (let j = 0; j < notes; j++) {
+          const len = Math.floor(SR * (0.18 + rand() * 0.12))
+          note(s, len, f * (1 - j * 0.12), f * (1 - j * 0.12) * 0.94, 15, amp)
+          s += len + Math.floor(SR * 0.08)
+        }
+      } else if (kind < 0.65) {
+        // fast trill
+        const f = 2800 + rand() * 1200
+        const notes = 8 + Math.floor(rand() * 10)
+        for (let j = 0; j < notes; j++) {
+          const len = Math.floor(SR * 0.035)
+          note(s, len, f * 1.1, f * 0.9, 0, amp * 0.6)
+          s += len + Math.floor(SR * 0.025)
+        }
+      } else {
+        // wandering warble
+        const len = Math.floor(SR * (0.5 + rand() * 0.5))
+        const f = 2200 + rand() * 1500
+        note(s, len, f, f * (0.8 + rand() * 0.5), 180, amp * 0.8)
+        s += len
+      }
+      t = s + Math.floor(SR * (2.5 + rand() * 6))
+    }
+
+    // 6. Frogs: an occasional low, distant croak.
+    const frogs = layer()
+    t = Math.floor(SR * (4 + rand() * 4))
+    while (t < n) {
+      const croaks = 1 + Math.floor(rand() * 3)
+      const f = 350 + rand() * 250
+      let s = t
+      for (let j = 0; j < croaks; j++) {
+        const len = Math.floor(SR * 0.22)
         for (let k = 0; k < len && s + k < n; k++) {
           const x = k / len
-          ph += (2 * Math.PI * (f0 + (f1 - f0) * x)) / SR
-          out[s + k] += Math.sin(ph) * Math.sin(Math.PI * x) * 0.035
+          const buzz = 0.5 + 0.5 * Math.sin((2 * Math.PI * 28 * k) / SR) // pulsing
+          frogs[s + k] += Math.sin((2 * Math.PI * f * k) / SR) * buzz * Math.sin(Math.PI * x)
         }
-        s += len + Math.floor(SR * (0.04 + rand() * 0.08))
+        s += len + Math.floor(SR * 0.15)
       }
-      t = s + Math.floor(SR * (3 + rand() * 7))
+      t = s + Math.floor(SR * (7 + rand() * 10))
+    }
+
+    // Mix: each layer scaled to a set loudness so the balance is predictable.
+    const mix = [
+      [bed, 0.035],
+      [patter, 0.06],
+      [drips, 0.03],
+      [insects, 0.006],
+      [birds, 0.02],
+      [frogs, 0.008],
+    ]
+    const out = layer()
+    for (const [buf, level] of mix) {
+      const g = level / rms(buf)
+      for (let i = 0; i < n; i++) out[i] += buf[i] * g
+    }
+    // Drops are spiky, so gently round off only the loudest peaks. That lets the
+    // overall level match the other sounds without any single drop startling.
+    const g = 0.1 / rms(out)
+    const T = 0.45
+    for (let i = 0; i < n; i++) {
+      const x = out[i] * g
+      const a = Math.abs(x)
+      out[i] = a <= T ? x : Math.sign(x) * (T + (1 - T) * Math.tanh((a - T) / (1 - T)))
     }
     return out
   },
@@ -444,7 +564,7 @@ function toWav(buf) {
   return bytes
 }
 
-const LEVELS = { white: 0.12, fire: 0.14, waves: 0.15, rainforest: 0.13, snow: 0.13, wind: 0.14, bach: 0.12 }
+const LEVELS = { white: 0.12, fire: 0.14, waves: 0.15, rainforest: 0.1, snow: 0.13, wind: 0.14, bach: 0.12 }
 
 function generate(name) {
   const raw = generators[name](rng(name.length * 7919 + 17))
