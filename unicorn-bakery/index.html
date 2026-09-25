@@ -1,0 +1,1220 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<!-- ARTIFACT-START -->
+<title>Unicorn Bakery</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Andika:wght@700&display=swap">
+<style>
+  :root {
+    color-scheme: light;
+    --ink: #3A2B63;
+    --wall: #D4F4EC;
+    --tile: #B9E9DC;
+    --counter: #FF8DB6;
+    --counter-edge: #F2679A;
+    --cab: #FFD27A;
+    --cab-line: #EDB04A;
+    --paper: #FFFFFF;
+    --go: #2FCB73;
+    --go-dark: #1E9955;
+    --sun: #FFCE2E;
+    --pink: #FF4F8B;
+    --shadow: rgba(58, 43, 99, 0.2);
+    --display: 'Baloo 2', 'Arial Rounded MT Bold', 'Trebuchet MS', system-ui, sans-serif;
+    --letters: 'Andika', 'Baloo 2', 'Trebuchet MS', system-ui, sans-serif;
+  }
+  html, body { height: 100%; }
+  [hidden] { display: none !important; }
+  body {
+    margin: 0;
+    background: var(--wall);
+    color: var(--ink);
+    font-family: var(--display);
+    overflow: hidden;
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+  button { font-family: inherit; color: inherit; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+  button:focus-visible { outline: 5px solid var(--sun); outline-offset: 3px; }
+
+  #app { height: 100%; display: flex; flex-direction: column; }
+
+  /* ---------- top bar ---------- */
+  .top {
+    display: flex; align-items: center; justify-content: space-between; gap: 8px;
+    padding: 8px 16px; background: var(--wall); position: relative; z-index: 6;
+  }
+  .iconbtn {
+    width: 54px; height: 54px; border-radius: 50%; border: 4px solid var(--ink);
+    background: var(--paper); box-shadow: 0 4px 0 var(--shadow);
+    display: grid; place-items: center; padding: 0;
+  }
+  .iconbtn svg { width: 28px; height: 28px; }
+  .iconbtn:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--shadow); }
+  .stars {
+    display: flex; align-items: center; gap: 6px; background: var(--paper);
+    border: 4px solid var(--ink); border-radius: 999px; padding: 2px 16px 0;
+    font-weight: 800; font-size: 1.6rem; box-shadow: 0 4px 0 var(--shadow);
+    font-variant-numeric: tabular-nums;
+  }
+  .stars svg { width: 30px; height: 30px; margin-top: -3px; }
+  .stars.pop { animation: pop .5s; }
+
+  /* ---------- kitchen ---------- */
+  #kitchen {
+    flex: 1; position: relative; overflow: hidden;
+    background-color: var(--wall);
+    background-image:
+      linear-gradient(var(--tile) 3px, transparent 3px),
+      linear-gradient(90deg, var(--tile) 3px, transparent 3px);
+    background-size: 58px 58px;
+    background-position: -2px -2px;
+  }
+  .counter {
+    position: absolute; left: 0; right: 0; bottom: 0; height: 22%;
+    border-top: 20px solid var(--counter);
+    box-shadow: 0 -6px 0 var(--counter-edge) inset, 0 -4px 0 var(--counter-edge);
+    background:
+      radial-gradient(circle at 50% 30%, var(--ink) 0 6px, transparent 7px) 0 0 / 25% 100%,
+      repeating-linear-gradient(90deg, var(--cab) 0 calc(25% - 6px), var(--cab-line) calc(25% - 6px) 25%);
+  }
+  .decor { position: absolute; pointer-events: none; }
+  .decor.win { top: 24%; right: 2%; width: clamp(90px, 13vw, 180px); }
+  .decor.shelf { top: 30%; left: 1%; width: clamp(110px, 15vw, 210px); }
+  @media (max-width: 760px), (max-height: 520px) { .decor.win, .decor.shelf { display: none; } }
+
+  #stage { position: absolute; inset: 0; z-index: 2; }
+  .scene {
+    position: absolute; inset: 0; display: flex; flex-direction: column; gap: 8px;
+    padding-inline: 16px; padding-block: 6px 16px;
+  }
+
+  /* ---------- talking baby unicorn ---------- */
+  .talk { display: flex; align-items: center; gap: 10px; width: 100%; max-width: 980px; margin: 0 auto; }
+  .talker { width: clamp(78px, 12vw, 130px); flex: none; }
+  .bubble {
+    flex: 1; position: relative; text-align: left; display: flex; align-items: center; gap: 12px;
+    background: var(--paper); border: 4px solid var(--ink); border-radius: 30px;
+    padding: 8px 18px; box-shadow: 0 6px 0 var(--shadow);
+    font-weight: 800; font-size: clamp(1.15rem, 3vw, 2rem); line-height: 1.15; text-wrap: balance;
+  }
+  .bubble::before {
+    content: ""; position: absolute; left: -22px; top: 50%; margin-top: -12px;
+    border: 12px solid transparent; border-right: 18px solid var(--ink);
+  }
+  .bubble::after {
+    content: ""; position: absolute; left: -13px; top: 50%; margin-top: -8px;
+    border: 8px solid transparent; border-right: 12px solid var(--paper);
+  }
+  .bubble b { color: var(--pink); font-size: 1.25em; }
+  .bubble .replay { margin-left: auto; flex: none; width: 34px; height: 34px; opacity: .55; }
+  .bubble.bump { animation: bump .4s; }
+  #btxt { flex: 1; }
+
+  .play {
+    flex: 1; min-height: 0; position: relative;
+    display: flex; align-items: center; justify-content: center; gap: 16px;
+  }
+
+  /* ---------- buttons ---------- */
+  .go {
+    position: absolute; right: 16px; bottom: 16px; z-index: 5;
+    width: clamp(86px, 12vw, 124px); aspect-ratio: 1; border-radius: 50%;
+    background: var(--go); border: 6px solid var(--paper); box-shadow: 0 8px 0 var(--go-dark), 0 10px 18px var(--shadow);
+    display: grid; place-items: center; padding: 0; animation: pulse 1.2s ease-in-out infinite;
+  }
+  .go svg { width: 55%; height: 55%; }
+  .go:active { transform: translateY(5px); box-shadow: 0 3px 0 var(--go-dark); }
+  .btn {
+    border: 5px solid var(--ink); border-radius: 999px; background: var(--sun);
+    font-weight: 800; font-size: clamp(1.3rem, 3.4vw, 2rem); padding: 6px 28px 2px;
+    box-shadow: 0 7px 0 var(--ink); display: inline-flex; align-items: center; gap: 10px;
+  }
+  .btn:active { transform: translateY(5px); box-shadow: 0 2px 0 var(--ink); }
+  .btn svg { width: 1.3em; height: 1.3em; margin-top: -4px; }
+  .helpbtn { background: #FFE3EC; }
+  .helpbtn.pulse, .card.pulse { animation: pulse 1.1s ease-in-out infinite; }
+
+  /* ---------- title ---------- */
+  .title { align-items: center; justify-content: center; text-align: center; gap: 10px; }
+  .logo { margin: 0; font-size: clamp(3rem, 11vw, 7rem); line-height: .9; font-weight: 800; letter-spacing: .01em; text-wrap: balance; }
+  .logo span { display: inline-block; color: var(--c); -webkit-text-stroke: 3px var(--ink); paint-order: stroke fill; text-shadow: 0 6px 0 var(--ink); animation: wave 2.4s ease-in-out infinite; animation-delay: calc(var(--i) * .12s); }
+  .logo .gap { width: .3em; }
+  .duo { display: flex; align-items: flex-end; justify-content: center; gap: 0; height: clamp(140px, 32vh, 300px); }
+  .duo > div { height: 100%; }
+  .duo svg { height: 100%; width: auto; display: block; }
+  .duo .u-baby { height: 68%; }
+  .duo .u-big { transform: scaleX(-1); }
+  .note { margin: 0; font-weight: 700; font-size: clamp(.95rem, 2vw, 1.15rem); max-width: 34em; background: rgba(255,255,255,.75); padding: 6px 14px; border-radius: 16px; }
+
+  /* ---------- age ---------- */
+  .ages { display: flex; gap: clamp(10px, 3vw, 28px); flex-wrap: wrap; justify-content: center; align-items: stretch; }
+  .agecard {
+    width: clamp(150px, 26vw, 240px); border: 5px solid var(--ink); border-radius: 34px;
+    background: var(--c); box-shadow: 0 8px 0 var(--ink); padding: 14px 10px 12px;
+    display: flex; flex-direction: column; align-items: center; gap: 2px;
+  }
+  .agecard:active { transform: translateY(5px); box-shadow: 0 3px 0 var(--ink); }
+  .agenum { font-size: clamp(2.8rem, 8vw, 4.4rem); font-weight: 800; line-height: 1; color: var(--paper); -webkit-text-stroke: 3px var(--ink); paint-order: stroke fill; }
+  .ageyrs { font-size: 1.3rem; font-weight: 800; }
+  .agestrip { display: flex; flex-wrap: wrap; justify-content: center; gap: 2px 6px; background: var(--paper); border-radius: 16px; padding: 4px 10px 0; margin-top: 6px; font-weight: 800; font-size: 1.35rem; font-variant-numeric: tabular-nums; }
+
+  /* ---------- split layout (cake + controls) ---------- */
+  .split { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: 16px; width: 100%; height: 100%; max-width: 1100px; align-items: center; }
+  .cakebox { height: 100%; min-height: 0; display: grid; place-items: center; }
+  .cakebox svg { width: 100%; height: 100%; max-height: 100%; }
+  @media (max-aspect-ratio: 1/1) {
+    .split { grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(0, 1fr) auto; }
+  }
+
+  .numgrid { display: grid; gap: clamp(8px, 1.6vw, 16px); justify-content: center; }
+  .numgrid.n3 { grid-template-columns: repeat(3, auto); }
+  .numgrid.n5, .numgrid.n10 { grid-template-columns: repeat(5, auto); }
+  .numtile {
+    width: clamp(62px, 11vw, 120px); aspect-ratio: .82; border: 4px solid var(--ink); border-radius: 22px;
+    background: var(--paper); box-shadow: 0 6px 0 var(--ink); color: var(--c);
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; padding: 4px;
+  }
+  .numgrid.n3 .numtile { width: clamp(84px, 16vw, 150px); }
+  .numtile .numeral { font-size: clamp(2.2rem, 6vw, 4rem); font-weight: 800; line-height: .9; -webkit-text-stroke: 2px var(--ink); paint-order: stroke fill; }
+  .numtile .dots { width: 80%; max-height: 30%; }
+  .numtile.sel, .tin.sel { background: #FFF6C9; outline: 6px solid var(--sun); outline-offset: 2px; transform: translateY(-4px); }
+  .numtile:active, .tin:active, .card:active, .dye:active, .tool:active { transform: translateY(4px); box-shadow: 0 2px 0 var(--ink); }
+
+  .tins { display: grid; grid-template-columns: repeat(4, auto); gap: clamp(8px, 1.6vw, 16px); justify-content: center; }
+  .tin {
+    width: clamp(72px, 12vw, 128px); border: 4px solid var(--ink); border-radius: 22px; background: var(--paper);
+    box-shadow: 0 6px 0 var(--ink); padding: 8px 4px 2px; display: flex; flex-direction: column; align-items: center; gap: 0;
+    font-weight: 800; font-size: clamp(.9rem, 1.9vw, 1.2rem);
+  }
+  .tin svg { width: 78%; aspect-ratio: 1; }
+
+  /* ---------- mixing ---------- */
+  .mix { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 16px; width: 100%; max-width: 1050px; height: 100%; align-items: center; }
+  @media (max-aspect-ratio: 1/1) { .mix { grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(0, 1fr) auto; } }
+  .bowlwrap { position: relative; height: 100%; min-height: 0; display: grid; place-items: center; }
+  .bowlwrap > svg { width: 100%; height: 100%; max-height: 100%; }
+  .bowlwrap.tapme { cursor: pointer; }
+  .bowlwrap.tapme > svg { animation: wiggle 1.4s ease-in-out infinite; }
+  .pourfx { position: absolute; left: 50%; top: 4%; width: 30%; max-width: 150px; pointer-events: none; opacity: 0; }
+  .pourfx.on { animation: pourin .8s ease-in forwards; }
+  .cards { display: flex; flex-wrap: wrap; gap: 14px; justify-content: center; align-items: center; }
+  .card {
+    width: clamp(120px, 20vw, 190px); border: 5px solid var(--ink); border-radius: 28px; background: var(--paper);
+    box-shadow: 0 7px 0 var(--ink); padding: 10px 8px 8px; display: flex; flex-direction: column; align-items: center; gap: 4px;
+    font-weight: 800; font-size: clamp(1.2rem, 2.6vw, 1.6rem); line-height: 1;
+  }
+  .card > svg { width: 72%; aspect-ratio: 1; }
+  .measure { display: inline-flex; align-items: center; gap: 4px; background: #E9F4FF; border: 3px solid var(--ink); border-radius: 999px; padding: 2px 10px 0; font-size: .85em; }
+  .measure svg { width: 1.4em; height: 1.4em; margin-top: -3px; }
+  .egg { width: clamp(70px, 12vw, 110px); aspect-ratio: .8; border: none; background: none; padding: 0; }
+  .egg svg { width: 100%; height: 100%; }
+  .egg.cracked { pointer-events: none; }
+  .egg:not(.cracked) { animation: wiggle 1.2s ease-in-out infinite; }
+
+  /* ---------- tins row ---------- */
+  .pourrow { display: flex; flex-wrap: wrap; justify-content: center; gap: clamp(10px, 2vw, 20px); max-width: 900px; }
+  .pourtin { border: none; background: none; padding: 0; width: clamp(76px, 14vw, 130px); display: flex; flex-direction: column; align-items: center; }
+  .pourtin svg { width: 100%; aspect-ratio: 1; }
+  .pourtin .lbl { font-weight: 800; font-size: clamp(1.6rem, 4vw, 2.6rem); line-height: 1; min-height: 1.1em; color: var(--c); -webkit-text-stroke: 2px var(--ink); paint-order: stroke fill; }
+  .pourtin:not(.full) svg { animation: wiggle 1.3s ease-in-out infinite; }
+  .batter { transform-box: fill-box; transform-origin: center; transform: scale(0); transition: transform .5s cubic-bezier(.3,1.5,.5,1); }
+  .full .batter { transform: scale(1); }
+
+  /* ---------- oven + stove ---------- */
+  .ovenwrap { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; }
+  .ovenwrap > svg { width: 100%; flex: 1; min-height: 0; max-width: 980px; }
+  .mover { transition: transform 1.3s cubic-bezier(.45,0,.3,1); }
+  .glow { opacity: 0; transition: opacity 1s; }
+  .hot .glow { opacity: .85; animation: flicker 1.4s ease-in-out infinite; }
+  .hot .lamp { fill: #FF4B4B; }
+  .actions { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; min-height: 64px; }
+
+  /* ---------- stacking + decorating ---------- */
+  .panel { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+  .addlayer { background: var(--sun); font-size: clamp(1.4rem, 3.4vw, 2.2rem); }
+  .addlayer .n { font-size: 1.3em; color: var(--paper); -webkit-text-stroke: 2px var(--ink); paint-order: stroke fill; }
+  .dyes { display: grid; grid-template-columns: repeat(4, auto); gap: 10px; }
+  .dye {
+    border: 4px solid var(--ink); border-radius: 20px; background: var(--paper); box-shadow: 0 5px 0 var(--ink);
+    width: clamp(70px, 10.5vw, 104px); padding: 6px 2px 2px; display: flex; flex-direction: column; align-items: center;
+    font-weight: 800; font-size: clamp(.9rem, 1.7vw, 1.1rem); line-height: 1.1;
+  }
+  .dye svg { width: 58%; aspect-ratio: .8; }
+  .dye:disabled { opacity: .35; cursor: default; }
+  .dye.sel { outline: 5px solid var(--sun); outline-offset: 2px; }
+
+  .deco { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 12px; width: 100%; max-width: 1100px; height: 100%; align-items: center; }
+  @media (max-aspect-ratio: 1/1) { .deco { grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(0, 1fr) auto; } }
+  .deco .cakebox svg { cursor: crosshair; touch-action: none; }
+  .tools { display: grid; grid-template-columns: repeat(3, auto); gap: 10px; justify-content: center; }
+  .tool {
+    border: 4px solid var(--ink); border-radius: 20px; background: var(--paper); box-shadow: 0 5px 0 var(--ink);
+    width: clamp(84px, 11vw, 112px); padding: 6px 2px 4px; display: flex; flex-direction: column; align-items: center;
+    font-weight: 800; font-size: clamp(.9rem, 1.6vw, 1.1rem); line-height: 1.1;
+  }
+  .tool svg { width: 60%; aspect-ratio: 1; }
+  .tool.sel { background: #FFF6C9; outline: 5px solid var(--sun); outline-offset: 2px; }
+  .picker { display: grid; grid-template-columns: repeat(5, 46px); gap: 6px; justify-content: center; }
+  .picker.abc { grid-template-columns: repeat(7, 46px); }
+  .picker button {
+    width: 46px; height: 46px; border: 3px solid var(--ink); border-radius: 12px; background: var(--paper);
+    font-family: var(--letters); font-weight: 700; font-size: 1.6rem; line-height: 1; padding: 0; color: var(--c);
+  }
+  .picker button.sel { background: var(--sun); color: var(--ink); }
+  .undo { background: var(--paper); font-size: 1.2rem; padding: 4px 18px 0; }
+
+  .candle-flame { transform-box: fill-box; transform-origin: 50% 100%; animation: flame .5s ease-in-out infinite alternate; }
+  .balloon { transform-box: fill-box; animation: float 2.6s ease-in-out infinite; }
+  .placed { transform-box: fill-box; transform-origin: center; animation: pop .35s ease-out; }
+  .layer.drop { animation: dropin .7s cubic-bezier(.3,1.4,.5,1); }
+
+  /* ---------- effects ---------- */
+  .bignum {
+    position: absolute; left: 50%; top: 45%; z-index: 20; pointer-events: none; text-align: center;
+    font-weight: 800; line-height: .85; animation: bignum 1.1s ease-out forwards;
+  }
+  .bignum .d { display: block; font-size: clamp(6rem, 22vw, 13rem); color: var(--c); -webkit-text-stroke: 6px var(--ink); paint-order: stroke fill; text-shadow: 0 8px 0 var(--ink); }
+  .bignum .w { display: inline-block; font-size: clamp(1.6rem, 5vw, 2.8rem); background: var(--paper); border: 4px solid var(--ink); border-radius: 999px; padding: 4px 18px 0; }
+  .confetti { position: absolute; top: -20px; width: 12px; height: 18px; border-radius: 3px; z-index: 30; pointer-events: none; animation: confetti linear forwards; }
+  .celebrate {
+    position: absolute; left: 50%; bottom: 16px; transform: translateX(-50%); z-index: 25;
+    width: min(560px, calc(100% - 32px)); background: var(--paper); border: 5px solid var(--ink); border-radius: 30px;
+    box-shadow: 0 8px 0 var(--ink); padding: 12px 16px 16px; text-align: center; animation: pop .5s;
+  }
+  .celebrate h2 { margin: 0; font-size: clamp(2rem, 6vw, 3.2rem); line-height: 1; color: var(--pink); -webkit-text-stroke: 2px var(--ink); paint-order: stroke fill; }
+  .celebrate p { margin: 4px 0 12px; font-weight: 700; font-size: clamp(1.05rem, 2.4vw, 1.35rem); }
+  .celebrate .row { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+  .uni .uni-body { animation: bob 2.4s ease-in-out infinite; }
+  .uni .eye { transform-box: fill-box; transform-origin: center; animation: blink 4.5s infinite; }
+  .uni-big .uni-body { animation-duration: 3s; }
+
+  @keyframes bob { 50% { transform: translateY(-5px); } }
+  @keyframes blink { 0%, 93%, 100% { transform: scaleY(1); } 96% { transform: scaleY(.1); } }
+  @keyframes pulse { 50% { transform: scale(1.07); } }
+  @keyframes wave { 50% { transform: translateY(-8px) rotate(-3deg); } }
+  @keyframes wiggle { 0%, 100% { transform: rotate(0); } 25% { transform: rotate(-3deg); } 75% { transform: rotate(3deg); } }
+  @keyframes bump { 40% { transform: scale(1.03); } }
+  @keyframes pop { 0% { transform: scale(.3); opacity: 0; } 60% { transform: scale(1.15); opacity: 1; } 100% { transform: scale(1); } }
+  @keyframes dropin { 0% { transform: translateY(-150px); opacity: 0; } 55% { transform: translateY(6px); opacity: 1; } 75% { transform: translateY(-4px); } 100% { transform: none; } }
+  @keyframes pourin {
+    0% { transform: translate(-50%, -50px) rotate(0); opacity: 0; }
+    25% { transform: translate(-50%, -20px) rotate(0); opacity: 1; }
+    70% { transform: translate(-50%, 0) rotate(-110deg); opacity: 1; }
+    100% { transform: translate(-50%, 0) rotate(-110deg); opacity: 0; }
+  }
+  @keyframes stir { 0%, 100% { transform: rotate(0); } 30% { transform: rotate(-22deg); } 70% { transform: rotate(22deg); } }
+  @keyframes float { 50% { transform: translateY(-9px); } }
+  @keyframes flame { to { transform: scale(.85, 1.15); } }
+  @keyframes flicker { 50% { opacity: .6; } }
+  @keyframes confetti { to { transform: translateY(115vh) rotate(760deg); } }
+  @keyframes bignum {
+    0% { transform: translate(-50%, -50%) scale(.2); opacity: 0; }
+    25% { transform: translate(-50%, -50%) scale(1.15); opacity: 1; }
+    70% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+    100% { transform: translate(-50%, -70%) scale(1); opacity: 0; }
+  }
+  .stir { transform-box: view-box; transform-origin: 150px 76px; animation: stir .45s ease-in-out; }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+  }
+</style>
+<!-- ARTIFACT-HEAD-END -->
+</head>
+<body>
+<!-- ARTIFACT-BODY-START -->
+<div id="app">
+  <header class="top">
+    <button class="iconbtn" id="home" type="button" aria-label="Back to the start">
+      <svg viewBox="0 0 32 32"><path d="M4 15 16 5l12 10" fill="none" stroke="#3A2B63" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 13v14h6v-7h4v7h6V13" fill="#FF8DB6" stroke="#3A2B63" stroke-width="3" stroke-linejoin="round"/></svg>
+    </button>
+    <div class="stars" id="stars" aria-label="Stars earned">
+      <svg viewBox="0 0 32 32"><path d="M16 3l3.9 8 8.6 1.2-6.3 6 1.5 8.6L16 22.7l-7.7 4.1 1.5-8.6-6.3-6L12.1 11z" fill="#FFCE2E" stroke="#3A2B63" stroke-width="2.5" stroke-linejoin="round"/></svg>
+      <span id="starN">0</span>
+    </div>
+    <button class="iconbtn" id="snd" type="button" aria-label="Sound is on"></button>
+  </header>
+  <main id="kitchen">
+    <svg class="decor shelf" viewBox="0 0 230 120" aria-hidden="true">
+      <rect x="4" y="96" width="222" height="14" rx="5" fill="#E8A24A" stroke="#3A2B63" stroke-width="4"/>
+      <rect x="18" y="44" width="46" height="52" rx="10" fill="#FFFFFF" stroke="#3A2B63" stroke-width="4"/><rect x="14" y="36" width="54" height="12" rx="5" fill="#FF6FA8" stroke="#3A2B63" stroke-width="4"/><circle cx="30" cy="72" r="5" fill="#FFCE2E"/><circle cx="46" cy="64" r="5" fill="#5BB8FF"/><circle cx="42" cy="82" r="5" fill="#3CCB6A"/><circle cx="54" cy="76" r="4" fill="#FF4B4B"/>
+      <rect x="80" y="30" width="54" height="66" rx="12" fill="#FFFFFF" stroke="#3A2B63" stroke-width="4"/><rect x="76" y="22" width="62" height="12" rx="5" fill="#5BB8FF" stroke="#3A2B63" stroke-width="4"/><rect x="88" y="56" width="38" height="26" rx="6" fill="#FFF3C9"/><circle cx="98" cy="68" r="6" fill="#8A5634"/><circle cx="114" cy="70" r="6" fill="#8A5634"/>
+      <rect x="150" y="52" width="40" height="44" rx="9" fill="#FFFFFF" stroke="#3A2B63" stroke-width="4"/><rect x="146" y="44" width="48" height="12" rx="5" fill="#3CCB6A" stroke="#3A2B63" stroke-width="4"/><path d="M158 84 q12 -22 24 0" fill="#FF9A2E"/>
+      <circle cx="210" cy="84" r="12" fill="#FF4B4B" stroke="#3A2B63" stroke-width="4"/><path d="M210 72 q4 -8 10 -8" fill="none" stroke="#3A2B63" stroke-width="3"/>
+    </svg>
+    <svg class="decor win" viewBox="0 0 190 170" aria-hidden="true">
+      <rect x="8" y="8" width="174" height="140" rx="16" fill="#8FD8FF" stroke="#3A2B63" stroke-width="5"/>
+      <circle cx="140" cy="48" r="18" fill="#FFCE2E"/>
+      <ellipse cx="60" cy="60" rx="26" ry="12" fill="#FFFFFF"/><ellipse cx="78" cy="54" rx="16" ry="12" fill="#FFFFFF"/>
+      <path d="M8 118 q40 -26 80 -6 q50 -26 94 4 v32 h-174z" fill="#7FDB8E"/>
+      <path d="M95 8v140M8 78h174" stroke="#FFFFFF" stroke-width="8"/>
+      <rect x="8" y="8" width="174" height="140" rx="16" fill="none" stroke="#3A2B63" stroke-width="5"/>
+      <path d="M2 4h36q-8 60 4 150h-40z" fill="#FF6FA8" stroke="#3A2B63" stroke-width="4" stroke-linejoin="round"/>
+      <path d="M188 4h-36q8 60 -4 150h40z" fill="#FF6FA8" stroke="#3A2B63" stroke-width="4" stroke-linejoin="round"/>
+      <rect x="0" y="148" width="190" height="14" rx="6" fill="#FFFFFF" stroke="#3A2B63" stroke-width="4"/>
+    </svg>
+    <div class="counter"></div>
+    <div id="stage"></div>
+  </main>
+</div>
+
+<script>
+(() => {
+  'use strict';
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  const range = n => Array.from({ length: n }, (_, i) => i + 1);
+  const INK = '#3A2B63';
+  const OL = `stroke="${INK}" stroke-width="4" stroke-linejoin="round"`;
+
+  // ---------- content ----------
+  const AGES = [
+    { label: '2–3', max: 3, bg: '#FF8DB6' },
+    { label: '3–4', max: 5, bg: '#FFB443' },
+    { label: '4–5', max: 10, bg: '#6CC4FF' },
+  ];
+  const WORDS = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten'];
+  const NUMCOL = ['#FF4B4B', '#FF9A2E', '#FFCE2E', '#3CCB6A', '#1FB5D6', '#3D8BFF', '#A25CFF', '#FF5FA8', '#B06A3B', '#E0457B'];
+  const DYES = [
+    { id: 'red', hex: '#FF4B4B' }, { id: 'blue', hex: '#3D8BFF' }, { id: 'green', hex: '#3CCB6A' }, { id: 'yellow', hex: '#FFD93B' },
+    { id: 'orange', hex: '#FF9A2E' }, { id: 'purple', hex: '#A25CFF' }, { id: 'brown', hex: '#8B5A3C' }, { id: 'pink', hex: '#FF7EB9' },
+  ];
+  const DYE = Object.fromEntries(DYES.map(d => [d.id, d.hex]));
+  const SHAPES = ['circle', 'triangle', 'heart', 'square', 'rectangle', 'pentagon', 'hexagon', 'cone'];
+  const FLAV = {
+    vanilla: { side: '#F5C872', dark: '#D89A45', top: '#FBE2A4', batter: '#FBE0A0' },
+    chocolate: { side: '#8A5634', dark: '#633A20', top: '#A8704A', batter: '#9A6040' },
+  };
+  const cap = s => s[0].toUpperCase() + s.slice(1);
+  const plural = (n, one, many) => (n === 1 ? one : many);
+
+  const S = {
+    sound: true, stars: 0, scene: 'title', max: 3, layers: 0, shape: 'circle', flavour: 'vanilla',
+    cake: [], decos: [], lastSay: '',
+  };
+
+  // ---------- timers (cleared on every scene change) ----------
+  let timers = [];
+  const later = (fn, ms) => { const id = setTimeout(fn, ms); timers.push(id); return id; };
+  const clearLater = () => { timers.forEach(clearTimeout); timers = []; };
+
+  // ---------- sound ----------
+  let actx = null;
+  function ac() {
+    if (!actx) { try { actx = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) { actx = null; } }
+    if (actx && actx.state === 'suspended') actx.resume().catch(() => {});
+    return actx;
+  }
+  function tone(freq, dur = .15, type = 'sine', vol = .2, when = 0) {
+    if (!S.sound) return;
+    const a = ac(); if (!a) return;
+    const t = a.currentTime + when;
+    const o = a.createOscillator(), g = a.createGain();
+    o.type = type; o.frequency.setValueAtTime(freq, t);
+    g.gain.setValueAtTime(.0001, t);
+    g.gain.exponentialRampToValueAtTime(vol, t + .02);
+    g.gain.exponentialRampToValueAtTime(.0001, t + dur);
+    o.connect(g); g.connect(a.destination); o.start(t); o.stop(t + dur + .05);
+  }
+  const SCALE = [523, 587, 659, 698, 784, 880, 988, 1047, 1175, 1319];
+  const sfx = {
+    pop() { tone(520, .1, 'triangle', .22); tone(780, .09, 'sine', .14, .05); },
+    plop() { tone(320, .14, 'sine', .3); tone(190, .18, 'sine', .2, .06); },
+    note(i) { tone(SCALE[(i - 1) % SCALE.length], .28, 'triangle', .2); },
+    chime() { [523, 659, 784, 1047].forEach((f, i) => tone(f, .32, 'sine', .16, i * .09)); },
+    ding() { tone(1319, .9, 'sine', .22); tone(1760, .7, 'sine', .1, .02); },
+    tick() { tone(880, .06, 'square', .06); },
+    sparkle() { [1568, 1760, 2093, 1976].forEach((f, i) => tone(f, .12, 'sine', .08, i * .05)); },
+    whoosh() { tone(240, .35, 'sawtooth', .04); tone(160, .4, 'sine', .08, .05); },
+    tada() { [523, 659, 784].forEach((f, i) => tone(f, .18, 'triangle', .18, i * .12)); tone(1047, .7, 'triangle', .2, .38); },
+  };
+
+  let voice = null;
+  function pickVoice() {
+    try {
+      const vs = speechSynthesis.getVoices();
+      voice = vs.find(v => /en[-_]AU/i.test(v.lang)) || vs.find(v => /en[-_]GB/i.test(v.lang)) || vs.find(v => /^en/i.test(v.lang)) || null;
+    } catch (e) { voice = null; }
+  }
+  try { pickVoice(); speechSynthesis.onvoiceschanged = pickVoice; } catch (e) { /* no speech */ }
+  function speak(html) {
+    if (!S.sound || !html) return;
+    try {
+      const text = String(html).replace(/<[^>]+>/g, '').replace(/–/g, ' to ');
+      speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance(text);
+      if (voice) u.voice = voice;
+      u.rate = .88; u.pitch = 1.25;
+      speechSynthesis.speak(u);
+    } catch (e) { /* speech not available */ }
+  }
+
+  // ---------- icons ----------
+  const ICON = {
+    arrow: `<svg viewBox="0 0 40 40"><path d="M9 20h20M20 10l10 10-10 10" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+    play: `<svg viewBox="0 0 32 32"><path d="M9 5l18 11-18 11z" fill="#fff" stroke="${INK}" stroke-width="3" stroke-linejoin="round"/></svg>`,
+    speaker: `<svg viewBox="0 0 32 32"><path d="M5 12h6l7-6v20l-7-6H5z" fill="#FFCE2E" stroke="${INK}" stroke-width="2.5" stroke-linejoin="round"/><path d="M22 11q4 5 0 10M25 7q8 9 0 18" fill="none" stroke="${INK}" stroke-width="2.5" stroke-linecap="round"/></svg>`,
+    mute: `<svg viewBox="0 0 32 32"><path d="M5 12h6l7-6v20l-7-6H5z" fill="#DDD6EE" stroke="${INK}" stroke-width="2.5" stroke-linejoin="round"/><path d="M22 12l7 8M29 12l-7 8" stroke="#FF4B4B" stroke-width="3" stroke-linecap="round"/></svg>`,
+    mitt: `<svg viewBox="0 0 40 40"><path d="M10 34V14a8 8 0 0 1 16 0v4l4-4a4 4 0 0 1 6 5l-8 9v6z" fill="#FF4D5E" stroke="${INK}" stroke-width="3" stroke-linejoin="round"/><rect x="8" y="30" width="22" height="7" rx="3" fill="#FFE14D" stroke="${INK}" stroke-width="3"/></svg>`,
+    cup: `<svg viewBox="0 0 32 32"><path d="M6 8h16l-2 18H8z" fill="#fff" stroke="${INK}" stroke-width="2.5" stroke-linejoin="round"/><path d="M22 12h3a3 3 0 0 1 0 8h-4" fill="none" stroke="${INK}" stroke-width="2.5"/><path d="M8 14h13" stroke="#5BB8FF" stroke-width="2.5"/></svg>`,
+    spoon: `<svg viewBox="0 0 32 32"><ellipse cx="11" cy="12" rx="7" ry="5" fill="#E6ECF7" stroke="${INK}" stroke-width="2.5"/><path d="M17 14l11 10" stroke="${INK}" stroke-width="3.5" stroke-linecap="round"/></svg>`,
+    undo: `<svg viewBox="0 0 32 32"><path d="M10 8L4 14l6 6" fill="none" stroke="${INK}" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 14h14a8 8 0 0 1 0 16h-5" fill="none" stroke="${INK}" stroke-width="3.5" stroke-linecap="round"/></svg>`,
+    again: `<svg viewBox="0 0 32 32"><path d="M26 16a10 10 0 1 1-3-7" fill="none" stroke="${INK}" stroke-width="3.5" stroke-linecap="round"/><path d="M24 3v7h-7" fill="none" stroke="${INK}" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+  };
+
+  // ---------- unicorn characters ----------
+  function unicorn(o = {}, attrs = '') {
+    const big = !!o.big;
+    const mane = big ? ['#8A6CFF', '#4FB3FF', '#3FD1A6', '#B58CFF'] : ['#FF6FA8', '#FFB443', '#FFE14D', '#5BD1FF'];
+    const body = big ? '#FFF4FF' : '#FFFFFF';
+    const hoof = big ? '#B9A8FF' : '#FFB7D5';
+    const leg = x => `<rect x="${x}" y="150" width="22" height="44" rx="10" fill="${body}" ${OL}/><rect x="${x}" y="182" width="22" height="12" rx="5" fill="${hoof}" ${OL}/>`;
+    const mitt = x => `<path d="M${x - 6} 174h34v18a8 8 0 0 1-8 8h-18a8 8 0 0 1-8-8z" fill="#FF4D5E" ${OL}/><rect x="${x - 8}" y="170" width="38" height="10" rx="5" fill="#FFE14D" ${OL}/>`;
+    return `<svg ${attrs} viewBox="0 -14 232 224" class="uni ${big ? 'uni-big' : 'uni-baby'}" aria-hidden="true"><g class="uni-body">
+      <path d="M60 126C18 116 12 160 40 172" fill="none" stroke="${mane[0]}" stroke-width="16" stroke-linecap="round"/>
+      <path d="M60 136C30 136 28 170 50 182" fill="none" stroke="${mane[1]}" stroke-width="12" stroke-linecap="round"/>
+      <path d="M62 146C46 152 46 176 62 186" fill="none" stroke="${mane[2]}" stroke-width="10" stroke-linecap="round"/>
+      ${leg(66)}${leg(92)}
+      <ellipse cx="112" cy="140" rx="62" ry="38" fill="${body}" ${OL}/>
+      ${leg(126)}${leg(152)}
+      ${o.mitts ? mitt(126) + mitt(154) : ''}
+      <path d="M130 130C124 100 138 82 158 84L176 118C162 132 146 138 130 130Z" fill="${body}" ${OL}/>
+      <circle cx="132" cy="62" r="17" fill="${mane[0]}" ${OL}/>
+      <circle cx="124" cy="85" r="16" fill="${mane[1]}" ${OL}/>
+      <circle cx="128" cy="107" r="15" fill="${mane[2]}" ${OL}/>
+      <circle cx="138" cy="126" r="12" fill="${mane[3]}" ${OL}/>
+      <circle cx="162" cy="76" r="42" fill="${body}" ${OL}/>
+      <path d="M138 46L144 14L162 38Z" fill="${body}" ${OL}/><path d="M144 38L146 25L154 36Z" fill="#FFC2DA"/>
+      <ellipse cx="190" cy="96" rx="27" ry="21" fill="#FFE1EE" ${OL}/>
+      <ellipse cx="202" cy="91" rx="3.5" ry="2.6" fill="#D77FA6"/>
+      <path d="M181 106Q192 115 203 104" fill="none" stroke="${INK}" stroke-width="3.5" stroke-linecap="round"/>
+      <g class="eye"><ellipse cx="170" cy="70" rx="8" ry="11" fill="${INK}"/><circle cx="173" cy="65" r="3.2" fill="#fff"/></g>
+      ${big ? `<path d="M163 58l-5-7M170 56l-1-9M177 58l4-7" stroke="${INK}" stroke-width="3" stroke-linecap="round"/>` : ''}
+      <ellipse cx="175" cy="90" rx="8" ry="5" fill="#FFB0CB"/>
+      <circle cx="150" cy="42" r="13" fill="${mane[1]}" ${OL}/>
+      ${o.hat ? `<circle cx="133" cy="16" r="11" fill="#fff" ${OL}/><circle cx="147" cy="9" r="13" fill="#fff" ${OL}/><circle cx="160" cy="17" r="10" fill="#fff" ${OL}/><rect x="126" y="22" width="38" height="16" rx="5" fill="#fff" ${OL}/>` : ''}
+      <path d="M161 40L178-10L186 42Z" fill="#FFD43B" ${OL}/>
+      <path d="M166 27L182 21M170 13L181 9" stroke="#E0A200" stroke-width="3" stroke-linecap="round"/>
+    </g></svg>`;
+  }
+
+  // ---------- shapes ----------
+  function unitShape(shape) {
+    const P = [];
+    const reg = (k, off) => { for (let i = 0; i < k; i++) { const a = off + i * 2 * Math.PI / k; P.push([Math.cos(a), Math.sin(a)]); } };
+    switch (shape) {
+      case 'triangle': reg(3, -Math.PI / 2); for (const p of P) p[1] = p[1] * 1.08 + .2; break;
+      case 'square': P.push([-.82, -.82], [.82, -.82], [.82, .82], [-.82, .82]); break;
+      case 'rectangle': P.push([-1, -.6], [1, -.6], [1, .6], [-1, .6]); break;
+      case 'pentagon': reg(5, -Math.PI / 2); break;
+      case 'hexagon': reg(6, 0); break;
+      case 'heart':
+        for (let i = 0; i < 64; i++) {
+          const t = i / 64 * 2 * Math.PI;
+          const x = 16 * Math.sin(t) ** 3;
+          const y = -(13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t));
+          P.push([x / 16.5, (y - 2.5) / 15]);
+        }
+        break;
+      default: reg(48, 0);
+    }
+    // resample polygons with few corners so the edges have points for drips
+    if (P.length > 12) return P;
+    const out = [];
+    P.forEach((p, i) => { const q = P[(i + 1) % P.length]; for (let s = 0; s < 12; s++) out.push([p[0] + (q[0] - p[0]) * s / 12, p[1] + (q[1] - p[1]) * s / 12]); });
+    return out;
+  }
+  const SHAPE_PTS = Object.fromEntries(SHAPES.map(s => [s, unitShape(s)]));
+  const poly = (pts, cx, cy, r, k = 1) => pts.map(([x, y]) => `${(cx + x * r).toFixed(1)},${(cy + y * r * k).toFixed(1)}`).join(' ');
+
+  // tin seen from above (cone tin seen from the side)
+  function tinSVG(shape, fillColour = null, cls = '') {
+    if (shape === 'cone') {
+      return `<svg viewBox="-60 -60 120 120" class="${cls}" aria-hidden="true">
+        <path d="M0-52L40 38A40 12 0 0 1-40 38Z" fill="#C9D3E6" ${OL}/>
+        <path d="M-10-22L-26 30" stroke="#fff" stroke-width="5" stroke-linecap="round" opacity=".8"/>
+        ${fillColour ? `<g class="batter"><path d="M0-40L32 34A32 9 0 0 1-32 34Z" fill="${fillColour}"/></g>` : ''}
+        <ellipse cx="0" cy="38" rx="40" ry="12" fill="none" stroke="${INK}" stroke-width="4"/>
+      </svg>`;
+    }
+    const p = SHAPE_PTS[shape];
+    const r = shape === 'rectangle' ? 50 : 48;
+    return `<svg viewBox="-60 -60 120 120" class="${cls}" aria-hidden="true">
+      <polygon points="${poly(p, 0, 3, r)}" fill="#9AA3C2" ${OL}/>
+      <polygon points="${poly(p, 0, 0, r)}" fill="#C9D3E6" ${OL}/>
+      <polygon points="${poly(p, 0, 0, r * .8)}" fill="#EEF2FA" stroke="#9AA3C2" stroke-width="3"/>
+      ${fillColour ? `<g class="batter"><polygon points="${poly(p, 0, 0, r * .8)}" fill="${fillColour}"/><ellipse cx="${-r * .25}" cy="${-r * .2}" rx="${r * .18}" ry="${r * .08}" fill="#fff" opacity=".45"/></g>` : ''}
+    </svg>`;
+  }
+
+  // ---------- the cake ----------
+  function shade(hex, amt) {
+    const n = parseInt(hex.slice(1), 16);
+    const f = c => Math.max(0, Math.min(255, Math.round(c * (1 + amt))));
+    return '#' + [f(n >> 16), f((n >> 8) & 255), f(n & 255)].map(v => v.toString(16).padStart(2, '0')).join('');
+  }
+  const CAKE = { K: .36, R: 132, cx: 200, base: 322 };
+  function cakeSVG({ layers, total, shape, flavour, decos = [], dropLast = false }) {
+    const { K, R, cx, base } = CAKE;
+    const f = FLAV[flavour];
+    const n = Math.max(total, 1);
+    const h = Math.min(46, 190 / n);
+    const taper = shape === 'cone' ? .84 / n : (n > 1 ? .3 / (n - 1) : 0);
+    const pts = SHAPE_PTS[shape];
+    let out = `<ellipse cx="${cx}" cy="${base + 14}" rx="182" ry="${182 * K}" fill="#D8CCF2" ${OL}/>
+      <ellipse cx="${cx}" cy="${base + 6}" rx="182" ry="${182 * K}" fill="#fff" ${OL}/>
+      <ellipse cx="${cx}" cy="${base + 4}" rx="146" ry="${146 * K}" fill="#F4EEFF"/>`;
+    layers.forEach((L, i) => {
+      const r = R * (1 - i * taper), yb = base - i * h, yt = yb - h;
+      const ice = L.icing ? DYE[L.icing] : null;
+      let outline = '', body = '';
+      for (let s = 0; s < h; s += 2.5) {
+        const P = poly(pts, cx, yb - s, r, K);
+        outline += `<polygon points="${P}" fill="${INK}" stroke="${INK}" stroke-width="7" stroke-linejoin="round"/>`;
+        const fill = ice && s > h * .5 ? ice : (s < 3 ? f.dark : f.side);
+        body += `<polygon points="${P}" fill="${fill}"/>`;
+      }
+      const top = poly(pts, cx, yt, r, K);
+      outline += `<polygon points="${top}" fill="${INK}" stroke="${INK}" stroke-width="7" stroke-linejoin="round"/>`;
+      let drips = '';
+      if (ice) {
+        pts.forEach(([x, y], j) => {
+          if (y < .25 || j % 4) return;
+          const px = cx + x * r, py = yt + y * r * K;
+          const dl = h * .3 + ((j * 7) % 3) * 5;
+          drips += `<rect x="${(px - 5).toFixed(1)}" y="${(py - 2).toFixed(1)}" width="10" height="${dl.toFixed(1)}" rx="5" fill="${ice}"/>`;
+        });
+      }
+      const topFace = `<polygon points="${top}" fill="${ice || f.top}" stroke="${ice ? shade(ice, -.2) : f.dark}" stroke-width="2.5" stroke-linejoin="round"/>`;
+      const shine = ice ? `<ellipse cx="${cx - r * .38}" cy="${yt - r * K * .25}" rx="${r * .16}" ry="4" fill="#fff" opacity=".55"/>` : '';
+      const drop = dropLast && i === layers.length - 1 ? ' drop' : '';
+      out += `<g class="layer${drop}">${outline}${body}${drips}${topFace}${shine}</g>`;
+    });
+    out += `<g id="decos">${decos.map(decoSVG).join('')}</g>`;
+    return `<svg viewBox="0 0 400 410" preserveAspectRatio="xMidYMax meet" role="img" aria-label="Your cake">${out}</svg>`;
+  }
+
+  function decoSVG(d, fresh = false) {
+    const cls = fresh ? ' placed' : '';
+    switch (d.type) {
+      case 'sprinkles':
+        return `<g class="${cls}">${d.bits.map(b => `<rect x="${(d.x + b[0]).toFixed(1)}" y="${(d.y + b[1]).toFixed(1)}" width="10" height="4" rx="2" fill="${b[3]}" transform="rotate(${b[2]} ${(d.x + b[0] + 5).toFixed(1)} ${(d.y + b[1] + 2).toFixed(1)})"/>`).join('')}</g>`;
+      case 'candles':
+        return `<g class="${cls}"><rect x="${d.x - 6}" y="${d.y - 50}" width="12" height="50" rx="4" fill="${d.c}" stroke="${INK}" stroke-width="3"/>
+          <path d="M${d.x - 6} ${d.y - 38}l12-6M${d.x - 6} ${d.y - 24}l12-6M${d.x - 6} ${d.y - 10}l12-6" stroke="#fff" stroke-width="3"/>
+          <path d="M${d.x} ${d.y - 50}v-6" stroke="${INK}" stroke-width="2.5"/>
+          <path class="candle-flame" d="M${d.x} ${d.y - 76}q10 12 0 20q-10-8 0-20z" fill="#FFB020" stroke="#FF6A00" stroke-width="2"/></g>`;
+      case 'balloons':
+        return `<g class="${cls}"><path d="M${d.x} ${d.y}q-10 22 4 40t-2 36" fill="none" stroke="${INK}" stroke-width="2.5"/>
+          <g class="balloon"><ellipse cx="${d.x}" cy="${d.y - 30}" rx="24" ry="30" fill="${d.c}" stroke="${INK}" stroke-width="3.5"/>
+          <path d="M${d.x - 5} ${d.y + 4}l5-5 5 5z" fill="${d.c}" stroke="${INK}" stroke-width="2.5" stroke-linejoin="round"/>
+          <ellipse cx="${d.x - 9}" cy="${d.y - 42}" rx="6" ry="9" fill="#fff" opacity=".6"/></g></g>`;
+      default:
+        return `<text class="${cls}" x="${d.x}" y="${d.y}" text-anchor="middle" dominant-baseline="central" font-family="Andika, 'Baloo 2', sans-serif" font-weight="700" font-size="52" fill="${d.c}" stroke="${INK}" stroke-width="7" paint-order="stroke" stroke-linejoin="round">${d.ch}</text>`;
+    }
+  }
+
+  // ---------- ingredients ----------
+  const ING = {
+    flour: `<svg viewBox="0 0 100 100"><path d="M20 26h60l6 66H14z" fill="#FFFDF4" ${OL}/><path d="M20 26l7-12 7 12 8-12 8 12 8-12 8 12 7-12 7 12" fill="#FFFDF4" ${OL}/><rect x="24" y="48" width="52" height="24" rx="6" fill="#FFCE2E" ${OL}/><text x="50" y="66" text-anchor="middle" font-family="Baloo 2, sans-serif" font-weight="800" font-size="15" fill="${INK}">FLOUR</text><path d="M50 86v-10M46 82l4-4 4 4" stroke="#E8A24A" stroke-width="3" fill="none"/></svg>`,
+    sugar: `<svg viewBox="0 0 100 100"><path d="M20 26h60l6 66H14z" fill="#E6F4FF" ${OL}/><path d="M20 26l7-12 7 12 8-12 8 12 8-12 8 12 7-12 7 12" fill="#E6F4FF" ${OL}/><rect x="22" y="48" width="56" height="24" rx="6" fill="#6CC4FF" ${OL}/><text x="50" y="66" text-anchor="middle" font-family="Baloo 2, sans-serif" font-weight="800" font-size="15" fill="#fff">SUGAR</text><rect x="36" y="78" width="7" height="7" fill="#fff" ${OL} stroke-width="2"/><rect x="50" y="80" width="7" height="7" fill="#fff" ${OL} stroke-width="2"/></svg>`,
+    milk: `<svg viewBox="0 0 100 100"><path d="M30 34L50 12 70 34v60H30z" fill="#fff" ${OL}/><path d="M30 34h40" stroke="${INK}" stroke-width="4"/><rect x="30" y="50" width="40" height="30" fill="#6CC4FF" ${OL}/><text x="50" y="71" text-anchor="middle" font-family="Baloo 2, sans-serif" font-weight="800" font-size="13" fill="#fff">MILK</text></svg>`,
+    egg: `<svg viewBox="0 0 80 100"><ellipse cx="40" cy="56" rx="30" ry="38" fill="#FFF1D6" ${OL}/><ellipse cx="30" cy="40" rx="7" ry="11" fill="#fff" opacity=".8"/></svg>`,
+    eggCracked: `<svg viewBox="0 0 80 100"><path d="M10 60a30 30 0 0 0 60 0l-8-6-7 7-8-8-7 8-8-8-7 7-8-6z" fill="#FFF1D6" ${OL}/><ellipse cx="40" cy="28" rx="16" ry="10" fill="#FFC52E" ${OL} stroke-width="3"/></svg>`,
+    cocoa: `<svg viewBox="0 0 100 100"><rect x="22" y="26" width="56" height="66" rx="8" fill="#7A4A2C" ${OL}/><rect x="18" y="16" width="64" height="16" rx="6" fill="#B06A3B" ${OL}/><rect x="28" y="46" width="44" height="26" rx="6" fill="#FFE1EE" ${OL} stroke-width="3"/><text x="50" y="65" text-anchor="middle" font-family="Baloo 2, sans-serif" font-weight="800" font-size="13" fill="#7A4A2C">COCOA</text></svg>`,
+    vanilla: `<svg viewBox="0 0 100 100"><rect x="34" y="34" width="32" height="56" rx="10" fill="#F6DFA6" ${OL}/><rect x="40" y="16" width="20" height="20" rx="4" fill="#FF8DB6" ${OL}/><circle cx="50" cy="62" r="10" fill="#fff" ${OL} stroke-width="3"/><circle cx="50" cy="62" r="4" fill="#FFCE2E"/></svg>`,
+    butter: `<svg viewBox="0 0 100 100"><path d="M14 44l22-16h50l-22 16z" fill="#FFF3A6" ${OL}/><path d="M14 44h50v30H14z" fill="#FFE27A" ${OL}/><path d="M64 44l22-16v30L64 74z" fill="#F4CF4A" ${OL}/><path d="M20 58h24" stroke="#fff" stroke-width="4" stroke-linecap="round"/></svg>`,
+    icing: `<svg viewBox="0 0 100 100"><path d="M20 26h60l6 66H14z" fill="#FFE8F2" ${OL}/><path d="M20 26l7-12 7 12 8-12 8 12 8-12 8 12 7-12 7 12" fill="#FFE8F2" ${OL}/><rect x="20" y="46" width="60" height="30" rx="6" fill="#FF6FA8" ${OL}/><text x="50" y="59" text-anchor="middle" font-family="Baloo 2, sans-serif" font-weight="800" font-size="11" fill="#fff">ICING</text><text x="50" y="71" text-anchor="middle" font-family="Baloo 2, sans-serif" font-weight="800" font-size="11" fill="#fff">SUGAR</text></svg>`,
+  };
+  const TOOL_ICON = {
+    sprinkles: `<svg viewBox="0 0 40 40"><rect x="6" y="8" width="12" height="5" rx="2.5" fill="#FF4B4B" transform="rotate(30 12 10)"/><rect x="22" y="6" width="12" height="5" rx="2.5" fill="#3D8BFF" transform="rotate(-20 28 8)"/><rect x="8" y="22" width="12" height="5" rx="2.5" fill="#3CCB6A" transform="rotate(-40 14 24)"/><rect x="22" y="24" width="12" height="5" rx="2.5" fill="#FFCE2E" transform="rotate(15 28 26)"/><rect x="15" y="31" width="12" height="5" rx="2.5" fill="#A25CFF" transform="rotate(60 21 33)"/></svg>`,
+    candles: `<svg viewBox="0 0 40 40"><rect x="15" y="14" width="10" height="24" rx="3" fill="#6CC4FF" stroke="${INK}" stroke-width="2.5"/><path d="M15 22l10-5M15 30l10-5" stroke="#fff" stroke-width="2.5"/><path d="M20 3q7 7 0 10q-7-3 0-10z" fill="#FFB020" stroke="#FF6A00" stroke-width="1.5"/></svg>`,
+    balloons: `<svg viewBox="0 0 40 40"><path d="M20 26q-4 6 1 13" fill="none" stroke="${INK}" stroke-width="2"/><ellipse cx="20" cy="15" rx="10" ry="12" fill="#FF7EB9" stroke="${INK}" stroke-width="2.5"/><ellipse cx="16" cy="11" rx="2.5" ry="4" fill="#fff" opacity=".7"/></svg>`,
+    letters: `<svg viewBox="0 0 40 40"><text x="20" y="22" text-anchor="middle" dominant-baseline="central" font-family="Andika, sans-serif" font-weight="700" font-size="24" fill="#FF4F8B" stroke="${INK}" stroke-width="2.5" paint-order="stroke">Aa</text></svg>`,
+    numbers: `<svg viewBox="0 0 40 40"><text x="20" y="22" text-anchor="middle" dominant-baseline="central" font-family="Andika, sans-serif" font-weight="700" font-size="24" fill="#3D8BFF" stroke="${INK}" stroke-width="2.5" paint-order="stroke">123</text></svg>`,
+  };
+  const dyeIcon = hex => `<svg viewBox="0 0 40 50"><path d="M20 4C12 18 6 26 6 34a14 14 0 0 0 28 0c0-8-6-16-14-30z" fill="${hex}" stroke="${INK}" stroke-width="3.5" stroke-linejoin="round"/><ellipse cx="14" cy="34" rx="3" ry="5" fill="#fff" opacity=".6"/></svg>`;
+
+  function dots(n, max) {
+    const cols = Math.min(max, 5), rows = max > 5 ? 2 : 1;
+    let s = '';
+    for (let i = 0; i < max; i++) {
+      const c = i % 5, r = Math.floor(i / 5);
+      s += i < n
+        ? `<circle cx="${c * 20 + 10}" cy="${r * 20 + 10}" r="7.5" fill="currentColor" stroke="${INK}" stroke-width="2"/>`
+        : `<circle cx="${c * 20 + 10}" cy="${r * 20 + 10}" r="6.5" fill="none" stroke="${INK}" stroke-width="2" opacity=".25"/>`;
+    }
+    return `<svg class="dots" viewBox="-2 -2 ${cols * 20 + 4} ${rows * 20 + 4}" aria-hidden="true">${s}</svg>`;
+  }
+
+  // ---------- shared scene helpers ----------
+  const stage = () => $('#stage');
+  function go(name) {
+    clearLater();
+    try { speechSynthesis.cancel(); } catch (e) { /* no speech */ }
+    S.scene = name;
+    $$('.confetti, .bignum').forEach(el => el.remove());
+    stage().innerHTML = '';
+    SC[name]();
+  }
+  function layout(body, cls = '') {
+    stage().innerHTML = `<div class="scene ${cls}">
+      <div class="talk"><div class="talker">${unicorn({ hat: true })}</div>
+        <button class="bubble" id="bubble" type="button" aria-live="polite"><span id="btxt"></span><span class="replay">${ICON.speaker}</span></button></div>
+      <div class="play" id="play">${body}</div>
+      <button class="go" id="go" type="button" hidden aria-label="Next">${ICON.arrow}</button>
+    </div>`;
+    $('#bubble').onclick = () => speak(S.lastSay);
+  }
+  function say(html) {
+    S.lastSay = html;
+    const t = $('#btxt');
+    if (t) { t.innerHTML = html; const b = t.parentElement; b.classList.remove('bump'); void b.offsetWidth; b.classList.add('bump'); }
+    speak(html);
+  }
+  function showGo(next) {
+    const g = $('#go'); if (!g) return;
+    g.hidden = false;
+    g.onclick = () => { sfx.pop(); next(); };
+  }
+  function addStar() {
+    S.stars++;
+    $('#starN').textContent = S.stars;
+    const el = $('#stars'); el.classList.remove('pop'); void el.offsetWidth; el.classList.add('pop');
+    sfx.chime();
+  }
+  function showNum(n) {
+    const el = document.createElement('div');
+    $$('.bignum').forEach(b => b.remove());
+    el.className = 'bignum';
+    el.style.setProperty('--c', NUMCOL[(n - 1) % 10]);
+    el.innerHTML = `<span class="d">${n}</span><span class="w">${WORDS[n] || n}</span>`;
+    $('#kitchen').appendChild(el);
+    setTimeout(() => el.remove(), 1150);
+  }
+  function confetti(count = 90) {
+    const k = $('#kitchen');
+    const cols = [...NUMCOL, '#fff'];
+    for (let i = 0; i < count; i++) {
+      const c = document.createElement('div');
+      c.className = 'confetti';
+      c.style.left = Math.random() * 100 + '%';
+      c.style.background = cols[i % cols.length];
+      c.style.animationDuration = (2.2 + Math.random() * 2) + 's';
+      c.style.animationDelay = (Math.random() * .8) + 's';
+      c.style.transform = `rotate(${Math.random() * 360}deg)`;
+      k.appendChild(c);
+      setTimeout(() => c.remove(), 5200);
+    }
+  }
+  const emptyLayers = n => Array.from({ length: n }, () => ({ icing: null }));
+
+  // ---------- scenes ----------
+  const SC = {};
+
+  SC.title = () => {
+    const word = (w, off) => [...w].map((ch, i) => `<span style="--c:${NUMCOL[(i + off) % 8]};--i:${i + off}">${ch}</span>`).join('');
+    stage().innerHTML = `<div class="scene title">
+      <h1 class="logo">${word('Unicorn', 0)}<span class="gap"></span><br>${word('Bakery', 3)}</h1>
+      <div class="duo"><div class="u-baby">${unicorn({ hat: true })}</div><div class="u-big">${unicorn({ big: true, mitts: true })}</div></div>
+      <button class="btn" id="start" type="button">${ICON.play} Let's bake!</button>
+      <p class="note">For little bakers aged 2 to 5, with a big person nearby. Turn the sound on: Sprinkle the baby unicorn reads every step out loud.</p>
+    </div>`;
+    $('#start').onclick = () => { ac(); sfx.tada(); go('age'); };
+  };
+
+  SC.age = () => {
+    layout(`<div class="ages">${AGES.map((a, i) => `<button class="agecard" type="button" data-i="${i}" style="--c:${a.bg}">
+      <span class="agenum">${a.label}</span><span class="ageyrs">years old</span>
+      <span class="agestrip">${range(a.max).map(k => `<i style="color:${NUMCOL[k - 1]};font-style:normal;-webkit-text-stroke:1px ${INK}">${k}</i>`).join('')}</span></button>`).join('')}</div>`);
+    say(`Hi! I'm <b>Sprinkle</b>. How old are you?`);
+    $$('.agecard').forEach(b => b.onclick = () => {
+      const a = AGES[+b.dataset.i];
+      S.max = a.max;
+      sfx.pop();
+      go('layers');
+    });
+  };
+
+  SC.layers = () => {
+    S.layers = 0; S.shape = 'circle'; S.flavour = 'vanilla'; S.cake = []; S.decos = [];
+    layout(`<div class="split"><div class="cakebox" id="cakebox"></div>
+      <div class="numgrid n${S.max}" id="nums">${range(S.max).map(n => `<button class="numtile" type="button" data-n="${n}" style="--c:${NUMCOL[n - 1]}" aria-label="${n}"><span class="numeral">${n}</span>${dots(n, S.max)}</button>`).join('')}</div></div>`);
+    const box = $('#cakebox');
+    box.innerHTML = cakeSVG({ layers: [], total: 1, shape: 'circle', flavour: 'vanilla' });
+    say(`We can count to <b>${S.max}</b>! How many <b>layers</b> should our cake have?`);
+    $$('.numtile').forEach(b => b.onclick = () => {
+      const n = +b.dataset.n;
+      clearLater();
+      S.layers = n;
+      $$('.numtile').forEach(x => x.classList.toggle('sel', x === b));
+      $('#go').hidden = true;
+      say(`<b>${n}</b> ${plural(n, 'layer', 'layers')}! Let's count: ${range(n).join(', ')}!`);
+      box.innerHTML = cakeSVG({ layers: [], total: n, shape: 'circle', flavour: 'vanilla' });
+      range(n).forEach(k => later(() => {
+        box.innerHTML = cakeSVG({ layers: emptyLayers(k), total: n, shape: 'circle', flavour: 'vanilla', dropLast: true });
+        sfx.note(k);
+      }, 700 + (k - 1) * 520));
+      later(() => showGo(() => { addStar(); go('tin'); }), 700 + n * 520);
+    });
+  };
+
+  SC.tin = () => {
+    layout(`<div class="split"><div class="cakebox" id="cakebox"></div>
+      <div class="tins">${SHAPES.map(s => `<button class="tin" type="button" data-s="${s}">${tinSVG(s)}<span>${cap(s)}</span></button>`).join('')}</div></div>`);
+    const box = $('#cakebox');
+    const draw = () => { box.innerHTML = cakeSVG({ layers: emptyLayers(S.layers), total: S.layers, shape: S.shape, flavour: 'vanilla' }); };
+    draw();
+    say(`Pick a cake tin. Which <b>shape</b> do you like?`);
+    $$('.tin').forEach(b => b.onclick = () => {
+      S.shape = b.dataset.s;
+      $$('.tin').forEach(x => x.classList.toggle('sel', x === b));
+      sfx.pop();
+      say(`A <b>${S.shape}</b> cake! Yummy!`);
+      draw();
+      showGo(() => { addStar(); go('mix'); });
+    });
+  };
+
+  // ---------- mixing the batter ----------
+  function bowlSVG(B) {
+    const p = Math.min(1, B.stir / B.stirTarget);
+    const flav = FLAV[B.cocoa ? 'chocolate' : 'vanilla'];
+    const raw = 1 - p;
+    let c = `<ellipse cx="150" cy="74" rx="132" ry="30" fill="#BFE6FF" ${OL}/>
+      <ellipse cx="150" cy="78" rx="118" ry="22" fill="#E3F4FF"/>`;
+    if (B.milk) c += `<ellipse cx="150" cy="80" rx="104" ry="17" fill="#FFFFFF" opacity="${.9 * raw}"/>`;
+    if (B.flour) c += `<ellipse cx="112" cy="74" rx="40" ry="14" fill="#FFFDF7" stroke="#E6DCC6" stroke-width="2" opacity="${raw}"/><ellipse cx="108" cy="68" rx="18" ry="6" fill="#fff" opacity="${raw}"/>`;
+    if (B.sugar) c += `<g opacity="${raw}"><ellipse cx="186" cy="76" rx="32" ry="12" fill="#F4FAFF" stroke="#CFE3F5" stroke-width="2"/><circle cx="178" cy="72" r="2" fill="#9FD6FF"/><circle cx="192" cy="78" r="2" fill="#FFB0CB"/><circle cx="200" cy="72" r="2" fill="#9FD6FF"/></g>`;
+    for (let i = 0; i < B.eggs; i++) c += `<g opacity="${raw}"><ellipse cx="${128 + i * 24}" cy="88" rx="15" ry="7" fill="#fff" stroke="#EEE" stroke-width="1.5"/><circle cx="${128 + i * 24}" cy="87" r="6" fill="#FFC52E"/></g>`;
+    if (B.cocoa) c += `<ellipse cx="156" cy="68" rx="24" ry="9" fill="#7A4A2C" opacity="${raw}"/>`;
+    if (p > 0) c += `<ellipse cx="150" cy="79" rx="${116 * Math.min(1, .5 + p)}" ry="${21 * Math.min(1, .5 + p)}" fill="${flav.batter}" opacity="${Math.min(1, p * 1.2)}"/><path d="M110 78q40 ${-8 * p} 80 0" fill="none" stroke="#fff" stroke-width="3" opacity="${.5 * p}" stroke-linecap="round"/>`;
+    c += `<path d="M18 74Q26 226 150 226Q274 226 282 74A132 30 0 0 1 18 74Z" fill="#5BB8FF" ${OL}/>
+      <path d="M36 118Q150 150 264 118" fill="none" stroke="#fff" stroke-width="10" stroke-linecap="round" opacity=".9"/>
+      <circle cx="80" cy="170" r="8" fill="#fff" opacity=".85"/><circle cx="150" cy="190" r="8" fill="#fff" opacity=".85"/><circle cx="220" cy="170" r="8" fill="#fff" opacity=".85"/>
+      <g id="spoon"><path d="M198-6L164 74" stroke="#D9985A" stroke-width="12" stroke-linecap="round"/><path d="M198-6L164 74" stroke="${INK}" stroke-width="3" stroke-linecap="round" opacity=".25"/><ellipse cx="160" cy="84" rx="14" ry="9" fill="#D9985A" ${OL} stroke-width="3"/></g>`;
+    return `<svg viewBox="0 -20 300 252" aria-label="Mixing bowl" role="img">${c}</svg>`;
+  }
+
+  SC.mix = () => {
+    const eggs = Math.min(3, S.layers);
+    const B = { flour: 0, sugar: 0, eggs: 0, milk: 0, cocoa: 0, stir: 0, stirTarget: S.max };
+    layout(`<div class="mix"><div class="bowlwrap" id="bowlwrap">${bowlSVG(B)}<div class="pourfx" id="pourfx"></div></div><div class="cards" id="cards"></div></div>`);
+    const wrap = $('#bowlwrap'), cards = $('#cards');
+    const redraw = () => { wrap.firstElementChild.outerHTML = bowlSVG(B); };
+    const pour = (icon, after) => {
+      const fx = $('#pourfx');
+      fx.innerHTML = icon; fx.classList.remove('on'); void fx.offsetWidth; fx.classList.add('on');
+      sfx.whoosh();
+      later(() => { sfx.plop(); after(); redraw(); }, 650);
+    };
+    const one = (key, label, measureIcon, measure, text, next) => {
+      say(text);
+      cards.innerHTML = `<button class="card pulse" type="button" id="ing">${ING[key]}<span>${label}</span><span class="measure">${measureIcon} ${measure}</span></button>`;
+      $('#ing').onclick = () => {
+        cards.innerHTML = '';
+        pour(ING[key], () => { B[key] = 1; later(next, 450); });
+      };
+    };
+    const steps = [
+      () => one('flour', 'Flour', ICON.cup, '1 cup', `Let's make cake batter! Add <b>1 cup</b> of flour.`, () => step(1)),
+      () => one('sugar', 'Sugar', ICON.cup, '1 cup', `Now add <b>1 cup</b> of sugar.`, () => step(2)),
+      () => {
+        say(`Crack <b>${eggs}</b> ${plural(eggs, 'egg', 'eggs')}! Tap ${plural(eggs, 'the egg', 'each egg')}.`);
+        cards.innerHTML = range(eggs).map(i => `<button class="egg" type="button" data-i="${i}" aria-label="Egg ${i}">${ING.egg}</button>`).join('');
+        let cracked = 0;
+        $$('.egg', cards).forEach(e => e.onclick = () => {
+          cracked++;
+          e.classList.add('cracked'); e.innerHTML = ING.eggCracked;
+          B.eggs = cracked; redraw();
+          sfx.note(cracked); showNum(cracked); speak(String(cracked));
+          if (cracked === eggs) later(() => { speak(`${cap(WORDS[eggs])} ${plural(eggs, 'egg', 'eggs')}!`); later(() => step(3), 1300); }, 700);
+        });
+      },
+      () => one('milk', 'Milk', ICON.cup, '1 cup', `Pour in <b>1 cup</b> of milk.`, () => step(4)),
+      () => {
+        say(`Chocolate or vanilla? Chocolate needs <b>1 tablespoon</b> of cocoa.`);
+        cards.innerHTML = `<button class="card pulse" type="button" id="choc">${ING.cocoa}<span>Chocolate</span><span class="measure">${ICON.spoon} 1 tbsp</span></button>
+          <button class="card pulse" type="button" id="van">${ING.vanilla}<span>Vanilla</span><span class="measure">no cocoa</span></button>`;
+        $('#choc').onclick = () => { S.flavour = 'chocolate'; cards.innerHTML = ''; pour(ING.cocoa, () => { B.cocoa = 1; later(() => step(5), 450); }); };
+        $('#van').onclick = () => { S.flavour = 'vanilla'; cards.innerHTML = ''; pour(ING.vanilla, () => later(() => step(5), 450)); };
+      },
+      () => {
+        say(`Stir, stir, stir! Tap the bowl <b>${S.max}</b> times.`);
+        wrap.classList.add('tapme');
+        wrap.onclick = () => {
+          if (B.stir >= B.stirTarget) return;
+          B.stir++; redraw();
+          const sp = $('#spoon'); sp.classList.add('stir');
+          sfx.note(B.stir); showNum(B.stir); speak(String(B.stir));
+          if (B.stir === B.stirTarget) {
+            wrap.classList.remove('tapme');
+            later(() => {
+              say(`Smooth ${S.flavour} batter! Well done!`);
+              addStar();
+              showGo(() => go('pour'));
+            }, 1000);
+          }
+        };
+      },
+    ];
+    function step(i) { steps[i](); }
+    step(0);
+  };
+
+  SC.pour = () => {
+    const n = S.layers, batter = FLAV[S.flavour].batter;
+    layout(`<div class="pourrow">${range(n).map(i => `<button class="pourtin" type="button" data-i="${i}" style="--c:${NUMCOL[i - 1]}">${tinSVG(S.shape, batter)}<span class="lbl"></span></button>`).join('')}</div>`);
+    say(n === 1 ? `Pour the batter into <b>1</b> tin. Tap the tin!` : `Fill <b>${n}</b> tins, one for each layer. Tap each tin!`);
+    let filled = 0;
+    $$('.pourtin').forEach(t => t.onclick = () => {
+      if (t.classList.contains('full')) return;
+      filled++;
+      t.classList.add('full');
+      t.querySelector('.lbl').textContent = filled;
+      sfx.note(filled); showNum(filled); speak(String(filled));
+      if (filled === n) later(() => {
+        say(`<b>${n}</b> ${plural(n, 'tin is', 'tins are')} full! Now they go in the oven.`);
+        addStar();
+        showGo(() => go('oven'));
+      }, 1000);
+    });
+  };
+
+  // ---------- oven ----------
+  function trayG(baked) {
+    const n = S.layers, f = FLAV[S.flavour];
+    let s = '';
+    const rows = n > 5 ? 2 : 1;
+    for (let r = rows - 1; r >= 0; r--) {
+      const inRow = r === 0 ? Math.min(n, 5) : n - 5;
+      const w = Math.min(28, 140 / Math.max(inRow, 1) - 2);
+      for (let c = 0; c < inRow; c++) {
+        const x = 6 + r * 10 + c * (w + 2), y = -r * 12;
+        s += `<rect x="${x}" y="${y - 18}" width="${w}" height="18" rx="3" fill="#C9D3E6" stroke="${INK}" stroke-width="2.5"/>`;
+        s += baked
+          ? `<path d="M${x + 1} ${y - 17}Q${x + w / 2} ${y - 36} ${x + w - 1} ${y - 17}Z" fill="${f.side}" stroke="${INK}" stroke-width="2.5"/>`
+          : `<ellipse cx="${x + w / 2}" cy="${y - 17}" rx="${w / 2 - 2}" ry="3.5" fill="${f.batter}"/>`;
+      }
+    }
+    return `<rect x="0" y="0" width="160" height="10" rx="4" fill="#9AA3C2" stroke="${INK}" stroke-width="3"/>${s}`;
+  }
+  function ovenSVG() {
+    return `<svg viewBox="0 0 640 380" id="ovensvg" role="img" aria-label="The oven">
+      <g>
+        <rect x="340" y="40" width="270" height="330" rx="24" fill="#EEF0F8" ${OL}/>
+        <rect x="340" y="40" width="270" height="60" rx="24" fill="#C9CFE3" ${OL}/>
+        <circle cx="380" cy="70" r="12" fill="#FF6FA8" ${OL} stroke-width="3"/><circle cx="420" cy="70" r="12" fill="#FFCE2E" ${OL} stroke-width="3"/><circle cx="460" cy="70" r="12" fill="#6CC4FF" ${OL} stroke-width="3"/>
+        <rect x="500" y="58" width="64" height="24" rx="8" fill="${INK}"/><circle class="lamp" cx="584" cy="70" r="9" fill="#DDD6EE" ${OL} stroke-width="3"/>
+        <text x="532" y="76" text-anchor="middle" font-family="Baloo 2, sans-serif" font-weight="800" font-size="16" fill="#7FF2A8" id="ovenclock">180°</text>
+        <rect x="360" y="116" width="230" height="236" rx="18" fill="#DCE0EE" ${OL}/>
+        <rect x="380" y="128" width="190" height="14" rx="7" fill="#9AA3C2" ${OL} stroke-width="3"/>
+        <rect x="385" y="160" width="180" height="170" rx="14" fill="#3A2B63"/>
+        <path d="M400 318h150" stroke="#FF6A3D" stroke-width="5" stroke-linecap="round" opacity=".8"/>
+        <path d="M400 176h150" stroke="#FF6A3D" stroke-width="5" stroke-linecap="round" opacity=".8"/>
+      </g>
+      <g id="bigu" class="mover" style="transform:translateX(0px)">${unicorn({ big: true, mitts: true }, 'x="-10" y="92" width="290" height="280"')}</g>
+      <g id="tray" class="mover" style="transform:translate(150px,318px)">${trayG(false)}</g>
+      <rect class="glow" x="385" y="160" width="180" height="170" rx="14" fill="#FF9A2E"/>
+      <rect x="385" y="160" width="180" height="170" rx="14" fill="#9FD6FF" opacity=".18" ${OL}/>
+      <path d="M400 180l30-14M404 200l50-24" stroke="#fff" stroke-width="5" stroke-linecap="round" opacity=".35"/>
+    </svg>`;
+  }
+
+  SC.oven = () => {
+    layout(`<div class="ovenwrap">${ovenSVG()}<div class="actions" id="actions"></div></div>`);
+    const svg = $('#ovensvg'), tray = $('#tray'), bigu = $('#bigu'), actions = $('#actions');
+    const TRAY_OUT = 'translate(150px,318px)', TRAY_IN = 'translate(395px,300px)';
+    const helpBtn = (label, fn) => {
+      actions.innerHTML = `<button class="btn helpbtn pulse" type="button" id="help">${ICON.mitt} ${label}</button>`;
+      $('#help').onclick = () => { actions.innerHTML = ''; sfx.pop(); fn(); };
+    };
+    say(`Ovens are <b>very hot</b>! Ask a <b>big person</b> to help. Big Unicorn has oven mitts.`);
+    helpBtn('Big person, tap here', () => {
+      say(`Thank you, Big Unicorn! In the cakes go.`);
+      bigu.style.transform = 'translateX(90px)';
+      later(() => { tray.style.transform = TRAY_IN; sfx.whoosh(); }, 500);
+      later(() => { bigu.style.transform = 'translateX(0px)'; svg.classList.add('hot'); }, 1900);
+      later(countdown, 2700);
+    });
+    function countdown() {
+      say(`Let's count down while they bake!`);
+      const n = S.max;
+      range(n).forEach(k => later(() => {
+        const v = n - k + 1;
+        showNum(v); sfx.tick(); speak(String(v));
+        $('#ovenclock').textContent = `${v}`;
+      }, 1400 + (k - 1) * 1150));
+      later(() => {
+        sfx.ding();
+        $('#ovenclock').textContent = 'DING';
+        say(`Ding! The cakes are baked. Ask the big person to take them out.`);
+        tray.innerHTML = trayG(true);
+        helpBtn('Big person, take them out', takeOut);
+      }, 1400 + n * 1150 + 300);
+    }
+    function takeOut() {
+      bigu.style.transform = 'translateX(90px)';
+      svg.classList.remove('hot');
+      later(() => { tray.style.transform = TRAY_OUT; sfx.whoosh(); bigu.style.transform = 'translateX(0px)'; }, 500);
+      later(() => {
+        say(`Yum! They smell so good. Let them cool, then we make <b>icing</b>!`);
+        addStar();
+        showGo(() => go('icing'));
+      }, 1900);
+    }
+  };
+
+  // ---------- icing ----------
+  function panSVG(P) {
+    const content = P.stir >= 3 ? '#FFF9F2' : (P.sugar ? '#FFF3D6' : (P.melted ? '#FFE27A' : null));
+    return `<svg viewBox="0 0 640 360" id="pansvg" role="img" aria-label="Saucepan on the stove">
+      <rect x="250" y="300" width="300" height="34" rx="10" fill="#C9CFE3" ${OL}/>
+      <ellipse class="${P.hot ? '' : 'off'}" cx="400" cy="300" rx="100" ry="12" fill="${P.hot ? '#FF4B4B' : '#9AA3C2'}" ${OL} stroke-width="3"/>
+      <path d="M520 214h96" stroke="${INK}" stroke-width="22" stroke-linecap="round"/><path d="M520 214h96" stroke="#FF6FA8" stroke-width="14" stroke-linecap="round"/>
+      <path d="M290 200v76a30 22 0 0 0 30 22h160a30 22 0 0 0 30-22v-76z" fill="#6CC4FF" ${OL}/>
+      <ellipse cx="400" cy="200" rx="110" ry="28" fill="#BFE6FF" ${OL}/>
+      <ellipse cx="400" cy="204" rx="96" ry="20" fill="#E3F4FF"/>
+      ${content ? `<ellipse cx="400" cy="206" rx="${P.melted ? 92 : 40}" ry="${P.melted ? 18 : 10}" fill="${content}"/>` : ''}
+      ${P.butter && !P.melted ? `<path d="M372 196h56v14h-56z" fill="#FFE27A" ${OL} stroke-width="3"/>` : ''}
+      ${P.sugar && P.stir < 3 ? `<ellipse cx="400" cy="200" rx="40" ry="12" fill="#fff" stroke="#EEE" stroke-width="2"/>` : ''}
+      ${P.stir >= 3 ? `<path d="M340 206q60-14 120 0" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round"/>` : ''}
+      <g id="whisk"><path d="M470 120l-50 80" stroke="#9AA3C2" stroke-width="8" stroke-linecap="round"/><path d="M470 120l-50 80" stroke="${INK}" stroke-width="2" opacity=".3"/><ellipse cx="416" cy="206" rx="10" ry="16" fill="none" stroke="#9AA3C2" stroke-width="4" transform="rotate(32 416 206)"/></g>
+      ${P.hot && !P.melted ? `<path d="M360 150q-10-18 0-32M400 146q-10-18 0-32M440 150q-10-18 0-32" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" opacity=".9"/>` : ''}
+      ${unicorn({ big: true, mitts: true }, 'x="-6" y="120" width="250" height="240"')}
+    </svg>`;
+  }
+
+  SC.icing = () => {
+    const P = { butter: 0, hot: 0, melted: 0, sugar: 0, stir: 0 };
+    layout(`<div class="mix"><div class="bowlwrap" id="panwrap">${panSVG(P)}<div class="pourfx" id="pourfx" style="left:62%"></div></div><div class="cards" id="cards"></div></div>`);
+    const wrap = $('#panwrap'), cards = $('#cards');
+    const redraw = () => { wrap.firstElementChild.outerHTML = panSVG(P); };
+    const pour = (icon, after) => {
+      const fx = $('#pourfx');
+      fx.innerHTML = icon; fx.classList.remove('on'); void fx.offsetWidth; fx.classList.add('on');
+      sfx.whoosh();
+      later(() => { sfx.plop(); after(); redraw(); }, 650);
+    };
+    say(`Let's make icing! Put <b>1</b> block of butter in the pan.`);
+    cards.innerHTML = `<button class="card pulse" type="button" id="ing">${ING.butter}<span>Butter</span><span class="measure">1 block</span></button>`;
+    $('#ing').onclick = () => {
+      cards.innerHTML = '';
+      pour(ING.butter, () => {
+        P.butter = 1;
+        later(() => {
+          say(`The stove is <b>hot</b>. Ask a <b>big person</b> to melt the butter.`);
+          cards.innerHTML = `<button class="btn helpbtn pulse" type="button" id="help">${ICON.mitt} Big person, tap here</button>`;
+          $('#help').onclick = () => {
+            cards.innerHTML = ''; sfx.pop();
+            P.hot = 1; redraw();
+            say(`Melt, butter, melt!`);
+            later(() => { P.melted = 1; P.hot = 0; redraw(); sfx.sparkle(); sugarStep(); }, 2200);
+          };
+        }, 500);
+      });
+    };
+    function sugarStep() {
+      say(`The butter melted! Now add <b>1 cup</b> of icing sugar.`);
+      cards.innerHTML = `<button class="card pulse" type="button" id="ing">${ING.icing}<span>Icing sugar</span><span class="measure">${ICON.cup} 1 cup</span></button>`;
+      $('#ing').onclick = () => { cards.innerHTML = ''; pour(ING.icing, () => { P.sugar = 1; later(stirStep, 400); }); };
+    }
+    function stirStep() {
+      say(`Whisk it! Tap the pan <b>3</b> times.`);
+      wrap.classList.add('tapme');
+      wrap.onclick = () => {
+        if (P.stir >= 3) return;
+        P.stir++; redraw();
+        const w = $('#whisk'); w.style.transformBox = 'view-box'; w.style.transformOrigin = '420px 200px'; w.style.animation = 'stir .45s ease-in-out';
+        sfx.note(P.stir); showNum(P.stir); speak(String(P.stir));
+        if (P.stir === 3) {
+          wrap.classList.remove('tapme');
+          later(() => {
+            say(`Creamy white icing! Next we add <b>colours</b> to it.`);
+            addStar();
+            showGo(() => go('stack'));
+          }, 1000);
+        }
+      };
+    }
+  };
+
+  // ---------- stack & ice each layer ----------
+  SC.stack = () => {
+    S.cake = [];
+    layout(`<div class="split"><div class="cakebox" id="cakebox"></div>
+      <div class="panel"><div id="addwrap"></div>
+      <div class="dyes" id="dyes">${DYES.map(d => `<button class="dye" type="button" data-c="${d.id}" disabled>${dyeIcon(d.hex)}<span>${cap(d.id)}</span></button>`).join('')}</div></div></div>`);
+    const box = $('#cakebox'), addwrap = $('#addwrap');
+    const draw = (drop = false) => { box.innerHTML = cakeSVG({ layers: S.cake, total: S.layers, shape: S.shape, flavour: S.flavour, dropLast: drop }); };
+    const setDyes = on => $$('.dye').forEach(d => { d.disabled = !on; d.classList.remove('sel'); });
+    draw();
+    function offerLayer() {
+      const k = S.cake.length + 1;
+      say(k === 1 ? `Put <b>layer 1</b> on the plate!` : `Now add <b>layer ${k}</b>!`);
+      addwrap.innerHTML = `<button class="btn addlayer pulse" type="button" id="add">+ Layer <span class="n">${k}</span></button>`;
+      $('#add').onclick = () => {
+        addwrap.innerHTML = '';
+        S.cake.push({ icing: null });
+        draw(true);
+        sfx.note(k); showNum(k);
+        say(`Layer <b>${k}</b>! Pick an icing colour.`);
+        setDyes(true);
+      };
+    }
+    $$('.dye').forEach(d => d.onclick = () => {
+      const top = S.cake[S.cake.length - 1];
+      if (!top) return;
+      const first = !top.icing;
+      top.icing = d.dataset.c;
+      $$('.dye').forEach(x => x.classList.toggle('sel', x === d));
+      draw();
+      sfx.sparkle();
+      if (S.cake.length < S.layers) {
+        say(`<b>${cap(d.dataset.c)}</b>!`);
+        if (first) later(() => { setDyes(false); offerLayer(); }, 1300);
+      } else {
+        say(`<b>${cap(d.dataset.c)}</b>! Wow, <b>${S.layers}</b> ${plural(S.layers, 'layer', 'layers')}! Tap the arrow to decorate.`);
+        if (first) { addStar(); showGo(() => go('decorate')); }
+      }
+    });
+    offerLayer();
+  };
+
+  // ---------- decorate ----------
+  SC.decorate = () => {
+    S.decos = [];
+    const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+    const T = { tool: 'sprinkles', letter: 'A', number: 1, colourIdx: 0 };
+    const TOOLS = [['sprinkles', 'Sprinkles'], ['candles', 'Candles'], ['balloons', 'Balloons'], ['letters', 'Letters'], ['numbers', 'Numbers']];
+    layout(`<div class="deco"><div class="cakebox" id="cakebox"></div>
+      <div class="panel">
+        <div class="tools">${TOOLS.map(([id, label]) => `<button class="tool" type="button" data-t="${id}">${TOOL_ICON[id]}<span>${label}</span></button>`).join('')}
+          <button class="tool undo" type="button" id="undo">${ICON.undo}<span>Undo</span></button></div>
+        <div class="picker" id="picker"></div>
+      </div></div>`);
+    const box = $('#cakebox'), picker = $('#picker');
+    box.innerHTML = cakeSVG({ layers: S.cake, total: S.layers, shape: S.shape, flavour: S.flavour, decos: S.decos });
+    const svg = () => box.querySelector('svg');
+    const nextColour = () => NUMCOL[(T.colourIdx++) % 8];
+    const counts = () => S.decos.reduce((m, d) => (m[d.type] = (m[d.type] || 0) + 1, m), {});
+
+    function pickTool(t) {
+      T.tool = t;
+      $$('.tool[data-t]').forEach(b => b.classList.toggle('sel', b.dataset.t === t));
+      if (t === 'letters') {
+        picker.innerHTML = letters.map((l, i) => `<button type="button" data-v="${l}" style="--c:${NUMCOL[i % 8]}">${l}</button>`).join('');
+      } else if (t === 'numbers') {
+        picker.innerHTML = range(S.max).map(n => `<button type="button" data-v="${n}" style="--c:${NUMCOL[n - 1]}">${n}</button>`).join('');
+      } else picker.innerHTML = '';
+      picker.classList.toggle('abc', t === 'letters');
+      $$('button', picker).forEach(b => {
+        const v = b.dataset.v;
+        b.classList.toggle('sel', v === String(t === 'letters' ? T.letter : T.number));
+        b.onclick = () => {
+          if (t === 'letters') T.letter = v; else T.number = +v;
+          $$('button', picker).forEach(x => x.classList.toggle('sel', x === b));
+          sfx.pop(); speak(t === 'letters' ? v : WORDS[+v]);
+        };
+      });
+      const tips = {
+        sprinkles: 'Tap the cake to shake on <b>sprinkles</b>!',
+        candles: 'Tap the top of the cake to add <b>candles</b>. We will count them!',
+        balloons: 'Tap to tie on <b>balloons</b>!',
+        letters: 'Pick a <b>letter</b>, then tap the cake. Can you find the first letter of your name?',
+        numbers: 'Pick a <b>number</b>, then tap the cake!',
+      };
+      say(tips[t]);
+    }
+    $$('.tool[data-t]').forEach(b => b.onclick = () => { sfx.pop(); pickTool(b.dataset.t); });
+
+    box.addEventListener('pointerdown', e => {
+      const s = svg(); if (!s) return;
+      const m = s.getScreenCTM(); if (!m) return;
+      const pt = new DOMPoint(e.clientX, e.clientY).matrixTransform(m.inverse());
+      const x = Math.round(pt.x), y = Math.round(pt.y);
+      if (x < 0 || x > 400 || y < 0 || y > 410) return;
+      let d;
+      if (T.tool === 'sprinkles') {
+        const bits = Array.from({ length: 12 }, () => [Math.random() * 60 - 35, Math.random() * 40 - 22, Math.round(Math.random() * 180), NUMCOL[Math.floor(Math.random() * 8)]]);
+        d = { type: 'sprinkles', x, y, bits };
+        sfx.sparkle();
+      } else if (T.tool === 'candles') {
+        d = { type: 'candles', x, y, c: nextColour() };
+      } else if (T.tool === 'balloons') {
+        d = { type: 'balloons', x, y, c: nextColour() };
+        sfx.pop();
+      } else if (T.tool === 'letters') {
+        d = { type: 'letters', x, y, c: nextColour(), ch: T.letter };
+        sfx.pop(); speak(T.letter);
+      } else {
+        d = { type: 'numbers', x, y, c: NUMCOL[T.number - 1], ch: String(T.number) };
+        sfx.pop(); speak(WORDS[T.number]);
+      }
+      S.decos.push(d);
+      $('#decos', s).insertAdjacentHTML('beforeend', decoSVG(d, true));
+      if (d.type === 'candles') {
+        const c = counts().candles;
+        sfx.note(c); showNum(c);
+        speak(`${c} ${plural(c, 'candle', 'candles')}`);
+      }
+      if (S.decos.length === 3) showGo(finish);
+    });
+    $('#undo').onclick = () => {
+      if (!S.decos.length) return;
+      S.decos.pop();
+      const g = $('#decos', svg());
+      if (g.lastElementChild) g.lastElementChild.remove();
+      sfx.pop();
+    };
+    pickTool('sprinkles');
+
+    function finish() {
+      $('#go').hidden = true;
+      $('.panel').style.visibility = 'hidden';
+      const c = counts();
+      const bits = [`<b>${S.layers}</b> ${plural(S.layers, 'layer', 'layers')}`];
+      if (c.candles) bits.push(`<b>${c.candles}</b> ${plural(c.candles, 'candle', 'candles')}`);
+      if (c.balloons) bits.push(`<b>${c.balloons}</b> ${plural(c.balloons, 'balloon', 'balloons')}`);
+      const list = bits.length > 1 ? bits.slice(0, -1).join(', ') + ' and ' + bits[bits.length - 1] : bits[0];
+      say(`Hooray! You made a ${S.flavour} ${S.shape} cake with ${list}! You are a super baker!`);
+      addStar(); sfx.tada(); confetti();
+      const panel = document.createElement('div');
+      panel.className = 'celebrate';
+      panel.innerHTML = `<h2>Super baker!</h2><p>${cap(S.flavour)} ${S.shape} cake with ${list}.</p>
+        <div class="row"><button class="btn" type="button" id="again">${ICON.again} Bake again</button>
+        <button class="btn undo" type="button" id="more">Keep decorating</button></div>`;
+      $('#play').appendChild(panel);
+      $('#again').onclick = () => { sfx.pop(); go('layers'); };
+      $('#more').onclick = () => { panel.remove(); $('.panel').style.visibility = ''; showGo(finish); sfx.pop(); pickTool(T.tool); };
+    }
+  };
+
+  // ---------- chrome ----------
+  function drawSound() {
+    const b = $('#snd');
+    b.innerHTML = S.sound ? ICON.speaker : ICON.mute;
+    b.setAttribute('aria-label', S.sound ? 'Sound is on' : 'Sound is off');
+  }
+  $('#snd').onclick = () => {
+    S.sound = !S.sound;
+    if (!S.sound) { try { speechSynthesis.cancel(); } catch (e) { /* no speech */ } }
+    drawSound();
+    if (S.sound) { ac(); sfx.pop(); }
+  };
+  $('#home').onclick = () => { sfx.pop(); go('title'); };
+  drawSound();
+  go('title');
+})();
+</script>
+<!-- ARTIFACT-END -->
+</body>
+</html>
