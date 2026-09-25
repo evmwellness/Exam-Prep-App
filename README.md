@@ -56,6 +56,27 @@ Question data lives in `src/data/akt/group*.ts` (AKT MCQs), `src/data/kfpMcq/gro
 (legacy KFP case bank), typed against `src/types.ts`. Add new files following
 the same schema and wire them into the matching `index.ts` aggregator.
 
+## Hush — baby sleep timer (`public/sleep/`)
+
+A separate, dependency-free PWA served at `/sleep/` alongside the exam app
+(e.g. `https://<user>.github.io/Exam-Prep-App/sleep/`).
+
+- Sounds: white noise, crackling fire, ocean waves, rainforest, snow falling,
+  gentle wind, and Bach's Prelude in C (BWV 846, public domain) for study.
+  All are synthesised on the device in a Web Worker, so there are no audio
+  files and it works offline.
+- Timers: 2 hours and 10 hours presets, plus 15/25/30/45 min, 1, 1½, 3, 8 hours,
+  no timer, or a custom length. The last 30 s fade out where the browser allows it.
+- Black screen mode while playing (dim countdown fades to pure black; tap to
+  show). Optional "keep screen on".
+- Guides tab: evidence-based baby sleep information (safe sleep, white noise
+  safety, normal sleep needs, bedtime routines, sleep training methods and
+  outcomes, when to get help) and study guidance (retrieval practice, spacing,
+  interleaving, sleep, background music, realistic speed reading), each with
+  cited sources, plus a reading-speed check with comprehension questions.
+- Keeps playing when the phone is locked or you switch to other apps. It plays
+  through an `<audio>` element with Media Session lock-screen controls.
+
 ## Seven Minute Sunrise (kids' morning routine)
 
 A separate, standalone page at `public/seven-minute-sunrise/index.html`

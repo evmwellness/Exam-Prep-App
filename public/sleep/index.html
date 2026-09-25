@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Hush — Sleep Timer</title>
+    <meta name="description" content="White noise and calming sounds with a sleep timer. Plays in the background while you use other apps." />
+    <meta name="theme-color" content="#0b1026" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Hush" />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="icon" href="icons/icon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="icons/icon-180.png" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app">
+      <header class="top">
+        <svg class="logo" viewBox="0 0 64 64" aria-hidden="true">
+          <path d="M40 10a22 22 0 1 0 14 38A24 24 0 0 1 40 10Z" fill="currentColor" />
+        </svg>
+        <div>
+          <h1>Hush</h1>
+          <p class="sub">Sleep sounds &amp; timer</p>
+        </div>
+      </header>
+
+      <nav class="tabs" role="tablist" aria-label="Sections">
+        <button role="tab" id="tab-sounds" aria-selected="true" aria-controls="view-sounds">Sounds &amp; timer</button>
+        <button role="tab" id="tab-guides" aria-selected="false" aria-controls="view-guides">Guides</button>
+      </nav>
+
+      <div id="view-sounds" role="tabpanel" aria-labelledby="tab-sounds">
+      <section aria-labelledby="sound-h">
+        <h2 id="sound-h">Sound</h2>
+        <div class="sounds" id="sounds" role="radiogroup" aria-labelledby="sound-h"></div>
+      </section>
+
+      <section aria-labelledby="timer-h">
+        <h2 id="timer-h">Timer</h2>
+        <div class="presets" id="big-timers" role="radiogroup" aria-labelledby="timer-h"></div>
+        <div class="chips" id="chips" role="radiogroup" aria-label="More timer options"></div>
+        <div class="custom" id="custom" hidden>
+          <label>Hours <input type="number" id="custom-h" min="0" max="24" value="1" inputmode="numeric" /></label>
+          <label>Minutes <input type="number" id="custom-m" min="0" max="59" value="30" inputmode="numeric" /></label>
+        </div>
+      </section>
+
+      <section class="options" aria-label="Options">
+        <label class="volume" id="volume-row">
+          <span>Volume</span>
+          <input type="range" id="volume" min="0" max="1" step="0.01" value="0.8" />
+        </label>
+        <p class="hint" id="volume-hint" hidden>Use your phone's volume buttons to change the volume.</p>
+        <label class="toggle">
+          <input type="checkbox" id="opt-dark" checked />
+          <span>Black screen while playing</span>
+        </label>
+        <label class="toggle" id="wake-row">
+          <input type="checkbox" id="opt-wake" />
+          <span>Keep screen on <small>(otherwise your phone locks as usual — the sound keeps going)</small></span>
+        </label>
+      </section>
+
+      <div class="player">
+        <div class="status" id="status" aria-live="polite"></div>
+        <button class="primary" id="play">Start</button>
+        <div class="running" id="running" hidden>
+          <button class="secondary" id="go-dark">Black screen</button>
+          <button class="secondary" id="stop">Stop</button>
+        </div>
+      </div>
+
+      <details class="help">
+        <summary>Using Hush with other apps</summary>
+        <ul>
+          <li>Once a sound is playing you can lock your phone, or switch to email, notes or your browser — Hush keeps playing until the timer ends.</li>
+          <li>You can pause or stop it from your lock screen or control centre.</li>
+          <li>Playing a video or music in another app will pause Hush (your phone only plays one audio app at a time).</li>
+          <li>Add it to your Home Screen to open it like an app. iPhone: in Safari tap Share → <em>Add to Home Screen</em>. Android: Chrome menu ⋮ → <em>Install app</em> / <em>Add to Home screen</em>.</li>
+          <li>Works offline after the first visit. No ads, no account.</li>
+        </ul>
+      </details>
+      </div>
+
+      <div id="view-guides" role="tabpanel" aria-labelledby="tab-guides" hidden>
+        <div class="seg" role="tablist" aria-label="Guide topic">
+          <button role="tab" id="seg-baby" aria-selected="true" aria-controls="guide-baby">Baby sleep</button>
+          <button role="tab" id="seg-study" aria-selected="false" aria-controls="guide-study">Study</button>
+        </div>
+
+        <!-- ================= BABY SLEEP ================= -->
+        <article id="guide-baby" class="guide" role="tabpanel" aria-labelledby="seg-baby">
+          <p class="note">
+            General information based on published research and national safe-sleep guidance. It isn't medical
+            advice. Every baby is different, so check with your GP, child health nurse or paediatrician if
+            you're worried.
+          </p>
+
+          <details open>
+            <summary>Safe sleep first</summary>
+            <p>These steps lower the risk of SIDS and fatal sleep accidents. They matter more than any settling method.</p>
+            <ul>
+              <li>Always put baby to sleep <strong>on their back</strong>, from birth, for day sleeps and night sleeps.</li>
+              <li>Keep their <strong>head and face uncovered</strong>. Use a firm, flat, well-fitting mattress with no pillows, bumpers, soft toys or loose bedding. A safe infant sleeping bag is a good option.</li>
+              <li>Have baby sleep in <strong>their own safe cot or bassinet in your room</strong>. Guidance recommends this for at least the first 6 months.</li>
+              <li>Keep baby <strong>smoke-free</strong>, before and after birth. Breastfeeding, if you can, also lowers the risk.</li>
+              <li>Stop swaddling as soon as baby shows signs of starting to roll.</li>
+              <li>Never let baby sleep on a sofa, armchair or in a propped-up position.</li>
+            </ul>
+            <p class="refs">Sources: Red Nose Australia safe sleep advice; Moon RY et al., AAP 2022 recommendations, <em>Pediatrics</em> 150(1):e2022057990.</p>
+          </details>
+
+          <details>
+            <summary>Using white noise safely</summary>
+            <ul>
+              <li>Keep the volume <strong>low</strong>. Aim for about the level of a soft shower or a quiet conversation, not louder than you'd talk over.</li>
+              <li>Put your phone <strong>at least 2 metres from the cot</strong>, never in it or on the mattress.</li>
+              <li>A study of infant sleep machines found that some, at full volume and close to the cot, went over the noise limits recommended for hospital nurseries.</li>
+              <li>White noise can help some babies settle and mask household noise. Evidence for longer sleep is modest and mixed, so treat it as a helper, not a fix.</li>
+            </ul>
+            <p class="refs">Source: Hugh SC et al. Infant sleep machines and hazardous sound pressure levels. <em>Pediatrics</em> 2014;133(4):677–81.</p>
+          </details>
+
+          <details>
+            <summary>How much sleep is normal?</summary>
+            <table class="sleep-table">
+              <thead><tr><th>Age</th><th>Total per 24 hours (incl. naps)</th></tr></thead>
+              <tbody>
+                <tr><td>0–3 months</td><td>14–17 hours</td></tr>
+                <tr><td>4–12 months</td><td>12–16 hours</td></tr>
+                <tr><td>1–2 years</td><td>11–14 hours</td></tr>
+                <tr><td>3–5 years</td><td>10–13 hours</td></tr>
+              </tbody>
+            </table>
+            <p>These are wide ranges and healthy children vary. Night waking is <strong>normal and expected</strong> in the first months. Newborns have no day–night rhythm yet, and most babies still wake at night at 6 and 12 months.</p>
+            <p class="refs">Sources: Paruthi S et al. AASM consensus, <em>J Clin Sleep Med</em> 2016;12(6):785–6; Hirshkowitz M et al. National Sleep Foundation, <em>Sleep Health</em> 2015;1:40–3.</p>
+          </details>
+
+          <details>
+            <summary>A consistent bedtime routine</summary>
+            <p>A short, predictable routine every night, such as bath, feed, pyjamas, book, song then bed, helped babies and toddlers fall asleep faster and wake less. In one trial it improved mothers' mood within 2–3 weeks.</p>
+            <ul>
+              <li>Keep it calm, dim and about 20–30 minutes long, in the same order each night.</li>
+              <li>Aim for a regular bedtime and wake time.</li>
+              <li>Try putting baby down <strong>drowsy but awake</strong> sometimes, so they get practice falling asleep in the cot.</li>
+            </ul>
+            <p class="refs">Source: Mindell JA et al. A nightly bedtime routine. <em>Sleep</em> 2009;32(5):599–606.</p>
+          </details>
+
+          <details>
+            <summary>Sleep training: what the evidence says</summary>
+            <p><strong>When:</strong> behavioural methods are generally suggested <strong>from about 6 months</strong>, once feeding and growth are going well. They aren't recommended for young babies, who need night feeds and responsive settling.</p>
+            <p><strong>Methods with the best evidence:</strong></p>
+            <ul>
+              <li><strong>Controlled comforting</strong> (also called graduated extinction). Settle baby, leave, then check at gradually longer intervals, for example 2, then 4, then 6 minutes, with brief calm reassurance each time.</li>
+              <li><strong>Camping out</strong> (adult fading). Sit by the cot until baby sleeps, then move your chair a little further away every few nights until you're out of the room. It's gentler but usually takes longer.</li>
+              <li><strong>Bedtime fading</strong>. Temporarily move bedtime later, to when baby naturally falls asleep, then bring it earlier by about 15 minutes every few nights.</li>
+            </ul>
+            <p><strong>What studies found:</strong></p>
+            <ul>
+              <li>Reviews of more than 50 studies found behavioural methods reduce bedtime problems and night waking in most children.</li>
+              <li>In a randomised trial, controlled comforting and bedtime fading both helped babies fall asleep faster. Controlled comforting also reduced night waking. Stress hormone levels and attachment at 12 months <strong>didn't differ</strong> from the control group.</li>
+              <li>Australian trials found these methods reduced infant sleep problems and <strong>parents' depression symptoms</strong>. A 5-year follow-up found <strong>no harm</strong> to children's emotions, behaviour, stress or the parent–child relationship.</li>
+            </ul>
+            <p><strong>Tips for success:</strong> choose a method you're comfortable with, agree on it with your partner, and stay consistent for at least 1–2 weeks. Expect some protest at first. It's fine not to sleep train at all. Responsive settling is a valid choice too.</p>
+            <p class="refs">Sources: Mindell JA et al. <em>Sleep</em> 2006;29(10):1263–76; Gradisar M et al. <em>Pediatrics</em> 2016;137(6):e20151486; Hiscock H, Wake M. <em>BMJ</em> 2002;324:1062; Hiscock H et al. <em>BMJ</em> 2007;334:1054; Price AMH et al. <em>Pediatrics</em> 2012;130(4):643–51.</p>
+          </details>
+
+          <details>
+            <summary>When to get help</summary>
+            <ul>
+              <li>Loud snoring, pauses in breathing or gasping during sleep.</li>
+              <li>Poor feeding or weight gain, fever, or baby seems unwell, floppy or unusually hard to wake. Seek help urgently.</li>
+              <li>Sleep problems that continue despite a consistent approach.</li>
+              <li><strong>You're exhausted, low, anxious or not coping.</strong> This is common and treatable. Talk to your GP or child health nurse. In Australia, PANDA, Tresillian, Karitane and Ngala offer phone support and sleep programs.</li>
+            </ul>
+          </details>
+        </article>
+
+        <!-- ================= STUDY ================= -->
+        <article id="guide-study" class="guide" role="tabpanel" aria-labelledby="seg-study" hidden>
+          <p class="note">
+            Strategies ranked by how well they've held up in controlled research. The biggest 2013 review of
+            learning techniques rated two as "high utility": practice testing and spacing your study out.
+          </p>
+
+          <details open>
+            <summary>1. Test yourself (retrieval practice)</summary>
+            <p>Pulling information <em>out</em> of memory strengthens it far more than reading it again. In a classic study, students who practised recalling a text remembered much more a week later than students who re-read it, even though re-reading <em>felt</em> more effective.</p>
+            <ul>
+              <li>Close the book and write or say everything you remember, then check what you missed.</li>
+              <li>Use flashcards and practice questions. Answer before you look.</li>
+              <li>Getting it wrong, then checking, still helps, as long as you look up the right answer.</li>
+            </ul>
+            <p class="refs">Sources: Roediger HL, Karpicke JD. <em>Psychol Sci</em> 2006;17(3):249–55; Adesope OO et al. <em>Rev Educ Res</em> 2017;87(3):659–701.</p>
+          </details>
+
+          <details>
+            <summary>2. Space it out</summary>
+            <p>Spreading study over several sessions beats cramming the same total time into one. A review of hundreds of experiments found spaced study gives consistently better long-term recall.</p>
+            <ul>
+              <li>Review new material after about a day, then a few days, then a week or two.</li>
+              <li>The longer you need to remember something (like an exam weeks away), the longer the gaps can be.</li>
+              <li>Flashcard apps with spaced repetition schedule this for you.</li>
+            </ul>
+            <p class="refs">Source: Cepeda NJ et al. <em>Psychol Bull</em> 2006;132(3):354–80.</p>
+          </details>
+
+          <details>
+            <summary>3. Mix topics and explain why</summary>
+            <ul>
+              <li><strong>Interleaving:</strong> mixing different types of problems in one session, rather than doing all of one type in a block, improved later test scores in maths studies. It feels harder, and that's part of why it works.</li>
+              <li><strong>Elaboration and self-explanation:</strong> ask yourself <em>why</em> something is true and how it links to what you already know. There's moderate evidence this helps.</li>
+              <li><strong>Less useful:</strong> highlighting, underlining and re-reading were rated "low utility". They feel productive but add little on their own.</li>
+            </ul>
+            <p class="refs">Sources: Dunlosky J et al. <em>Psychol Sci Public Interest</em> 2013;14(1):4–58; Rohrer D, Taylor K. <em>Instr Sci</em> 2007;35:481–98.</p>
+          </details>
+
+          <details>
+            <summary>4. Sleep on it</summary>
+            <p>Sleep after learning helps the brain consolidate new memories, and sleep loss before study makes it harder to take in new information. An all-nighter usually costs more than it gains.</p>
+            <p class="refs">Source: Diekelmann S, Born J. The memory function of sleep. <em>Nat Rev Neurosci</em> 2010;11:114–26.</p>
+          </details>
+
+          <details>
+            <summary>Focus sessions and background music</summary>
+            <ul>
+              <li><strong>Timed blocks with breaks</strong>, such as the 25-minute timer here, are a practical way to start and keep going. Short breaks help. There's little direct evidence that exactly 25 minutes is best, so use whatever length keeps you focused.</li>
+              <li><strong>Put your phone out of reach</strong> or on do-not-disturb. Notifications and task-switching reliably hurt focus. (Hush keeps playing with the screen locked.)</li>
+              <li><strong>Music:</strong> a meta-analysis found background music slightly <em>reduces</em> reading comprehension and memory on average, and music with lyrics interferes most. The "Mozart effect" didn't hold up in larger studies. Quiet, familiar instrumental music like the Bach here, or steady white noise, is the least distracting option if it helps your mood or masks noise. If you're reading dense material, try silence.</li>
+            </ul>
+            <p class="refs">Sources: Kämpfe J et al. <em>Psychol Music</em> 2011;39(4):424–48; Pietschnig J et al. <em>Intelligence</em> 2010;38:314–23.</p>
+          </details>
+
+          <details>
+            <summary>Speed reading: what actually works</summary>
+            <p>A major scientific review of speed reading found that the big claims (1,000+ words a minute with full understanding) don't hold up. Reading speed is limited mainly by how fast we recognise words and understand language, not by eye movements. When people read much faster than normal, <strong>comprehension drops</strong>.</p>
+            <p>Typical adult silent reading is about <strong>240 words per minute</strong> for non-fiction and about 260 for fiction. Things that genuinely help:</p>
+            <ul>
+              <li><strong>Preview first.</strong> Skim headings, summaries, figures and the first sentence of each paragraph, so you know what's important before reading closely.</li>
+              <li><strong>Read with a purpose.</strong> Decide what you need to find out, and slow down only for the parts that matter.</li>
+              <li><strong>Skim strategically</strong> when you only need the gist. Just know you'll miss detail, so don't skim what you have to learn.</li>
+              <li><strong>Build vocabulary and background knowledge.</strong> Familiarity with a subject is the most reliable way to read it faster over time.</li>
+              <li><strong>Cut regressions from distraction</strong> by reading in a quiet space. Some re-reading of hard sentences is normal and helps understanding.</li>
+              <li><strong>Be wary of apps</strong> that flash one word at a time. They stop you glancing back and lower comprehension, especially for complex text.</li>
+            </ul>
+            <p class="refs">Sources: Rayner K et al. So much to read, so little time. <em>Psychol Sci Public Interest</em> 2016;17(1):4–34; Brysbaert M. <em>J Mem Lang</em> 2019;109:104047.</p>
+          </details>
+
+          <section class="reading-test" aria-labelledby="rt-h">
+            <h3 id="rt-h">Check your reading speed</h3>
+            <p class="muted">Read the passage at your normal pace, then answer 3 quick questions. Speed only counts if you understood it.</p>
+            <button class="primary" id="rt-start">Start reading</button>
+            <div id="rt-passage" class="passage" hidden></div>
+            <button class="primary" id="rt-done" hidden>I've finished reading</button>
+            <form id="rt-quiz" hidden></form>
+            <div id="rt-result" class="rt-result" aria-live="polite" hidden></div>
+          </section>
+        </article>
+      </div>
+    </main>
+
+    <div class="dark" id="dark" hidden>
+      <div class="dark-info" id="dark-info">
+        <div class="dark-sound" id="dark-sound"></div>
+        <div class="dark-time" id="dark-time"></div>
+        <div class="dark-actions">
+          <button id="dark-exit">Show app</button>
+          <button id="dark-stop">Stop</button>
+        </div>
+        <div class="dark-tip">Tap anywhere to show · fades to black</div>
+      </div>
+    </div>
+
+    <audio id="audio" loop preload="auto" playsinline></audio>
+    <script src="app.js"></script>
+  </body>
+</html>
