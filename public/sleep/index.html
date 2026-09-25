@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Hush — Sleep Timer</title>
+    <meta name="description" content="White noise and calming sounds with a sleep timer. Plays in the background while you use other apps." />
+    <meta name="theme-color" content="#0b1026" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Hush" />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="icon" href="icons/icon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="icons/icon-180.png" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app">
+      <header class="top">
+        <svg class="logo" viewBox="0 0 64 64" aria-hidden="true">
+          <path d="M40 10a22 22 0 1 0 14 38A24 24 0 0 1 40 10Z" fill="currentColor" />
+        </svg>
+        <div>
+          <h1>Hush</h1>
+          <p class="sub">Sleep sounds &amp; timer</p>
+        </div>
+      </header>
+
+      <section aria-labelledby="sound-h">
+        <h2 id="sound-h">Sound</h2>
+        <div class="sounds" id="sounds" role="radiogroup" aria-labelledby="sound-h"></div>
+      </section>
+
+      <section aria-labelledby="timer-h">
+        <h2 id="timer-h">Timer</h2>
+        <div class="presets" id="big-timers" role="radiogroup" aria-labelledby="timer-h"></div>
+        <div class="chips" id="chips" role="radiogroup" aria-label="More timer options"></div>
+        <div class="custom" id="custom" hidden>
+          <label>Hours <input type="number" id="custom-h" min="0" max="24" value="1" inputmode="numeric" /></label>
+          <label>Minutes <input type="number" id="custom-m" min="0" max="59" value="30" inputmode="numeric" /></label>
+        </div>
+      </section>
+
+      <section class="options" aria-label="Options">
+        <label class="volume" id="volume-row">
+          <span>Volume</span>
+          <input type="range" id="volume" min="0" max="1" step="0.01" value="0.8" />
+        </label>
+        <p class="hint" id="volume-hint" hidden>Use your phone's volume buttons to change the volume.</p>
+        <label class="toggle">
+          <input type="checkbox" id="opt-dark" checked />
+          <span>Black screen while playing</span>
+        </label>
+        <label class="toggle" id="wake-row">
+          <input type="checkbox" id="opt-wake" />
+          <span>Keep screen on <small>(otherwise your phone locks as usual — the sound keeps going)</small></span>
+        </label>
+      </section>
+
+      <div class="player">
+        <div class="status" id="status" aria-live="polite"></div>
+        <button class="primary" id="play">Start</button>
+        <div class="running" id="running" hidden>
+          <button class="secondary" id="go-dark">Black screen</button>
+          <button class="secondary" id="stop">Stop</button>
+        </div>
+      </div>
+
+      <details class="help">
+        <summary>Using Hush with other apps</summary>
+        <ul>
+          <li>Once a sound is playing you can lock your phone, or switch to email, notes or your browser — Hush keeps playing until the timer ends.</li>
+          <li>You can pause or stop it from your lock screen or control centre.</li>
+          <li>Playing a video or music in another app will pause Hush (your phone only plays one audio app at a time).</li>
+          <li>Add it to your Home Screen to open it like an app. iPhone: in Safari tap Share → <em>Add to Home Screen</em>. Android: Chrome menu ⋮ → <em>Install app</em> / <em>Add to Home screen</em>.</li>
+          <li>Works offline after the first visit. No ads, no account.</li>
+        </ul>
+      </details>
+    </main>
+
+    <div class="dark" id="dark" hidden>
+      <div class="dark-info" id="dark-info">
+        <div class="dark-sound" id="dark-sound"></div>
+        <div class="dark-time" id="dark-time"></div>
+        <div class="dark-actions">
+          <button id="dark-exit">Show app</button>
+          <button id="dark-stop">Stop</button>
+        </div>
+        <div class="dark-tip">Tap anywhere to show · fades to black</div>
+      </div>
+    </div>
+
+    <audio id="audio" loop preload="auto" playsinline></audio>
+    <script src="app.js"></script>
+  </body>
+</html>

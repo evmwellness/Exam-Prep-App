@@ -32,6 +32,9 @@ export default defineConfig({
       workbox: {
         globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2}'],
         navigateFallback: `${base}index.html`,
+        // The Hush sleep timer in public/sleep/ is a separate app with its own service worker.
+        globIgnores: ['sleep/**'],
+        navigateFallbackDenylist: [/\/sleep\//],
       },
       devOptions: {
         enabled: false,
