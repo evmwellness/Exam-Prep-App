@@ -7,9 +7,15 @@ import { EXAM_SIM_DEFAULTS } from '../lib/examConfig'
 import type { ExamType, SessionMode, Specialty } from '../types'
 
 interface NavState {
-  quickMode?: 'exam' | 'block' | 'weak'
+  quickMode?: 'exam' | 'block' | 'weak' | 'topic'
   exam?: ExamType
   specialty?: Specialty
+  specialties?: Specialty[]
+}
+
+function modeForQuickMode(quickMode: NavState['quickMode']): SessionMode {
+  if (quickMode === 'weak' || quickMode === 'topic') return 'custom'
+  return (quickMode as SessionMode) ?? 'block'
 }
 
 export default function PracticeSetup() {
@@ -18,19 +24,22 @@ export default function PracticeSetup() {
   const navState = (location.state as NavState) ?? {}
 
   const [exam, setExam] = useState<ExamType>(navState.exam ?? 'AKT')
-  const [mode, setMode] = useState<SessionMode>(navState.quickMode === 'weak' ? 'custom' : (navState.quickMode as SessionMode) ?? 'block')
+  const [mode, setMode] = useState<SessionMode>(modeForQuickMode(navState.quickMode))
   const [blockMinutes, setBlockMinutes] = useState<20 | 25>(20)
   const [customCount, setCustomCount] = useState(20)
   const [focusWeakAreas, setFocusWeakAreas] = useState(navState.quickMode === 'weak')
-  const [specialties, setSpecialties] = useState<Specialty[]>(navState.specialty ? [navState.specialty] : [])
+  const [specialties, setSpecialties] = useState<Specialty[]>(
+    navState.specialties ?? (navState.specialty ? [navState.specialty] : []),
+  )
   const [includeCaseStudies, setIncludeCaseStudies] = useState(false)
   const [isBuilding, setIsBuilding] = useState(false)
 
   useEffect(() => {
-    setMode(navState.quickMode === 'weak' ? 'custom' : (navState.quickMode as SessionMode) ?? 'block')
+    setMode(modeForQuickMode(navState.quickMode))
     setFocusWeakAreas(navState.quickMode === 'weak')
     if (navState.exam) setExam(navState.exam)
-    if (navState.specialty) setSpecialties([navState.specialty])
+    if (navState.specialties) setSpecialties(navState.specialties)
+    else if (navState.specialty) setSpecialties([navState.specialty])
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.key])
 

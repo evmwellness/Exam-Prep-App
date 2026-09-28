@@ -217,4 +217,8 @@ export interface UserSettings {
   bestPaceSec?: number
   /** Highest accuracy % among sessions of >=20 questions. */
   bestAccuracyPct?: number
+  /** YYYY-MM-DD. When set, the Dashboard shows a week-by-week study plan counting down to it. */
+  targetExamDate?: string
+  /** YYYY-MM-DD. Week 1 of the plan; defaults to the date targetExamDate was first set. */
+  planStartDate?: string
 }

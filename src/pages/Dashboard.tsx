@@ -6,6 +6,7 @@ import { db, getSettings, updateSettings } from '../db/db'
 import { computeCurrentStreak } from '../lib/streak'
 import { computeSpecialtyStats } from '../lib/weakAreas'
 import { getAllBadges } from '../lib/badges'
+import { computeStudyPlanWeek, phaseDescription, phaseLabel } from '../lib/studyPlan'
 import StreakCalendar from '../components/StreakCalendar'
 import { FlameIcon, ChevronRightIcon } from '../components/layout/icons'
 import type { ExamType } from '../types'
@@ -40,6 +41,7 @@ export default function Dashboard() {
   }, [exam, attemptsCount])
 
   const accuracy = attemptsCount && attemptsCount > 0 ? Math.round(((correctCount ?? 0) / attemptsCount) * 100) : null
+  const plan = settings ? computeStudyPlanWeek(settings) : null
 
   async function switchExam(next: ExamType) {
     setExam(next)
@@ -91,6 +93,45 @@ export default function Dashboard() {
           <StreakCalendar days={70} />
         </div>
       </section>
+
+      {plan && plan.phase !== 'not-set' && (
+        <section className="rounded-xl bg-slate-900 border border-slate-800 p-4 mb-4">
+          <div className="flex items-center justify-between mb-1.5">
+            <p className="text-xs font-semibold text-sky-400">
+              {plan.phase === 'complete' ? 'Exam week' : `Week ${plan.weekNumber} of ${plan.totalWeeks}`}
+            </p>
+            <p className="text-xs text-slate-500">{phaseLabel(plan.phase)}</p>
+          </div>
+          <p className="text-xs text-slate-400 mb-2">{phaseDescription(plan.phase)}</p>
+          {plan.phase === 'foundations' && plan.topics.length > 0 && (
+            <>
+              <p className="text-sm text-slate-200 mb-2">{plan.topics.join(', ')}</p>
+              <button
+                onClick={() => navigate('/practice', { state: { quickMode: 'topic', exam, specialties: plan.topics } })}
+                className="text-xs font-medium bg-sky-500 text-slate-950 px-3 py-1.5 rounded-full"
+              >
+                Practice this week's topic
+              </button>
+            </>
+          )}
+          {plan.phase === 'weak-areas' && (
+            <button
+              onClick={() => navigate('/practice', { state: { quickMode: 'weak', exam } })}
+              className="text-xs font-medium bg-amber-500 text-slate-950 px-3 py-1.5 rounded-full"
+            >
+              Practice weak areas
+            </button>
+          )}
+          {plan.phase === 'final-sim' && (
+            <button
+              onClick={() => navigate('/practice', { state: { quickMode: 'exam', exam } })}
+              className="text-xs font-medium bg-emerald-500 text-slate-950 px-3 py-1.5 rounded-full"
+            >
+              Start exam simulation
+            </button>
+          )}
+        </section>
+      )}
 
       <section className="grid grid-cols-3 gap-2 mb-4">
         <StatTile label="Answered" value={String(attemptsCount ?? 0)} />

@@ -2,6 +2,7 @@ import { useRef, useState } from 'react'
 import { useLiveQuery } from 'dexie-react-hooks'
 import { db, getSettings, updateSettings } from '../db/db'
 import { notificationsSupported, requestNotificationPermission } from '../lib/notifications'
+import { computeStudyPlanWeek, phaseDescription, phaseLabel, todayISO } from '../lib/studyPlan'
 import type { ExamType } from '../types'
 
 export default function Settings() {
@@ -13,6 +14,16 @@ export default function Settings() {
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   if (!settings) return null
+
+  const plan = settings ? computeStudyPlanWeek(settings) : null
+
+  async function setTargetExamDate(date: string) {
+    if (!date) {
+      await updateSettings({ targetExamDate: undefined, planStartDate: undefined })
+      return
+    }
+    await updateSettings({ targetExamDate: date, planStartDate: settings?.planStartDate ?? todayISO() })
+  }
 
   async function toggleReminder(enabled: boolean) {
     if (enabled && permission !== 'granted') {
@@ -132,6 +143,35 @@ export default function Settings() {
             </button>
           ))}
         </div>
+      </Section>
+
+      <Section title="Study plan">
+        <Row>
+          <div>
+            <p className="text-sm text-slate-200">Target exam date</p>
+            <p className="text-xs text-slate-500">Generates a week-by-week plan on your Dashboard</p>
+          </div>
+          <input
+            type="date"
+            value={settings.targetExamDate ?? ''}
+            onChange={(e) => setTargetExamDate(e.target.value)}
+            className="bg-slate-800 border border-slate-700 rounded-lg px-2 py-1 text-sm text-slate-200"
+          />
+        </Row>
+        {settings.targetExamDate && plan && (
+          <div className="mt-3 rounded-lg bg-slate-950/60 border border-slate-800 px-3 py-2.5">
+            <p className="text-xs font-semibold text-sky-400 mb-1">
+              Week {plan.weekNumber} of {plan.totalWeeks} · {phaseLabel(plan.phase)}
+            </p>
+            <p className="text-xs text-slate-400">{phaseDescription(plan.phase)}</p>
+            {plan.topics.length > 0 && (
+              <p className="text-xs text-slate-300 mt-1">This week: {plan.topics.join(', ')}</p>
+            )}
+            <button onClick={() => setTargetExamDate('')} className="text-xs text-rose-400 mt-2">
+              Clear plan
+            </button>
+          </div>
+        )}
       </Section>
 
       <Section title="Your data">
