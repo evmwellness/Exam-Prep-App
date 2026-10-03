@@ -7,6 +7,7 @@ import { computeCurrentStreak } from '../lib/streak'
 import { computeSpecialtyStats } from '../lib/weakAreas'
 import { getAllBadges } from '../lib/badges'
 import { computeStudyPlanWeek, phaseDescription, phaseLabel } from '../lib/studyPlan'
+import { countDueFlashcards } from '../lib/srs'
 import StreakCalendar from '../components/StreakCalendar'
 import { FlameIcon, ChevronRightIcon } from '../components/layout/icons'
 import type { ExamType } from '../types'
@@ -18,6 +19,7 @@ export default function Dashboard() {
   const [streak, setStreak] = useState({ currentStreak: 0, practicedToday: false })
   const [weakest, setWeakest] = useState<Awaited<ReturnType<typeof computeSpecialtyStats>>>([])
   const [badgeCount, setBadgeCount] = useState(0)
+  const [dueCards, setDueCards] = useState({ due: 0, new: 0 })
 
   const attemptsCount = useLiveQuery(() => db.attempts.where('exam').equals(exam).count(), [exam], 0)
   const correctCount = useLiveQuery(
@@ -38,6 +40,7 @@ export default function Dashboard() {
     computeCurrentStreak().then(setStreak)
     computeSpecialtyStats(exam).then((s) => setWeakest(s.filter((x) => x.attempts > 0 || x.accuracy === -1).slice(0, 3)))
     getAllBadges().then((b) => setBadgeCount(b.length))
+    countDueFlashcards().then(setDueCards)
   }, [exam, attemptsCount])
 
   const accuracy = attemptsCount && attemptsCount > 0 ? Math.round(((correctCount ?? 0) / attemptsCount) * 100) : null
@@ -94,6 +97,25 @@ export default function Dashboard() {
         </div>
       </section>
 
+      {(dueCards.due + dueCards.new) > 0 && (
+        <section className="rounded-xl bg-violet-950/30 border border-violet-900/50 p-4 mb-4 flex items-center justify-between">
+          <div>
+            <p className="text-sm font-medium text-violet-200">
+              {dueCards.due + dueCards.new} flashcard{dueCards.due + dueCards.new === 1 ? '' : 's'} due
+            </p>
+            <p className="text-xs text-violet-200/60">
+              {dueCards.due} review{dueCards.due === 1 ? '' : 's'} · {dueCards.new} new
+            </p>
+          </div>
+          <button
+            onClick={() => navigate('/flashcards')}
+            className="text-xs font-medium bg-violet-500 text-slate-950 px-3 py-1.5 rounded-full shrink-0"
+          >
+            Review
+          </button>
+        </section>
+      )}
+
       {plan && plan.phase !== 'not-set' && (
         <section className="rounded-xl bg-slate-900 border border-slate-800 p-4 mb-4">
           <div className="flex items-center justify-between mb-1.5">
@@ -106,12 +128,20 @@ export default function Dashboard() {
           {plan.phase === 'foundations' && plan.topics.length > 0 && (
             <>
               <p className="text-sm text-slate-200 mb-2">{plan.topics.join(', ')}</p>
-              <button
-                onClick={() => navigate('/practice', { state: { quickMode: 'topic', exam, specialties: plan.topics } })}
-                className="text-xs font-medium bg-sky-500 text-slate-950 px-3 py-1.5 rounded-full"
-              >
-                Practice this week's topic
-              </button>
+              <div className="flex gap-2">
+                <button
+                  onClick={() => navigate('/practice', { state: { quickMode: 'topic', exam, specialties: plan.topics } })}
+                  className="text-xs font-medium bg-sky-500 text-slate-950 px-3 py-1.5 rounded-full"
+                >
+                  Practice this week's topic
+                </button>
+                <button
+                  onClick={() => navigate('/flashcards', { state: { specialties: plan.topics } })}
+                  className="text-xs font-medium bg-violet-500 text-slate-950 px-3 py-1.5 rounded-full"
+                >
+                  Flashcards
+                </button>
+              </div>
             </>
           )}
           {plan.phase === 'weak-areas' && (

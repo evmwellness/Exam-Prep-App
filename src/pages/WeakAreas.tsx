@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import clsx from 'clsx'
 import { computeSpecialtyStats, type SpecialtyStat } from '../lib/weakAreas'
-import type { ExamType } from '../types'
+import type { ExamType, Specialty } from '../types'
 
 export default function WeakAreas() {
   const navigate = useNavigate()
@@ -19,6 +19,10 @@ export default function WeakAreas() {
 
   function practiceSpecialty(specialty: string) {
     navigate('/practice', { state: { quickMode: 'weak', exam, specialty } })
+  }
+
+  function reviewFlashcards(specialty: Specialty) {
+    navigate('/flashcards', { state: { specialties: [specialty] } })
   }
 
   return (
@@ -48,7 +52,12 @@ export default function WeakAreas() {
       {weak.length > 0 && (
         <Section title="Needs work (below 70%)">
           {weak.map((s) => (
-            <SpecialtyRow key={s.specialty} stat={s} onPractice={() => practiceSpecialty(s.specialty)} />
+            <SpecialtyRow
+              key={s.specialty}
+              stat={s}
+              onPractice={() => practiceSpecialty(s.specialty)}
+              onFlashcards={() => reviewFlashcards(s.specialty)}
+            />
           ))}
         </Section>
       )}
@@ -56,7 +65,12 @@ export default function WeakAreas() {
       {unseen.length > 0 && (
         <Section title="Not yet practiced">
           {unseen.map((s) => (
-            <SpecialtyRow key={s.specialty} stat={s} onPractice={() => practiceSpecialty(s.specialty)} />
+            <SpecialtyRow
+              key={s.specialty}
+              stat={s}
+              onPractice={() => practiceSpecialty(s.specialty)}
+              onFlashcards={() => reviewFlashcards(s.specialty)}
+            />
           ))}
         </Section>
       )}
@@ -64,7 +78,12 @@ export default function WeakAreas() {
       {strong.length > 0 && (
         <Section title="On track (70%+)">
           {strong.map((s) => (
-            <SpecialtyRow key={s.specialty} stat={s} onPractice={() => practiceSpecialty(s.specialty)} />
+            <SpecialtyRow
+              key={s.specialty}
+              stat={s}
+              onPractice={() => practiceSpecialty(s.specialty)}
+              onFlashcards={() => reviewFlashcards(s.specialty)}
+            />
           ))}
         </Section>
       )}
@@ -81,7 +100,15 @@ function Section({ title, children }: { title: string; children: React.ReactNode
   )
 }
 
-function SpecialtyRow({ stat, onPractice }: { stat: SpecialtyStat; onPractice: () => void }) {
+function SpecialtyRow({
+  stat,
+  onPractice,
+  onFlashcards,
+}: {
+  stat: SpecialtyStat
+  onPractice: () => void
+  onFlashcards: () => void
+}) {
   const pct = stat.accuracy === -1 ? null : Math.round(stat.accuracy * 100)
   return (
     <div className="rounded-xl bg-slate-900 border border-slate-800 p-3.5">
@@ -95,9 +122,14 @@ function SpecialtyRow({ stat, onPractice }: { stat: SpecialtyStat; onPractice: (
           style={{ width: `${pct == null ? 100 : Math.max(4, pct)}%` }}
         />
       </div>
-      <button onClick={onPractice} className="text-xs text-sky-400 font-medium">
-        Practice this specialty →
-      </button>
+      <div className="flex gap-3">
+        <button onClick={onPractice} className="text-xs text-sky-400 font-medium">
+          Practice this specialty →
+        </button>
+        <button onClick={onFlashcards} className="text-xs text-violet-400 font-medium">
+          Flashcards →
+        </button>
+      </div>
     </div>
   )
 }

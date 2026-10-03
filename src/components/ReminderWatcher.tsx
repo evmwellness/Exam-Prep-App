@@ -3,6 +3,7 @@ import { useLiveQuery } from 'dexie-react-hooks'
 import { getSettings } from '../db/db'
 import { computeCurrentStreak } from '../lib/streak'
 import { maybeShowDailyReminder } from '../lib/notifications'
+import { countDueFlashcards } from '../lib/srs'
 
 const CHECK_INTERVAL_MS = 5 * 60 * 1000
 
@@ -13,7 +14,8 @@ export default function ReminderWatcher() {
     async function check() {
       const s = settings ?? (await getSettings())
       const { currentStreak, practicedToday } = await computeCurrentStreak()
-      await maybeShowDailyReminder(s, practicedToday, currentStreak)
+      const { due } = await countDueFlashcards()
+      await maybeShowDailyReminder(s, practicedToday, currentStreak, due)
     }
     check()
     const id = window.setInterval(check, CHECK_INTERVAL_MS)

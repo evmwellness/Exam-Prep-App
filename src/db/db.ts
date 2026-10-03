@@ -1,5 +1,5 @@
 import Dexie, { type EntityTable } from 'dexie'
-import type { AttemptRecord, Badge, SessionRecord, StreakDay, UserSettings } from '../types'
+import type { AttemptRecord, Badge, FlashcardReview, SessionRecord, StreakDay, UserSettings } from '../types'
 
 class ExamPrepDB extends Dexie {
   sessions!: EntityTable<SessionRecord, 'id'>
@@ -7,6 +7,7 @@ class ExamPrepDB extends Dexie {
   streakDays!: EntityTable<StreakDay, 'date'>
   badges!: EntityTable<Badge, 'id'>
   settings!: EntityTable<UserSettings, 'id'>
+  flashcardReviews!: EntityTable<FlashcardReview, 'cardId'>
 
   constructor() {
     super('racgp-exam-prep')
@@ -16,6 +17,14 @@ class ExamPrepDB extends Dexie {
       streakDays: 'date',
       badges: 'id, category, earnedAt',
       settings: 'id',
+    })
+    this.version(2).stores({
+      sessions: '++id, exam, mode, startedAt, finishedAt',
+      attempts: '++id, sessionId, questionUid, exam, specialty, topic, isCorrect, answeredAt',
+      streakDays: 'date',
+      badges: 'id, category, earnedAt',
+      settings: 'id',
+      flashcardReviews: 'cardId, dueDate',
     })
   }
 }

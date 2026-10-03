@@ -27,7 +27,12 @@ function currentTimeIsAtOrAfter(hhmm: string): boolean {
  * needs a push server, which this offline-first app deliberately has none
  * of — Android tends to honour this better than iOS Home Screen apps.
  */
-export async function maybeShowDailyReminder(settings: UserSettings, practicedToday: boolean, streak: number): Promise<void> {
+export async function maybeShowDailyReminder(
+  settings: UserSettings,
+  practicedToday: boolean,
+  streak: number,
+  dueCardCount = 0,
+): Promise<void> {
   if (!settings.reminderEnabled || practicedToday) return
   if (!notificationsSupported() || Notification.permission !== 'granted') return
   if (!currentTimeIsAtOrAfter(settings.reminderTime)) return
@@ -35,9 +40,10 @@ export async function maybeShowDailyReminder(settings: UserSettings, practicedTo
   const today = todayLocalDate()
   if (localStorage.getItem(LAST_SHOWN_KEY) === today) return
 
+  const cardsClause = dueCardCount > 0 ? ` (${dueCardCount} flashcard${dueCardCount === 1 ? '' : 's'} due)` : ''
   const body = streak > 0
-    ? `Keep your ${streak}-day streak alive — a quick block takes 20 minutes.`
-    : `Start a streak today with a quick 20-minute practice block.`
+    ? `Keep your ${streak}-day streak alive — a quick block takes 20 minutes.${cardsClause}`
+    : `Start a streak today with a quick 20-minute practice block.${cardsClause}`
 
   try {
     const registration = await navigator.serviceWorker?.getRegistration()

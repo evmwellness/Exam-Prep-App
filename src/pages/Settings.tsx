@@ -37,14 +37,24 @@ export default function Settings() {
   async function exportData() {
     setBusy(true)
     try {
-      const [sessions, attempts, streakDays, badges, settingsRow] = await Promise.all([
+      const [sessions, attempts, streakDays, badges, settingsRow, flashcardReviews] = await Promise.all([
         db.sessions.toArray(),
         db.attempts.toArray(),
         db.streakDays.toArray(),
         db.badges.toArray(),
         db.settings.toArray(),
+        db.flashcardReviews.toArray(),
       ])
-      const payload = { version: 1, exportedAt: new Date().toISOString(), sessions, attempts, streakDays, badges, settings: settingsRow }
+      const payload = {
+        version: 2,
+        exportedAt: new Date().toISOString(),
+        sessions,
+        attempts,
+        streakDays,
+        badges,
+        settings: settingsRow,
+        flashcardReviews,
+      }
       const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' })
       const url = URL.createObjectURL(blob)
       const a = document.createElement('a')
@@ -63,13 +73,23 @@ export default function Settings() {
     try {
       const text = await file.text()
       const payload = JSON.parse(text)
-      await db.transaction('rw', db.sessions, db.attempts, db.streakDays, db.badges, db.settings, async () => {
-        if (Array.isArray(payload.sessions)) await db.sessions.bulkPut(payload.sessions)
-        if (Array.isArray(payload.attempts)) await db.attempts.bulkPut(payload.attempts)
-        if (Array.isArray(payload.streakDays)) await db.streakDays.bulkPut(payload.streakDays)
-        if (Array.isArray(payload.badges)) await db.badges.bulkPut(payload.badges)
-        if (Array.isArray(payload.settings)) await db.settings.bulkPut(payload.settings)
-      })
+      await db.transaction(
+        'rw',
+        db.sessions,
+        db.attempts,
+        db.streakDays,
+        db.badges,
+        db.settings,
+        db.flashcardReviews,
+        async () => {
+          if (Array.isArray(payload.sessions)) await db.sessions.bulkPut(payload.sessions)
+          if (Array.isArray(payload.attempts)) await db.attempts.bulkPut(payload.attempts)
+          if (Array.isArray(payload.streakDays)) await db.streakDays.bulkPut(payload.streakDays)
+          if (Array.isArray(payload.badges)) await db.badges.bulkPut(payload.badges)
+          if (Array.isArray(payload.settings)) await db.settings.bulkPut(payload.settings)
+          if (Array.isArray(payload.flashcardReviews)) await db.flashcardReviews.bulkPut(payload.flashcardReviews)
+        },
+      )
       alert('Import complete.')
     } catch {
       alert('Could not import that file — it may not be a valid backup.')
@@ -83,11 +103,12 @@ export default function Settings() {
     if (!window.confirm('Are you absolutely sure? Type OK to confirm deletion.')) return
     setBusy(true)
     try {
-      await db.transaction('rw', db.sessions, db.attempts, db.streakDays, db.badges, async () => {
+      await db.transaction('rw', db.sessions, db.attempts, db.streakDays, db.badges, db.flashcardReviews, async () => {
         await db.sessions.clear()
         await db.attempts.clear()
         await db.streakDays.clear()
         await db.badges.clear()
+        await db.flashcardReviews.clear()
       })
       await updateSettings({ currentStreak: 0, bestStreak: 0, bestPaceSec: undefined, bestAccuracyPct: undefined })
     } finally {

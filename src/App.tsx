@@ -8,6 +8,7 @@ import History from './pages/History'
 import SessionDetail from './pages/SessionDetail'
 import WeakAreas from './pages/WeakAreas'
 import Settings from './pages/Settings'
+import Flashcards from './pages/Flashcards'
 import ReminderWatcher from './components/ReminderWatcher'
 
 export default function App() {
@@ -24,6 +25,7 @@ export default function App() {
             <Route path="/history" element={<History />} />
             <Route path="/history/:sessionId" element={<SessionDetail />} />
             <Route path="/weak-areas" element={<WeakAreas />} />
+            <Route path="/flashcards" element={<Flashcards />} />
             <Route path="/settings" element={<Settings />} />
           </Routes>
         </div>

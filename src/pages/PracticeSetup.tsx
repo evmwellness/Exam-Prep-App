@@ -84,7 +84,12 @@ export default function PracticeSetup() {
 
   return (
     <div className="flex-1 px-4 pt-6 pb-8">
-      <h1 className="text-xl font-semibold mb-4">Practice setup</h1>
+      <div className="flex items-center justify-between mb-4">
+        <h1 className="text-xl font-semibold">Practice setup</h1>
+        <button onClick={() => navigate('/flashcards')} className="text-xs font-medium text-violet-400">
+          Flashcards →
+        </button>
+      </div>
 
       <div className="flex rounded-full bg-slate-900 border border-slate-800 p-0.5 text-sm mb-4 w-fit">
         {(['AKT', 'KFP'] as ExamType[]).map((e) => (

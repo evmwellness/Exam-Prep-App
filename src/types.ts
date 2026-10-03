@@ -222,3 +222,27 @@ export interface UserSettings {
   /** YYYY-MM-DD. Week 1 of the plan; defaults to the date targetExamDate was first set. */
   planStartDate?: string
 }
+
+/** A single spaced-repetition flashcard, shared general-practice knowledge (not exam-format specific). */
+export interface Flashcard {
+  id: string
+  specialty: Specialty
+  topic: string
+  front: string
+  back: string
+  tags?: string[]
+}
+
+export type ReviewGrade = 'again' | 'hard' | 'good' | 'easy'
+
+/** Per-card SM-2-style spaced-repetition scheduling state. One row per card. */
+export interface FlashcardReview {
+  cardId: string
+  easeFactor: number // starts at 2.5, floor 1.3
+  intervalDays: number
+  repetitions: number
+  dueDate: string // YYYY-MM-DD, local
+  lastReviewedAt?: number
+  lapses: number // count of 'again' grades, ever
+  introducedAt: number // first-seen timestamp, for "new vs review" accounting
+}
