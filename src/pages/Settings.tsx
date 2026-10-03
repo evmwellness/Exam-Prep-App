@@ -75,12 +75,7 @@ export default function Settings() {
       const payload = JSON.parse(text)
       await db.transaction(
         'rw',
-        db.sessions,
-        db.attempts,
-        db.streakDays,
-        db.badges,
-        db.settings,
-        db.flashcardReviews,
+        [db.sessions, db.attempts, db.streakDays, db.badges, db.settings, db.flashcardReviews],
         async () => {
           if (Array.isArray(payload.sessions)) await db.sessions.bulkPut(payload.sessions)
           if (Array.isArray(payload.attempts)) await db.attempts.bulkPut(payload.attempts)
@@ -244,9 +239,14 @@ export default function Settings() {
           in Custom mode) but isn't the current exam mechanic. Formats can change again — check the current RACGP
           candidate handbook before your sitting.
         </p>
-        <p className="text-xs text-slate-400 leading-relaxed">
+        <p className="text-xs text-slate-400 leading-relaxed mb-2">
           Exam simulation timings are sensible defaults, not guaranteed to match the current RACGP candidate handbook —
           check the latest handbook before your sitting.
+        </p>
+        <p className="text-xs text-slate-400 leading-relaxed">
+          Flashcards are AI-written summaries, not checked against live guidelines — treat specific numbers (doses,
+          screening intervals, funded vaccine schedules) as a memory prompt to verify, not a final source, especially
+          for anything that changes year to year (immunisation schedules, MBS/PBS items, recently revised guidelines).
         </p>
       </Section>
     </div>

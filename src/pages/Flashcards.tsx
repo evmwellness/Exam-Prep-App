@@ -116,31 +116,32 @@ export default function Flashcards() {
         </p>
       </header>
 
-      <main className="flex-1 px-4 py-6 flex flex-col">
-        <p className="text-xs text-slate-500 mb-1">
+      <main className="flex-1 px-4 py-6 flex flex-col overflow-y-auto">
+        <p className="text-xs text-slate-500 mb-3">
           {current!.card.specialty} · {current!.card.topic} {current!.isNew && <span className="text-sky-400">· new</span>}
         </p>
-        <div className="flex-1 flex flex-col justify-center">
-          <div className="rounded-2xl bg-slate-900 border border-slate-800 p-6 min-h-[180px] flex items-center justify-center text-center">
-            <p className="text-base text-slate-100 leading-relaxed">{current!.card.front}</p>
-          </div>
 
-          {revealed && (
-            <div className="mt-4 rounded-2xl bg-slate-950/60 border border-sky-900/40 p-5">
-              <p className="text-sm text-slate-200 whitespace-pre-line leading-relaxed">{current!.card.back}</p>
-            </div>
-          )}
+        <div className="rounded-2xl bg-slate-900 border border-slate-800 p-6 min-h-[140px] flex items-center justify-center text-center">
+          <p className="text-base text-slate-100 leading-relaxed">{current!.card.front}</p>
         </div>
+
+        {revealed && (
+          <div className="mt-4 rounded-2xl bg-slate-950/60 border border-sky-900/40 p-5">
+            <p className="text-sm text-slate-200 whitespace-pre-line leading-relaxed">{current!.card.back}</p>
+          </div>
+        )}
+
+        <div className="flex-1" />
 
         {!revealed ? (
           <button
             onClick={() => setRevealed(true)}
-            className="mt-6 w-full py-3.5 rounded-xl bg-sky-500 text-slate-950 font-semibold"
+            className="mt-6 w-full py-3.5 rounded-xl bg-sky-500 text-slate-950 font-semibold shrink-0"
           >
             Show answer
           </button>
         ) : (
-          <div className="mt-6 grid grid-cols-4 gap-2">
+          <div className="mt-6 grid grid-cols-4 gap-2 shrink-0">
             {GRADE_CONFIG.map(({ grade: g, label, className }) => (
               <button
                 key={g}
