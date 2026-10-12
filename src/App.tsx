@@ -10,11 +10,13 @@ import WeakAreas from './pages/WeakAreas'
 import Settings from './pages/Settings'
 import Flashcards from './pages/Flashcards'
 import ReminderWatcher from './components/ReminderWatcher'
+import UpdatePrompt from './components/UpdatePrompt'
 
 export default function App() {
   return (
     <HashRouter>
       <ReminderWatcher />
+      <UpdatePrompt />
       <div className="min-h-screen bg-slate-950 text-slate-100 pb-20">
         <div className="max-w-md mx-auto min-h-screen flex flex-col">
           <Routes>
