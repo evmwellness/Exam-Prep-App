@@ -24,6 +24,20 @@ Aurvaine, on an aggressive two-month timeline.
 Create these folders as needed. Keep this list in sync with what actually
 exists.
 
+## Standing priorities (every time)
+
+- **50%+ commission programs come first.** Whenever affiliate programs or
+  research come up, focus hardest on programs paying 50% or more (high-ticket,
+  recurring, lifetime). Rank them by realistic US$ per referral.
+- **Always be generating ideas for US$100,000/month within 2 months.** Tie
+  every piece of research back to that target with the maths. Be honest about
+  what is realistic in 60 days.
+- **Use what Veronica already owns.** Check her inbox for the programs and
+  memberships she has bought, and look for affiliate programs among them.
+- The daily report is produced by the `affiliate-researcher` skill
+  (`.claude/skills/affiliate-researcher/SKILL.md`). Reports go in
+  `research/reports/`.
+
 ## How Claude should work in this project
 
 - **Model with evidence.** When studying a marketer, separate what can be
