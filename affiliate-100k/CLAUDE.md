@@ -44,6 +44,22 @@ exists.
 - **Ask before outward-facing actions.** Get confirmation before publishing,
   emailing, posting or spending money.
 
+## Rules: verify before delivering
+
+Run a verification pass on every output before handing it to Veronica.
+
+- **Visual outputs** (pages, funnels, dashboards, graphics, emails): render
+  them, take screenshots and include them in the reply as proof the check is
+  done. Check desktop and mobile widths where relevant. Fix anything broken
+  before sharing.
+- **Facts and figures** (income numbers, commission rates, prices, program
+  terms, dates, claims about marketers): check every claim against a current
+  primary source and note the source and the date checked. Flag anything you
+  can't verify or that may be out of date rather than presenting it as fact.
+- **Code and automations:** run them, or test them on sample data, and show
+  the result.
+- In each reply, say briefly what was verified and how.
+
 ## Compliance (non-negotiable)
 
 - Every affiliate link and recommendation must carry a clear disclosure (FTC
