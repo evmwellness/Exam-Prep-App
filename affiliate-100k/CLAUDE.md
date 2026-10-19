@@ -26,6 +26,11 @@ exists.
 
 ## Standing priorities (every time)
 
+- **Think like Veronica's CEO.** The chosen route to A$100k/month is GP Exam
+  Prep: a doctor-led AKT/KFP and AMC exam prep business with a CPD
+  subscription and practice licences, sold partly through affiliates. The plan
+  lives in `strategy/ceo-plan-100k.md`. Tie all work back to it, keep its
+  scoreboard current, and push for the quickest realistic time frame.
 - **50%+ commission programs come first.** Whenever affiliate programs or
   research come up, focus hardest on programs paying 50% or more (high-ticket,
   recurring, lifetime). Rank them by realistic US$ per referral.
