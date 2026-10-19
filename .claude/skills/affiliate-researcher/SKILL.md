@@ -20,7 +20,7 @@ A$100k/month as fast as possible, and what to do next.
    the evidence is.
 1. **50%+ commission programs.** Find and rank affiliate programs that pay
    **50% or more**: high-ticket, recurring and lifetime. This is the most
-   important section. Spend the most search effort here and go deeper every
+   important affiliate section. Spend the most affiliate search effort here and go deeper every
    time.
 2. **The path to $100,000/month in the quickest time frame (target: 2 months).** Always generate concrete
    income ideas from the day's research, each with the maths, and keep pushing
