@@ -65,6 +65,15 @@ Affiliates take 30–50% of the sales they refer, and payment fees take ~3%. If 
    - **Target: 1,000 diagnostic sign-ups by 13 Dec.**
 4. **Community seeding:** answer questions and share free mini-mocks in the GP registrar and IMG Facebook groups, within each group's rules.
 
+### Phase 1b: "30-Day Exam Coach" on WhatsApp (build in weeks 4–8)
+A coach that messages each buyer first, every day: today's study block, one practice question, a check-in on yesterday's score, and a weekly weak-area plan, built around a 30-day countdown to the exam.
+- **Why:** it's a differentiator none of the AKT competitors show, it keeps buyers studying (fewer refunds, more pass stories) and it gives affiliates something new to talk about.
+- **Policy fit:** Meta has banned *general-purpose* AI chatbots on the WhatsApp Business API since 15 Jan 2026. Task-specific bots tied to a business's own service are reported as allowed. Keep it a structured exam-study coach, not open-ended chat, and confirm against Meta's current terms before launch.
+- **Mechanics:** proactive messages outside the 24-hour window must be pre-approved *utility* templates, billed per message (check Australian rates). Replies inside the window are free.
+- **Reuse:** Chairside already has a tested scheduled-message engine (consent, STOP opt-out, quiet hours, cron sender) that can be adapted.
+- **Pricing:** bundle it into the A$497 pack, or sell it as a A$49 add-on.
+- **Later:** if it works, spin out a general "30-Day Goal Coach" as a second affiliate product. Competitors like CoachCall.ai charge ~US$10–40/mo (unverified).
+
 ### Phase 2: Expand the product line (months 3–6, Jan – Apr 2027)
 1. **AMC MCQ Pass Pack** for IMGs: a global audience, and most of the content can be adapted from the AKT bank. Launch through IMG coaches as affiliates at 40%.
 2. **check Prep CPD subscription** (A$19/mo): monthly summaries of new units, quizzes and a CPD log export.
