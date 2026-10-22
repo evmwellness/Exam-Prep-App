@@ -1,0 +1,3 @@
+numpy
+opencv-contrib-python-headless<5   # 4.x bundles the Haar face/eye detectors and guidedFilter
+ai-edge-litert                     # TFLite runtime for the segmentation model
